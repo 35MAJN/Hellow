@@ -6,7 +6,9 @@
     <title>Mohammadali Javadinasab | Portfolio</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Vazirmatn:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -18,7 +20,7 @@
             --text-dim: #424245;
             --accent: #0071e3;
             --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            --nav-height: 70px;
+            --nav-height: 64px;
         }
 
         [data-theme="dark"] {
@@ -35,30 +37,29 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease, transform 0.2s ease;
         }
 
         body {
             background: var(--bg-gradient);
             background-attachment: fixed;
             color: var(--text-main);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.5;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Language-specific Typography */
-        [lang="fa"] { font-family: 'Vazirmatn', sans-serif; }
+        /* Persian Font Fix for Mobile */
+        [lang="fa"], [lang="fa"] body, [lang="fa"] * { 
+            font-family: 'Vazirmatn', sans-serif !important; 
+        }
         
-        /* Specific bold styling for the Persian name */
         [lang="fa"] h1 { 
-            font-family: 'Vazirmatn', sans-serif; 
-            font-weight: 900; 
+            font-weight: 900 !important; 
             letter-spacing: 0;
         }
 
-        /* Neural Background */
         #bg-canvas {
             position: fixed;
             top: 0; left: 0;
@@ -70,44 +71,54 @@
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 20px;
         }
 
-        /* Navigation */
+        /* Navigation Overhaul */
         nav {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: fit-content;
-            min-width: 320px;
             height: var(--nav-height);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 0 24px;
+            padding: 0 20px;
             z-index: 1000;
-            border-radius: 40px;
+            border-radius: 32px;
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             box-shadow: var(--card-shadow);
         }
 
-        .nav-links { display: flex; gap: 20px; }
+        .nav-links { display: flex; gap: 24px; margin-right: 20px; }
+        [dir="rtl"] .nav-links { margin-right: 0; margin-left: 20px; }
+
         .nav-links a {
             text-decoration: none;
             color: var(--text-main);
-            font-size: 0.9rem;
-            font-weight: 500;
-            opacity: 0.7;
-            transition: 0.2s;
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.6;
         }
         .nav-links a:hover { opacity: 1; color: var(--accent); }
 
-        .controls { display: flex; align-items: center; gap: 15px; border-left: 1px solid var(--glass-border); padding-left: 15px; }
-        [dir="rtl"] .controls { border-left: none; border-right: 1px solid var(--glass-border); padding-left: 0; padding-right: 15px; }
+        .controls { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            border-left: 1px solid var(--glass-border); 
+            padding-left: 15px; 
+        }
+        [dir="rtl"] .controls { 
+            border-left: none; 
+            border-right: 1px solid var(--glass-border); 
+            padding-left: 0; 
+            padding-right: 15px; 
+        }
 
         .btn-icon {
             background: none;
@@ -118,7 +129,6 @@
             width: 36px; height: 36px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            transition: 0.2s;
         }
         .btn-icon:hover { background: rgba(0, 113, 227, 0.1); color: var(--accent); }
 
@@ -136,7 +146,7 @@
 
         /* Hero */
         #hero {
-            margin-top: 140px;
+            margin-top: 130px;
             text-align: center;
         }
         .profile-img {
@@ -148,52 +158,58 @@
             padding: 4px;
             background: var(--bg-primary);
         }
-        h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
-        .subtitle { font-size: 1.2rem; color: var(--accent); font-weight: 600; margin-bottom: 24px; }
+        h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+        .subtitle { font-size: 1.15rem; color: var(--accent); font-weight: 600; margin-bottom: 24px; }
         
         .contact-pill-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
+            gap: 10px;
+            margin-bottom: 24px;
         }
         .contact-pill {
             padding: 8px 16px;
-            border-radius: 20px;
+            border-radius: 18px;
             background: rgba(0, 113, 227, 0.08);
             color: var(--text-main);
             font-size: 0.85rem;
             display: flex; align-items: center; gap: 8px;
+            text-decoration: none;
         }
+        .contact-pill:hover { background: rgba(0, 113, 227, 0.15); }
         .contact-pill i { color: var(--accent); }
 
-        /* Grid Layout */
+        /* Bento Grid */
         .grid-bento {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             padding: 20px 0;
         }
+        .card { padding: 30px; }
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .card .date { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; display: block; }
 
-        .card {
-            padding: 30px;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card:hover { transform: scale(1.02); }
-        .card h3 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
-        .card .date { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px; display: block; }
-
-        footer { text-align: center; padding: 60px 0; opacity: 0.6; font-size: 0.85rem; }
-
-        /* Icon Visibility Logic */
+        footer { text-align: center; padding: 60px 0; opacity: 0.5; font-size: 0.8rem; }
         .fa-hide { display: none !important; }
 
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            nav { width: 90%; min-width: unset; }
-            .nav-links { display: none; }
-            h1 { font-size: 2.2rem; }
-            .glass-card { padding: 24px; }
+            nav { 
+                top: 15px;
+                width: 90%; 
+                min-width: 280px; 
+                padding: 0 15px;
+                justify-content: center; 
+            }
+            .nav-links { display: none; } /* Focus on branding/controls for small mobile */
+            .controls { border: none; padding: 0; }
+            
+            h1 { font-size: 2rem; }
+            .glass-card { padding: 25px; }
+            #hero { margin-top: 100px; }
         }
     </style>
 </head>
@@ -224,13 +240,16 @@
             <p class="subtitle" data-t="hero-sub">Co-founder of LearnAmuse | AI Researcher | Electrical Engineer</p>
             
             <div class="contact-pill-container">
-                <div class="contact-pill"><i class="fas fa-envelope icon-ui"></i> ma.javadinasab@gmail.com</div>
-                <div class="contact-pill"><i class="fas fa-phone icon-ui"></i> +98 (912) 058 6696</div>
-                <div class="contact-pill"><i class="fab fa-linkedin icon-ui"></i> 35majn</div>
+                <a href="mailto:ma.javadinasab@gmail.com" class="contact-pill">
+                    <i class="fas fa-envelope icon-ui"></i> ma.javadinasab@gmail.com
+                </a>
+                <a href="https://linkedin.com/in/35majn" target="_blank" class="contact-pill">
+                    <i class="fab fa-linkedin icon-ui"></i> 35majn
+                </a>
             </div>
 
-            <div class="nav-links" style="display: flex; justify-content: center;">
-                <a href="https://learnamuse.com" target="_blank" style="color: var(--accent); font-weight: 800;">LEARNAMUSE.COM</a>
+            <div style="margin-top: 10px;">
+                <a href="https://learnamuse.com" target="_blank" style="color: var(--accent); font-weight: 800; text-decoration: none; font-size: 0.9rem;">LEARNAMUSE.COM</a>
             </div>
         </section>
 
@@ -277,7 +296,7 @@
                 "hero-sub": "Co-founder of LearnAmuse | AI Researcher | Electrical Engineer",
                 "edu-title": "Academic Background",
                 "edu-1-h": "Electrical Engineering", "edu-1-u": "Shahid Beheshti University", "edu-1-d": "Active", "edu-1-p": "Advanced research at the School of Electrical Engineering.",
-                "edu-2-h": "B.Sc. Electrical Engineering", "edu-2-u": "IUST", "edu-2-p": "Thesis: Solving the Inverse Problem for EEG using Deep Learning.",
+                "edu-2-h": "B.Sc. Electrical Engineering", "edu-2-u": "IUST", "edu-2-p": "Thesis: Solving the Inverse Problem for EEG using Deep Learning. GPA: 3.41/4.",
                 "exp-title": "Experience",
                 "exp-1-h": "Co-founder @ LearnAmuse", "exp-1-d": "Present", "exp-1-p": "Driving innovation in adaptive learning platforms and AI tools.",
                 "exp-2-h": "Research Assistant", "exp-2-p": "Focused on signal processing and neural network teaching.",
@@ -308,7 +327,6 @@
             
             const uiIcons = document.querySelectorAll('.icon-ui');
             if(currentLang === 'fa') {
-                // Background stays, but UI icons hide as requested previously
                 uiIcons.forEach(icon => icon.classList.add('fa-hide'));
             } else {
                 uiIcons.forEach(icon => icon.classList.remove('fa-hide'));
