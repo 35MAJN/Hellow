@@ -9,23 +9,23 @@
     
     <style>
         :root {
-            /* Day Mode (Default) */
             --bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
             --glass-bg: rgba(255, 255, 255, 0.25);
             --glass-border: rgba(255, 255, 255, 0.18);
             --text-color: #2d3436;
             --accent-color: #0984e3;
             --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --bg-icon-opacity: 0.05;
         }
 
         [data-theme="dark"] {
-            /* Night Mode */
             --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-color: #f5f6fa;
             --accent-color: #74b9ff;
             --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+            --bg-icon-opacity: 0.1;
         }
 
         * {
@@ -42,8 +42,45 @@
             color: var(--text-color);
             transition: all 0.4s ease;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
+        /* Neural Background Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Floating Background Icons */
+        .bg-graphics {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: var(--accent-color);
+            opacity: var(--bg-icon-opacity);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(100px, 50px) rotate(180deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        /* Glass Style */
         .glass {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -75,11 +112,7 @@
             transition: color 0.3s;
         }
 
-        .theme-toggle {
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: var(--accent-color);
-        }
+        .theme-toggle { cursor: pointer; font-size: 1.2rem; color: var(--accent-color); }
 
         .container {
             max-width: 1100px;
@@ -87,9 +120,7 @@
             padding: 0 20px;
         }
 
-        section {
-            padding: 60px 0;
-        }
+        section { padding: 60px 0; }
 
         #hero {
             display: flex;
@@ -118,11 +149,7 @@
             margin-top: 30px;
         }
 
-        .card {
-            padding: 25px;
-            transition: transform 0.3s ease;
-        }
-
+        .card { padding: 25px; transition: transform 0.3s ease; }
         .card:hover { transform: translateY(-5px); }
         .card h3 { color: var(--accent-color); margin-bottom: 10px; }
         .date { font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px; }
@@ -145,30 +172,11 @@
             margin-top: 20px;
         }
 
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-        }
+        .contact-item { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; }
+        .contact-item i { color: var(--accent-color); }
 
-        .contact-item i {
-            color: var(--accent-color);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            margin-top: 50px;
-        }
-
-        .social-links a {
-            font-size: 1.5rem;
-            margin: 0 15px;
-            color: var(--text-color);
-            transition: color 0.3s;
-        }
-
+        footer { text-align: center; padding: 40px; margin-top: 50px; }
+        .social-links a { font-size: 1.5rem; margin: 0 15px; color: var(--text-color); transition: color 0.3s; }
         .social-links a:hover { color: var(--accent-color); }
 
         @media (max-width: 768px) {
@@ -178,6 +186,14 @@
     </style>
 </head>
 <body>
+
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-graphics">
+        <i class="fas fa-brain floating-icon" style="top: 15%; left: 10%; font-size: 4rem;"></i>
+        <i class="fas fa-laptop-code floating-icon" style="top: 40%; right: 15%; font-size: 5rem; animation-delay: -5s;"></i>
+        <i class="fas fa-microchip floating-icon" style="bottom: 20%; left: 20%; font-size: 3.5rem; animation-delay: -10s;"></i>
+        <i class="fas fa-globe floating-icon" style="top: 70%; right: 10%; font-size: 4.5rem; animation-delay: -15s;"></i>
+    </div>
 
     <nav class="glass">
         <div class="logo"><strong>MJ</strong></div>
@@ -193,11 +209,10 @@
     </nav>
 
     <div class="container">
-        
         <section id="hero" class="glass">
             <img src="pic.jpg" alt="Mohammadali Javadinasab" class="profile-img">
             <h1>Mohammadali Javadinasab</h1>
-            <p class="subtitle">Co-founder of LearnAmuse | AI & Deep Learning Researcher | Electrical Engineer</p>
+            <p class="subtitle">Co-founder of LearnAmuse | AI Researcher | Electrical Engineer</p>
             <p>Bridging the gap between Neuroscience, Deep Learning, and Medical Applications.</p>
             
             <div class="contact-info">
@@ -220,18 +235,18 @@
                     <h3>Electrical Engineering</h3>
                     <p><strong>Shahid Beheshti University</strong></p>
                     <p class="date">Current Student</p>
-                    <p>Pursuing advanced studies at the School of Electrical Engineering in Tehran.</p>
+                    <p>Pursuing advanced studies at the School of Electrical Engineering.</p>
                 </div>
                 <div class="card glass">
                     <h3>B.Sc. Electrical Engineering</h3>
                     <p><strong>Iran University of Science & Technology</strong></p>
                     <p class="date">2019 - 2024</p>
-                    <p>Major in Telecommunications. GPA: 3.41/4. Thesis on Solving the Inverse Problem for EEG using DL.</p>
+                    <p>Thesis on EEG Source Reconstruction using DL. GPA: 3.41/4.</p>
                 </div>
                 <div class="card glass">
                     <h3>Medical Studies</h3>
                     <p><strong>Continuing Education</strong></p>
-                    <p>Applying computational expertise to sports medicine and neurophysiology.</p>
+                    <p>Focusing on sports medicine and neurophysiology applications.</p>
                 </div>
             </div>
         </section>
@@ -241,25 +256,20 @@
             <div class="grid">
                 <div class="card glass">
                     <h3>Co-founder</h3>
-                    <p><strong>LearnAmuse</strong> | Present</p>
-                    <p><a href="https://learnamuse.com" style="color: var(--accent-color); text-decoration: none;">learnamuse.com</a></p>
-                    <ul>
-                        <li>Leading innovation in educational technology and personalized learning.</li>
-                    </ul>
+                    <p><strong>LearnAmuse</strong></p>
+                    <p><a href="https://learnamuse.com" target="_blank" style="color: var(--accent-color); text-decoration: none;">learnamuse.com</a></p>
+                    <p>Developing innovative educational technology solutions.</p>
                 </div>
                 <div class="card glass">
-                    <h3>Research & Teaching Assistant</h3>
-                    <p><strong>IUST</strong> | 2022 - 2024</p>
-                    <ul>
-                        <li>Focus on EEG Source Reconstruction and Neural Network instruction.</li>
-                    </ul>
+                    <h3>Research Assistant</h3>
+                    <p><strong>IUST</strong></p>
+                    <p class="date">2022 - 2024</p>
+                    <p>Specialized in Signal Processing and Neural Network models.</p>
                 </div>
                 <div class="card glass">
                     <h3>AI Specialist</h3>
-                    <p><strong>Freelance & Industry</strong></p>
-                    <ul>
-                        <li>Deep Learning architectures for medical imaging and satellite topology.</li>
-                    </ul>
+                    <p><strong>Freelance</strong></p>
+                    <p>Building 3D deep learning architectures and medical data models.</p>
                 </div>
             </div>
         </section>
@@ -267,24 +277,21 @@
         <section id="skills" class="glass" style="text-align: center; padding: 40px;">
             <h2>Technical Arsenal</h2>
             <div style="margin-top: 20px;">
-                <span class="skills-tag">Python</span>
-                <span class="skills-tag">TensorFlow</span>
-                <span class="skills-tag">PyTorch</span>
-                <span class="skills-tag">EEG Signal Processing</span>
+                <span class="skills-tag">Python (TF/PyTorch)</span>
                 <span class="skills-tag">Deep Learning</span>
+                <span class="skills-tag">EEG Processing</span>
                 <span class="skills-tag">MAJNet3D</span>
                 <span class="skills-tag">IoT & PCB Design</span>
             </div>
         </section>
-
     </div>
 
     <footer class="glass">
         <p>© 2026 Mohammadali Javadinasab | Tehran, Iran</p>
-        <p>Top 1% Nationwide Rank (2019)</p>
     </footer>
 
     <script>
+        // --- Theme Toggle ---
         const themeBtn = document.getElementById('theme-btn');
         const body = document.body;
         const icon = themeBtn.querySelector('i');
@@ -298,6 +305,100 @@
                 icon.className = 'fas fa-sun';
             }
         });
+
+        // --- Neural Background Canvas ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--accent-color');
+                ctx.globalAlpha = 0.4;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            connect();
+            requestAnimationFrame(animate);
+        }
+
+        function connect() {
+            let opacityValue = 1;
+            const accentColor = getComputedStyle(document.body).getPropertyValue('--accent-color');
+            
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let distance = ((particles[a].x - particles[b].x) ** 2) + ((particles[a].y - particles[b].y) ** 2);
+                    
+                    // Mouse interaction
+                    let mouseDistance = ((particles[a].x - mouse.x) ** 2) + ((particles[a].y - mouse.y) ** 2);
+                    
+                    if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+                        opacityValue = 1 - (distance / 20000);
+                        ctx.strokeStyle = accentColor;
+                        
+                        // Increase connection strength near mouse
+                        if (mouseDistance < mouse.radius * mouse.radius) {
+                            ctx.lineWidth = 2;
+                            ctx.globalAlpha = opacityValue * 0.8;
+                        } else {
+                            ctx.lineWidth = 1;
+                            ctx.globalAlpha = opacityValue * 0.2;
+                        }
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        init();
+        animate();
     </script>
 </body>
 </html>
