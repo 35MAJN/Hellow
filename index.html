@@ -6,7 +6,7 @@
     <title>Mohammadali Javadinasab | Portfolio</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -27,7 +27,7 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #f5f5f7;
             --text-dim: #86868b;
-            --accent: #2997ff;
+            --accent: #2997ff; /* Bright blue for dark mode visibility */
             --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
@@ -50,7 +50,12 @@
 
         /* Language-specific Typography */
         [lang="fa"] { font-family: 'Vazirmatn', sans-serif; }
-        [lang="fa"] .subtitle { font-weight: 300; }
+        
+        /* Specific bold styling for the Persian name */
+        [lang="fa"] h1 { 
+            font-family: 'Vazirmatn', sans-serif; 
+            font-weight: 900; 
+        }
 
         /* Neural Background */
         #bg-canvas {
@@ -58,7 +63,6 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
-            opacity: 0.6;
             pointer-events: none;
         }
 
@@ -68,7 +72,7 @@
             padding: 0 24px;
         }
 
-        /* Navigation - Floating Dock style */
+        /* Navigation */
         nav {
             position: fixed;
             top: 20px;
@@ -113,7 +117,7 @@
             width: 36px; height: 36px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
+            transition: 0.2s;
         }
         .btn-icon:hover { background: rgba(0, 113, 227, 0.1); color: var(--accent); }
 
@@ -168,7 +172,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
-            padding: 40px 0;
+            padding: 20px 0;
         }
 
         .card {
@@ -178,22 +182,9 @@
         .card:hover { transform: scale(1.02); }
         .card h3 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
         .card .date { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px; display: block; }
-        .card p { font-size: 0.95rem; color: var(--text-dim); }
-
-        /* Skill Badges */
-        .skills-wrap { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-        .skill-badge {
-            padding: 10px 20px;
-            border-radius: 30px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
 
         footer { text-align: center; padding: 60px 0; opacity: 0.6; font-size: 0.85rem; }
 
-        /* Icon Visibility Logic */
         .fa-hide { display: none !important; }
 
         @media (max-width: 768px) {
@@ -236,7 +227,7 @@
                 <div class="contact-pill"><i class="fab fa-linkedin icon-ui"></i> 35majn</div>
             </div>
 
-            <div class="nav-links" style="display: flex; justify-content: center; margin-top: 10px;">
+            <div class="nav-links" style="display: flex; justify-content: center;">
                 <a href="https://learnamuse.com" target="_blank" style="color: var(--accent); font-weight: 800;">LEARNAMUSE.COM</a>
             </div>
         </section>
@@ -267,23 +258,12 @@
             <div class="glass-card card">
                 <span class="date">2022 - 2024</span>
                 <h3 data-t="exp-2-h">Research Assistant</h3>
-                <p data-t="exp-2-p">Worked on computational models for EEG signal processing and Neural Networks at IUST.</p>
-            </div>
-        </div>
-
-        <div class="glass-card" style="text-align: center;">
-            <h2 data-t="skills-title" style="margin-bottom: 25px;">Technical Arsenal</h2>
-            <div class="skills-wrap">
-                <div class="skill-badge">Python (TF/PyTorch)</div>
-                <div class="skill-badge">Deep Learning</div>
-                <div class="skill-badge">EEG Processing</div>
-                <div class="skill-badge">MAJNet3D</div>
-                <div class="skill-badge">IoT & PCB</div>
+                <p data-t="exp-2-p">Computational models for EEG signal processing and Neural Networks at IUST.</p>
             </div>
         </div>
 
         <footer data-t="footer-text">
-            © 2026 Mohammadali Javadinasab | Designed for Neuro-Med Engineering
+            © 2026 Mohammadali Javadinasab | Tehran, Iran
         </footer>
     </div>
 
@@ -299,7 +279,6 @@
                 "exp-title": "Experience",
                 "exp-1-h": "Co-founder @ LearnAmuse", "exp-1-d": "Present", "exp-1-p": "Driving innovation in adaptive learning platforms and AI tools.",
                 "exp-2-h": "Research Assistant", "exp-2-p": "Focused on signal processing and neural network teaching.",
-                "skills-title": "Technical Arsenal",
                 "footer-text": "© 2026 Mohammadali Javadinasab | Tehran, Iran"
             },
             fa: {
@@ -312,7 +291,6 @@
                 "exp-title": "تجربیات حرفه‌ای",
                 "exp-1-h": "هم‌بنیان‌گذار LearnAmuse", "exp-1-d": "اکنون", "exp-1-p": "پیشبرد نوآوری در پلتفرم‌های یادگیری تطبیقی و ابزارهای هوش مصنوعی.",
                 "exp-2-h": "دستیار پژوهشی", "exp-2-p": "تمرکز بر پردازش سیگنال و آموزش شبکه‌های عصبی.",
-                "skills-title": "جعبه‌ابزار فنی",
                 "footer-text": "© ۲۰۲۶ محمدعلی جوادی‌نسب | تهران، ایران"
             }
         };
@@ -326,7 +304,6 @@
             document.documentElement.lang = currentLang;
             document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
             
-            // Toggle visibility of UI icons and Background
             const uiIcons = document.querySelectorAll('.icon-ui');
             if(currentLang === 'fa') {
                 canvas.style.display = 'none';
@@ -381,8 +358,9 @@
                 if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
             }
             draw() {
+                const isDark = document.body.getAttribute('data-theme') === 'dark';
                 ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--accent');
-                ctx.globalAlpha = 0.3;
+                ctx.globalAlpha = isDark ? 0.6 : 0.3; // Boosted opacity for dark mode
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -402,6 +380,7 @@
         }
 
         function connect() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
             const accent = getComputedStyle(document.body).getPropertyValue('--accent');
             for (let a = 0; a < particles.length; a++) {
                 for (let b = a; b < particles.length; b++) {
@@ -409,8 +388,8 @@
                     if (distance < (canvas.width / 8) * (canvas.height / 8)) {
                         let opacity = 1 - (distance / 25000);
                         ctx.strokeStyle = accent;
-                        ctx.globalAlpha = opacity * 0.2;
-                        ctx.lineWidth = 1;
+                        ctx.globalAlpha = isDark ? opacity * 0.4 : opacity * 0.2; // Stronger lines for dark mode
+                        ctx.lineWidth = isDark ? 1.5 : 1;
                         ctx.beginPath();
                         ctx.moveTo(particles[a].x, particles[a].y);
                         ctx.lineTo(particles[b].x, particles[b].y);
