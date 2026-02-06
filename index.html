@@ -27,7 +27,7 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #f5f5f7;
             --text-dim: #86868b;
-            --accent: #2997ff; /* Bright blue for dark mode visibility */
+            --accent: #2997ff;
             --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
@@ -55,6 +55,7 @@
         [lang="fa"] h1 { 
             font-family: 'Vazirmatn', sans-serif; 
             font-weight: 900; 
+            letter-spacing: 0;
         }
 
         /* Neural Background */
@@ -185,6 +186,7 @@
 
         footer { text-align: center; padding: 60px 0; opacity: 0.6; font-size: 0.85rem; }
 
+        /* Icon Visibility Logic */
         .fa-hide { display: none !important; }
 
         @media (max-width: 768px) {
@@ -244,7 +246,7 @@
                 <span class="date">2019 - 2024</span>
                 <h3 data-t="edu-2-h">B.Sc. Electrical Engineering</h3>
                 <p><strong data-t="edu-2-u">IUST</strong></p>
-                <p data-t="edu-2-p">Thesis on EEG Source Reconstruction using DL. GPA: 3.41/4.</p>
+                <p data-t="edu-2-p">Thesis: Solving the Inverse Problem for EEG using Deep Learning. GPA: 3.41/4.</p>
             </div>
         </div>
 
@@ -275,7 +277,7 @@
                 "hero-sub": "Co-founder of LearnAmuse | AI Researcher | Electrical Engineer",
                 "edu-title": "Academic Background",
                 "edu-1-h": "Electrical Engineering", "edu-1-u": "Shahid Beheshti University", "edu-1-d": "Active", "edu-1-p": "Advanced research at the School of Electrical Engineering.",
-                "edu-2-h": "B.Sc. Electrical Engineering", "edu-2-u": "IUST", "edu-2-p": "Thesis: EEG Source Reconstruction with Deep Learning.",
+                "edu-2-h": "B.Sc. Electrical Engineering", "edu-2-u": "IUST", "edu-2-p": "Thesis: Solving the Inverse Problem for EEG using Deep Learning.",
                 "exp-title": "Experience",
                 "exp-1-h": "Co-founder @ LearnAmuse", "exp-1-d": "Present", "exp-1-p": "Driving innovation in adaptive learning platforms and AI tools.",
                 "exp-2-h": "Research Assistant", "exp-2-p": "Focused on signal processing and neural network teaching.",
@@ -287,7 +289,7 @@
                 "hero-sub": "هم‌بنیان‌گذار LearnAmuse | پژوهشگر هوش مصنوعی | مهندس برق",
                 "edu-title": "پیشینه آکادمیک",
                 "edu-1-h": "مهندسی برق", "edu-1-u": "دانشگاه شهید بهشتی", "edu-1-d": "در حال تحصیل", "edu-1-p": "تحصیلات تکمیلی در دانشکده مهندسی برق.",
-                "edu-2-h": "کارشناسی مهندسی برق", "edu-2-u": "دانشگاه علم و صنعت ایران", "edu-2-p": "پایان‌نامه: بازسازی منابع EEG با یادگیری عمیق.",
+                "edu-2-h": "کارشناسی مهندسی برق", "edu-2-u": "دانشگاه علم و صنعت ایران", "edu-2-p": "پایان‌نامه: حل مسئله معکوس EEG با یادگیری عمیق.",
                 "exp-title": "تجربیات حرفه‌ای",
                 "exp-1-h": "هم‌بنیان‌گذار LearnAmuse", "exp-1-d": "اکنون", "exp-1-p": "پیشبرد نوآوری در پلتفرم‌های یادگیری تطبیقی و ابزارهای هوش مصنوعی.",
                 "exp-2-h": "دستیار پژوهشی", "exp-2-p": "تمرکز بر پردازش سیگنال و آموزش شبکه‌های عصبی.",
@@ -306,10 +308,9 @@
             
             const uiIcons = document.querySelectorAll('.icon-ui');
             if(currentLang === 'fa') {
-                canvas.style.display = 'none';
+                // Background stays, but UI icons hide as requested previously
                 uiIcons.forEach(icon => icon.classList.add('fa-hide'));
             } else {
-                canvas.style.display = 'block';
                 uiIcons.forEach(icon => icon.classList.remove('fa-hide'));
             }
 
@@ -360,7 +361,7 @@
             draw() {
                 const isDark = document.body.getAttribute('data-theme') === 'dark';
                 ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--accent');
-                ctx.globalAlpha = isDark ? 0.6 : 0.3; // Boosted opacity for dark mode
+                ctx.globalAlpha = isDark ? 0.6 : 0.3; 
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -388,7 +389,7 @@
                     if (distance < (canvas.width / 8) * (canvas.height / 8)) {
                         let opacity = 1 - (distance / 25000);
                         ctx.strokeStyle = accent;
-                        ctx.globalAlpha = isDark ? opacity * 0.4 : opacity * 0.2; // Stronger lines for dark mode
+                        ctx.globalAlpha = isDark ? opacity * 0.4 : opacity * 0.2; 
                         ctx.lineWidth = isDark ? 1.5 : 1;
                         ctx.beginPath();
                         ctx.moveTo(particles[a].x, particles[a].y);
