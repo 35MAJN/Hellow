@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,6 @@
             --text-color: #2d3436;
             --accent-color: #0984e3;
             --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            --bg-icon-opacity: 0.05;
         }
 
         [data-theme="dark"] {
@@ -25,7 +24,6 @@
             --text-color: #f5f6fa;
             --accent-color: #74b9ff;
             --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
-            --bg-icon-opacity: 0.1;
         }
 
         * {
@@ -34,6 +32,11 @@
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
+        }
+
+        /* Persian Font Override */
+        [lang="fa"] * {
+            font-family: Tahoma, Arial, sans-serif;
         }
 
         body {
@@ -45,7 +48,6 @@
             overflow-x: hidden;
         }
 
-        /* Neural Background Canvas */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -56,31 +58,6 @@
             pointer-events: none;
         }
 
-        /* Floating Background Icons */
-        .bg-graphics {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .floating-icon {
-            position: absolute;
-            color: var(--accent-color);
-            opacity: var(--bg-icon-opacity);
-            animation: float 20s infinite linear;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(100px, 50px) rotate(180deg); }
-            100% { transform: translate(0, 0) rotate(360deg); }
-        }
-
-        /* Glass Style */
         .glass {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -112,7 +89,28 @@
             transition: color 0.3s;
         }
 
-        .theme-toggle { cursor: pointer; font-size: 1.2rem; color: var(--accent-color); }
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-toggle, .lang-toggle {
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            background: none;
+            border: 1px solid var(--accent-color);
+            padding: 5px 10px;
+            border-radius: 10px;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            background: var(--accent-color);
+            color: white;
+        }
 
         .container {
             max-width: 1100px;
@@ -140,7 +138,7 @@
         }
 
         h1 { font-size: 2.8rem; margin-bottom: 10px; }
-        .subtitle { font-size: 1.2rem; color: var(--accent-color); margin-bottom: 20px; }
+        .subtitle { font-size: 1.2rem; color: var(--accent-color); margin-bottom: 20px; font-weight: 600; }
 
         .grid {
             display: grid;
@@ -188,23 +186,20 @@
 <body>
 
     <canvas id="bg-canvas"></canvas>
-    <div class="bg-graphics">
-        <i class="fas fa-brain floating-icon" style="top: 15%; left: 10%; font-size: 4rem;"></i>
-        <i class="fas fa-laptop-code floating-icon" style="top: 40%; right: 15%; font-size: 5rem; animation-delay: -5s;"></i>
-        <i class="fas fa-microchip floating-icon" style="bottom: 20%; left: 20%; font-size: 3.5rem; animation-delay: -10s;"></i>
-        <i class="fas fa-globe floating-icon" style="top: 70%; right: 10%; font-size: 4.5rem; animation-delay: -15s;"></i>
-    </div>
 
     <nav class="glass">
         <div class="logo"><strong>MJ</strong></div>
         <div class="nav-links">
-            <a href="#hero">Home</a>
-            <a href="#about">Education</a>
-            <a href="#experience">Experience</a>
-            <a href="#contact">Contact</a>
+            <a href="#hero" data-t="nav-home">Home</a>
+            <a href="#about" data-t="nav-edu">Education</a>
+            <a href="#experience" data-t="nav-exp">Experience</a>
+            <a href="#contact" data-t="nav-contact">Contact</a>
         </div>
-        <div class="theme-toggle" id="theme-btn">
-            <i class="fas fa-moon"></i>
+        <div class="controls">
+            <button class="lang-toggle" id="lang-btn">FA</button>
+            <div class="theme-toggle" id="theme-btn">
+                <i class="fas fa-moon"></i>
+            </div>
         </div>
     </nav>
 
@@ -212,8 +207,8 @@
         <section id="hero" class="glass">
             <img src="pic.jpg" alt="Mohammadali Javadinasab" class="profile-img">
             <h1>Mohammadali Javadinasab</h1>
-            <p class="subtitle">Co-founder of LearnAmuse | AI Researcher | Electrical Engineer</p>
-            <p>Bridging the gap between Neuroscience, Deep Learning, and Medical Applications.</p>
+            <p class="subtitle" data-t="hero-sub">Co-founder of LearnAmuse | AI Researcher | Electrical Engineer</p>
+            <p data-t="hero-desc">Bridging the gap between Neuroscience, Deep Learning, and Medical Applications.</p>
             
             <div class="contact-info">
                 <div class="contact-item"><i class="fas fa-envelope"></i> ma.javadinasab@gmail.com</div>
@@ -229,53 +224,53 @@
         </section>
 
         <section id="about">
-            <h2 style="text-align: center;">Education</h2>
+            <h2 style="text-align: center;" data-t="edu-title">Education</h2>
             <div class="grid">
                 <div class="card glass">
-                    <h3>Electrical Engineering</h3>
-                    <p><strong>Shahid Beheshti University</strong></p>
-                    <p class="date">Current Student</p>
-                    <p>Pursuing advanced studies at the School of Electrical Engineering.</p>
+                    <h3 data-t="edu-1-h">Electrical Engineering</h3>
+                    <p><strong data-t="edu-1-u">Shahid Beheshti University</strong></p>
+                    <p class="date" data-t="edu-1-d">Current Student</p>
+                    <p data-t="edu-1-p">Pursuing advanced studies at the School of Electrical Engineering.</p>
                 </div>
                 <div class="card glass">
-                    <h3>B.Sc. Electrical Engineering</h3>
-                    <p><strong>Iran University of Science & Technology</strong></p>
+                    <h3 data-t="edu-2-h">B.Sc. Electrical Engineering</h3>
+                    <p><strong data-t="edu-2-u">Iran University of Science & Technology</strong></p>
                     <p class="date">2019 - 2024</p>
-                    <p>Thesis on EEG Source Reconstruction using DL. GPA: 3.41/4.</p>
+                    <p data-t="edu-2-p">Thesis on EEG Source Reconstruction using DL. GPA: 3.41/4.</p>
                 </div>
                 <div class="card glass">
-                    <h3>Medical Studies</h3>
-                    <p><strong>Continuing Education</strong></p>
-                    <p>Focusing on sports medicine and neurophysiology applications.</p>
+                    <h3 data-t="edu-3-h">Medical Studies</h3>
+                    <p><strong data-t="edu-3-u">Continuing Education</strong></p>
+                    <p data-t="edu-3-p">Focusing on sports medicine and neurophysiology applications.</p>
                 </div>
             </div>
         </section>
 
         <section id="experience">
-            <h2 style="text-align: center;">Professional Journey</h2>
+            <h2 style="text-align: center;" data-t="exp-title">Professional Journey</h2>
             <div class="grid">
                 <div class="card glass">
-                    <h3>Co-founder</h3>
+                    <h3 data-t="exp-1-h">Co-founder</h3>
                     <p><strong>LearnAmuse</strong></p>
                     <p><a href="https://learnamuse.com" target="_blank" style="color: var(--accent-color); text-decoration: none;">learnamuse.com</a></p>
-                    <p>Developing innovative educational technology solutions.</p>
+                    <p data-t="exp-1-p">Developing innovative educational technology solutions.</p>
                 </div>
                 <div class="card glass">
-                    <h3>Research Assistant</h3>
+                    <h3 data-t="exp-2-h">Research Assistant</h3>
                     <p><strong>IUST</strong></p>
                     <p class="date">2022 - 2024</p>
-                    <p>Specialized in Signal Processing and Neural Network models.</p>
+                    <p data-t="exp-2-p">Specialized in Signal Processing and Neural Network models.</p>
                 </div>
                 <div class="card glass">
-                    <h3>AI Specialist</h3>
-                    <p><strong>Freelance</strong></p>
-                    <p>Building 3D deep learning architectures and medical data models.</p>
+                    <h3 data-t="exp-3-h">AI Specialist</h3>
+                    <p><strong data-t="exp-3-u">Freelance</strong></p>
+                    <p data-t="exp-3-p">Building 3D deep learning architectures and medical data models.</p>
                 </div>
             </div>
         </section>
 
         <section id="skills" class="glass" style="text-align: center; padding: 40px;">
-            <h2>Technical Arsenal</h2>
+            <h2 data-t="skills-title">Technical Arsenal</h2>
             <div style="margin-top: 20px;">
                 <span class="skills-tag">Python (TF/PyTorch)</span>
                 <span class="skills-tag">Deep Learning</span>
@@ -287,10 +282,60 @@
     </div>
 
     <footer class="glass">
-        <p>© 2026 Mohammadali Javadinasab | Tehran, Iran</p>
+        <p data-t="footer-text">© 2026 Mohammadali Javadinasab | Tehran, Iran</p>
     </footer>
 
     <script>
+        // --- Translations ---
+        const translations = {
+            en: {
+                "nav-home": "Home", "nav-edu": "Education", "nav-exp": "Experience", "nav-contact": "Contact",
+                "hero-sub": "Co-founder of LearnAmuse | AI Researcher | Electrical Engineer",
+                "hero-desc": "Bridging the gap between Neuroscience, Deep Learning, and Medical Applications.",
+                "edu-title": "Education",
+                "edu-1-h": "Electrical Engineering", "edu-1-u": "Shahid Beheshti University", "edu-1-d": "Current Student", "edu-1-p": "Pursuing advanced studies at the School of Electrical Engineering.",
+                "edu-2-h": "B.Sc. Electrical Engineering", "edu-2-u": "Iran University of Science & Technology", "edu-2-p": "Thesis on EEG Source Reconstruction using DL. GPA: 3.41/4.",
+                "edu-3-h": "Medical Studies", "edu-3-u": "Continuing Education", "edu-3-p": "Focusing on sports medicine and neurophysiology applications.",
+                "exp-title": "Professional Journey",
+                "exp-1-h": "Co-founder", "exp-1-p": "Developing innovative educational technology solutions.",
+                "exp-2-h": "Research Assistant", "exp-2-p": "Specialized in Signal Processing and Neural Network models.",
+                "exp-3-h": "AI Specialist", "exp-3-u": "Freelance", "exp-3-p": "Building 3D deep learning architectures and medical data models.",
+                "skills-title": "Technical Arsenal",
+                "footer-text": "© 2026 Mohammadali Javadinasab | Tehran, Iran"
+            },
+            fa: {
+                "nav-home": "خانه", "nav-edu": "تحصیلات", "nav-exp": "تجربیات", "nav-contact": "تماس",
+                "hero-sub": "هم‌بنیان‌گذار LearnAmuse | پژوهشگر هوش مصنوعی | مهندس برق",
+                "hero-desc": "ایجاد پل میان علوم اعصاب، یادگیری عمیق و کاربردهای پزشکی.",
+                "edu-title": "تحصیلات",
+                "edu-1-h": "مهندسی برق", "edu-1-u": "دانشگاه شهید بهشتی", "edu-1-d": "دانشجوی فعلی", "edu-1-p": "در حال گذراندن تحصیلات تکمیلی در دانشکده مهندسی برق.",
+                "edu-2-h": "کارشناسی مهندسی برق", "edu-2-u": "دانشگاه علم و صنعت ایران", "edu-2-p": "پایان‌نامه در زمینه بازسازی منابع EEG با یادگیری عمیق. معدل: ۱۷.۰۵.",
+                "edu-3-h": "مطالعات پزشکی", "edu-3-u": "آموزش مستمر", "edu-3-p": "تمرکز بر کاربردهای مهندسی در پزشکی ورزشی و نوروفیزیولوژی.",
+                "exp-title": "مسیر حرفه‌ای",
+                "exp-1-h": "هم‌بنیان‌گذار", "exp-1-p": "توسعه راهکارهای نوآورانه در فناوری آموزشی.",
+                "exp-2-h": "دستیار پژوهشی", "exp-2-p": "متخصص در پردازش سیگنال و مدل‌های شبکه عصبی.",
+                "exp-3-h": "متخصص هوش مصنوعی", "exp-3-u": "فریلنسر", "exp-3-p": "طراحی معماری‌های یادگیری عمیق سه‌بعدی و مدل‌های داده پزشکی.",
+                "skills-title": "توانمندی‌های فنی",
+                "footer-text": "© ۲۰۲۶ محمدعلی جوادی‌نسب | تهران، ایران"
+            }
+        };
+
+        // --- Language Switch Logic ---
+        let currentLang = 'en';
+        const langBtn = document.getElementById('lang-btn');
+
+        langBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'fa' : 'en';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
+            langBtn.innerText = currentLang === 'en' ? 'FA' : 'EN';
+            
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                el.innerText = translations[currentLang][key];
+            });
+        });
+
         // --- Theme Toggle ---
         const themeBtn = document.getElementById('theme-btn');
         const body = document.body;
@@ -312,10 +357,7 @@
         let particles = [];
         const mouse = { x: null, y: null, radius: 150 };
 
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
 
         function resize() {
             canvas.width = window.innerWidth;
@@ -349,17 +391,12 @@
 
         function init() {
             particles = [];
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < 100; i++) particles.push(new Particle());
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            particles.forEach(p => { p.update(); p.draw(); });
             connect();
             requestAnimationFrame(animate);
         }
@@ -367,27 +404,18 @@
         function connect() {
             let opacityValue = 1;
             const accentColor = getComputedStyle(document.body).getPropertyValue('--accent-color');
-            
             for (let a = 0; a < particles.length; a++) {
                 for (let b = a; b < particles.length; b++) {
                     let distance = ((particles[a].x - particles[b].x) ** 2) + ((particles[a].y - particles[b].y) ** 2);
-                    
-                    // Mouse interaction
                     let mouseDistance = ((particles[a].x - mouse.x) ** 2) + ((particles[a].y - mouse.y) ** 2);
-                    
                     if (distance < (canvas.width / 7) * (canvas.height / 7)) {
                         opacityValue = 1 - (distance / 20000);
                         ctx.strokeStyle = accentColor;
-                        
-                        // Increase connection strength near mouse
                         if (mouseDistance < mouse.radius * mouse.radius) {
-                            ctx.lineWidth = 2;
-                            ctx.globalAlpha = opacityValue * 0.8;
+                            ctx.lineWidth = 2; ctx.globalAlpha = opacityValue * 0.8;
                         } else {
-                            ctx.lineWidth = 1;
-                            ctx.globalAlpha = opacityValue * 0.2;
+                            ctx.lineWidth = 1; ctx.globalAlpha = opacityValue * 0.2;
                         }
-                        
                         ctx.beginPath();
                         ctx.moveTo(particles[a].x, particles[a].y);
                         ctx.lineTo(particles[b].x, particles[b].y);
