@@ -1,164 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAJN35</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohammadali Javadinasab | Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Day Mode (Default) */
+            --bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --text-color: #2d3436;
+            --accent-color: #0984e3;
+            --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
 
-body {
-    height: 100vh;
-    background: linear-gradient(135deg, #1f1c2c, #928dab);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-}
+        [data-theme="dark"] {
+            /* Night Mode */
+            --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-color: #f5f6fa;
+            --accent-color: #74b9ff;
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+        }
 
-nav {
-    width: 100%;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    backdrop-filter: blur(12px);
-    background: rgba(255,255,255,0.08);
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
 
-nav h1 {
-    font-weight: 600;
-    letter-spacing: 2px;
-}
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            transition: all 0.4s ease;
+            line-height: 1.6;
+        }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-}
+        /* Glass Container Style */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
 
-nav ul li {
-    cursor: pointer;
-    opacity: 0.85;
-    transition: 0.3s;
-}
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
 
-nav ul li:hover {
-    opacity: 1;
-}
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
 
-.container {
-    width: 90%;
-    max-width: 1100px;
-    margin-top: 60px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
-}
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
 
-.card {
-    padding: 30px;
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.25);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-    transition: 0.3s;
-}
+        /* Sections */
+        .container {
+            max-width: 1100px;
+            margin: 120px auto 50px;
+            padding: 0 20px;
+        }
 
-.card:hover {
-    transform: translateY(-6px);
-}
+        section {
+            padding: 60px 0;
+        }
 
-.hero {
-    text-align: center;
-    margin-top: 60px;
-}
+        /* Hero Section */
+        #hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 80px 40px;
+        }
 
-.hero h2 {
-    font-size: 48px;
-    letter-spacing: 4px;
-    margin-bottom: 10px;
-}
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 25px;
+            border: 4px solid var(--accent-color);
+        }
 
-.hero p {
-    opacity: 0.8;
-}
+        h1 { font-size: 2.8rem; margin-bottom: 10px; }
+        .subtitle { font-size: 1.2rem; color: var(--accent-color); margin-bottom: 20px; }
 
-footer {
-    margin-top: 60px;
-    padding: 20px;
-    opacity: 0.7;
-    font-size: 14px;
-}
-</style>
+        /* Experience & Education Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            padding: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { color: var(--accent-color); margin-bottom: 10px; }
+        .date { font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px; }
+
+        /* Skills */
+        .skills-tag {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin: 5px;
+        }
+
+        /* Footer & Contact */
+        footer {
+            text-align: center;
+            padding: 40px;
+            margin-top: 50px;
+        }
+
+        .social-links a {
+            font-size: 1.5rem;
+            margin: 0 15px;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover { color: var(--accent-color); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
 </head>
-
 <body>
 
-<nav>
-    <h1>MAJN35</h1>
-    <ul>
-        <li>Home</li>
-        <li>About</li>
-        <li>Services</li>
-        <li>Contact</li>
-    </ul>
-</nav>
+    <nav class="glass">
+        <div class="logo"><strong>MJ</strong></div>
+        <div class="nav-links">
+            <a href="#hero">Home</a>
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="theme-toggle" id="theme-btn">
+            <i class="fas fa-moon"></i>
+        </div>
+    </nav>
 
-<div class="hero">
-    <h2>MAJN35</h2>
-    <p>Innovating Digital Experiences</p>
-</div>
+    <div class="container">
+        
+        <section id="hero" class="glass">
+            <img src="path/to/your/photo.jpg" alt="Mohammadali Javadinasab" class="profile-img">
+            <h1>Mohammadali Javadinasab</h1>
+            <p class="subtitle">Medical Student | AI & Deep Learning Researcher | Electrical Engineer</p>
+            <p>Bridging the gap between Neuroscience, Deep Learning, and Medical Applications[cite: 12, 26].</p>
+            <div class="social-links" style="margin-top: 20px;">
+                <a href="https://github.com/35MAJN"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/35majn"><i class="fab fa-linkedin"></i></a>
+                <a href="mailto:ma.javadinasab@gmail.com"><i class="fas fa-envelope"></i></a>
+            </div>
+        </section>
 
-<div class="container">
-    <div class="card">
-        <h3>About MAJN35</h3>
-        <p>
-            MAJN35 is a forward-thinking digital company focused on
-            creativity, technology, and modern solutions. We strive to
-            deliver elegant and efficient experiences for businesses worldwide.
-        </p>
+        <section id="about">
+            <h2 style="text-align: center;">Education</h2>
+            <div class="grid">
+                <div class="card glass">
+                    <h3>B.Sc. Electrical Engineering</h3>
+                    <p><strong>Iran University of Science & Technology</strong></p>
+                    <p class="date">2019 - 2024</p>
+                    <p>Major in Telecommunications Engineering. GPA: 3.41/4[cite: 11].</p>
+                    <p>Thesis: Solving the Inverse Problem for EEG using Deep Learning[cite: 12].</p>
+                </div>
+                <div class="card glass">
+                    <h3>B.Sc. Industrial Engineering (Minor)</h3>
+                    <p><strong>Iran University of Science & Technology</strong></p>
+                    <p class="date">2020 - 2024</p>
+                    <p>Minor focus on Project Management, Marketing, and Decision Analysis[cite: 16, 18].</p>
+                </div>
+                <div class="card glass">
+                    <h3>Medical Studies</h3>
+                    <p><strong>Current Pursuit</strong></p>
+                    <p>Applying computational expertise to sports medicine and neurophysiology.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2 style="text-align: center;">Research & Professional Experience</h2>
+            <div class="grid">
+                <div class="card glass">
+                    <h3>Research & Teaching Assistant</h3>
+                    <p><strong>IUST</strong> | 2022 - Present</p>
+                    <ul>
+                        <li>EEG Source Reconstruction Using Deep Learning[cite: 51].</li>
+                        <li>Instructor for Neural Networks and Linear Algebra courses[cite: 51, 66].</li>
+                    </ul>
+                </div>
+                <div class="card glass">
+                    <h3>AI & Data Science Specialist</h3>
+                    <p><strong>Freelance</strong> | 2022 - Present</p>
+                    <ul>
+                        <li>Developed Federated Learning topology for imaging satellites[cite: 58].</li>
+                        <li>Built a DL model for Skin Cancer Classification (95% accuracy)[cite: 58].</li>
+                    </ul>
+                </div>
+                <div class="card glass">
+                    <h3>Python Developer & Data Scientist</h3>
+                    <p><strong>LifeWeb</strong> | 2021 - 2022</p>
+                    <ul>
+                        <li>Utilized Elasticsearch and MongoDB for large-scale data clustering[cite: 79, 81].</li>
+                        <li>Applied RNNs and NLP for stock signal prediction[cite: 82, 83].</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2 style="text-align: center;">Featured Projects</h2>
+            <div class="grid">
+                <div class="card glass">
+                    <h3>Syntax Voice Assistant</h3>
+                    <p>A Deep RNN-powered smart home assistant capable of recognizing Persian commands with 99.59% accuracy[cite: 104, 105].</p>
+                </div>
+                <div class="card glass">
+                    <h3>MAJNet3D</h3>
+                    <p>A specialized 3D deep learning architecture overview designed for neuroimaging and medical data analysis.</p>
+                </div>
+                <div class="card glass">
+                    <h3>IoT Smart Home</h3>
+                    <p>Developed a Raspberry Pi & ESP8266 system with custom PCBs for remote monitoring and automation[cite: 23, 108].</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="glass" style="text-align: center; padding: 40px;">
+            <h2>Technical Arsenal</h2>
+            <div style="margin-top: 20px;">
+                <span class="skills-tag">Python</span>
+                <span class="skills-tag">TensorFlow</span>
+                <span class="skills-tag">PyTorch</span>
+                <span class="skills-tag">MATLAB</span>
+                <span class="skills-tag">C++</span>
+                <span class="skills-tag">Deep Learning (CNNs, RNNs)</span>
+                <span class="skills-tag">Reinforcement Learning</span>
+                <span class="skills-tag">NLP</span>
+                <span class="skills-tag">EEG Signal Processing</span>
+                <span class="skills-tag">Linux (Kali)</span>
+                <span class="skills-tag">Altium Designer</span>
+            </div>
+        </section>
+
     </div>
 
-    <div class="card">
-        <h3>Our Vision</h3>
-        <p>
-            At MAJN35, our vision is to build products that inspire confidence,
-            performance, and long-term value. We believe in innovation,
-            simplicity, and sustainable growth.
-        </p>
-    </div>
+    <footer class="glass">
+        <p>© 2026 Mohammadali Javadinasab | Top 1% Nationwide Rank [cite: 122]</p>
+        <p>Tehran, Iran [cite: 9]</p>
+    </footer>
 
-    <div class="card">
-        <h3>Services</h3>
-        <p>
-            We provide modern digital solutions, consulting, design,
-            and technical development tailored to evolving market needs.
-            Quality and precision define every MAJN35 project.
-        </p>
-    </div>
+    <script>
+        const themeBtn = document.getElementById('theme-btn');
+        const body = document.body;
+        const icon = themeBtn.querySelector('i');
 
-    <div class="card">
-        <h3>Contact</h3>
-        <p>
-            Reach out to MAJN35 for collaborations, partnerships,
-            and professional inquiries. Our team is always open to
-            new opportunities and ideas.
-        </p>
-    </div>
-</div>
-
-<footer>
-    © 2026 MAJN35 — All Rights Reserved
-</footer>
-
+        themeBtn.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                icon.className = 'fas fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.className = 'fas fa-sun';
+            }
+        });
+    </script>
 </body>
 </html>
