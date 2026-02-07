@@ -12,46 +12,45 @@
     
     <style>
         :root {
-            --bg-primary: #f0f2f5;
             --bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.45);
             --glass-border: rgba(255, 255, 255, 0.3);
             --text-main: #1d1d1f;
             --text-dim: #424245;
             --accent: #0071e3;
             --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            --nav-height: 64px;
+            --nav-height: 60px;
         }
 
         [data-theme="dark"] {
             --bg-gradient: linear-gradient(135deg, #000000 0%, #1c1c1e 100%);
-            --glass-bg: rgba(28, 28, 30, 0.7);
+            --glass-bg: rgba(28, 28, 30, 0.8);
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #f5f5f7;
             --text-dim: #86868b;
             --accent: #2997ff;
-            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease, transform 0.2s ease;
+            transition: background 0.4s ease, color 0.4s ease, border 0.4s ease;
         }
 
         body {
             background: var(--bg-gradient);
             background-attachment: fixed;
             color: var(--text-main);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.5;
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Persian Font Fix for Mobile */
-        [lang="fa"], [lang="fa"] body, [lang="fa"] * { 
+        /* Persian Language Overrides */
+        [lang="fa"] body, [lang="fa"] * { 
             font-family: 'Vazirmatn', sans-serif !important; 
         }
         
@@ -69,24 +68,24 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* Navigation Overhaul */
+        /* Mobile-Optimized Navigation */
         nav {
             position: fixed;
-            top: 20px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
             width: fit-content;
             height: var(--nav-height);
             display: flex;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 10px;
             z-index: 1000;
-            border-radius: 32px;
+            border-radius: 30px;
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
@@ -94,9 +93,7 @@
             box-shadow: var(--card-shadow);
         }
 
-        .nav-links { display: flex; gap: 24px; margin-right: 20px; }
-        [dir="rtl"] .nav-links { margin-right: 0; margin-left: 20px; }
-
+        .nav-links { display: flex; gap: 20px; padding: 0 15px; }
         .nav-links a {
             text-decoration: none;
             color: var(--text-main);
@@ -109,15 +106,15 @@
         .controls { 
             display: flex; 
             align-items: center; 
-            gap: 12px; 
+            gap: 8px; 
             border-left: 1px solid var(--glass-border); 
-            padding-left: 15px; 
+            padding-left: 8px; 
         }
         [dir="rtl"] .controls { 
             border-left: none; 
             border-right: 1px solid var(--glass-border); 
-            padding-left: 0; 
-            padding-right: 15px; 
+            padding-right: 8px; 
+            padding-left: 0;
         }
 
         .btn-icon {
@@ -125,91 +122,77 @@
             border: none;
             color: var(--text-main);
             cursor: pointer;
-            font-size: 1.1rem;
-            width: 36px; height: 36px;
+            font-size: 1rem;
+            width: 38px; height: 38px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
         }
         .btn-icon:hover { background: rgba(0, 113, 227, 0.1); color: var(--accent); }
 
-        /* Glass Cards */
+        /* Glass Content Cards */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
-            border-radius: 28px;
+            border-radius: 24px;
             padding: 40px;
             box-shadow: var(--card-shadow);
             margin-bottom: 24px;
         }
 
-        /* Hero */
         #hero {
-            margin-top: 130px;
+            margin-top: 110px;
             text-align: center;
         }
         .profile-img {
-            width: 140px; height: 140px;
+            width: 130px; height: 130px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 24px;
-            border: 4px solid var(--accent);
-            padding: 4px;
-            background: var(--bg-primary);
+            margin-bottom: 20px;
+            border: 3px solid var(--accent);
+            padding: 3px;
         }
-        h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
-        .subtitle { font-size: 1.15rem; color: var(--accent); font-weight: 600; margin-bottom: 24px; }
+        h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+        .subtitle { font-size: 1.1rem; color: var(--accent); font-weight: 600; margin-bottom: 20px; }
         
-        .contact-pill-container {
+        .contact-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 24px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
-        .contact-pill {
-            padding: 8px 16px;
-            border-radius: 18px;
-            background: rgba(0, 113, 227, 0.08);
-            color: var(--text-main);
-            font-size: 0.85rem;
-            display: flex; align-items: center; gap: 8px;
+        .contact-link {
             text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            display: flex; align-items: center; gap: 8px;
         }
-        .contact-pill:hover { background: rgba(0, 113, 227, 0.15); }
-        .contact-pill i { color: var(--accent); }
 
-        /* Bento Grid */
-        .grid-bento {
+        .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            padding: 20px 0;
+            margin-top: 20px;
         }
         .card { padding: 30px; }
-        .card:hover { transform: translateY(-5px); }
-        .card h3 { font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
-        .card .date { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; display: block; }
+        .card h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--accent); }
+        .card .date { font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px; display: block; }
 
-        footer { text-align: center; padding: 60px 0; opacity: 0.5; font-size: 0.8rem; }
-        .fa-hide { display: none !important; }
+        footer { text-align: center; padding: 50px 0; opacity: 0.5; font-size: 0.8rem; }
+        
+        /* Language-based Icon Hiding */
+        .lang-icon { transition: opacity 0.3s; }
+        [lang="fa"] .lang-icon { display: none !important; }
 
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            nav { 
-                top: 15px;
-                width: 90%; 
-                min-width: 280px; 
-                padding: 0 15px;
-                justify-content: center; 
-            }
-            .nav-links { display: none; } /* Focus on branding/controls for small mobile */
+        @media (max-width: 600px) {
+            nav { width: 90%; justify-content: center; top: 10px; }
+            .nav-links { display: none; }
             .controls { border: none; padding: 0; }
-            
-            h1 { font-size: 2rem; }
+            h1 { font-size: 1.8rem; }
             .glass-card { padding: 25px; }
-            #hero { margin-top: 100px; }
+            #hero { margin-top: 90px; }
         }
     </style>
 </head>
@@ -224,12 +207,8 @@
             <a href="#experience" data-t="nav-exp">Experience</a>
         </div>
         <div class="controls">
-            <button class="btn-icon" id="lang-btn" title="Change Language">
-                <i class="fas fa-language"></i>
-            </button>
-            <button class="btn-icon" id="theme-btn">
-                <i class="fas fa-moon"></i>
-            </button>
+            <button class="btn-icon" id="lang-btn"><i class="fas fa-language"></i></button>
+            <button class="btn-icon" id="theme-btn"><i class="fas fa-moon"></i></button>
         </div>
     </nav>
 
@@ -239,32 +218,32 @@
             <h1 data-t="hero-name">Mohammadali Javadinasab</h1>
             <p class="subtitle" data-t="hero-sub">Co-founder of LearnAmuse | AI Researcher | Electrical Engineer</p>
             
-            <div class="contact-pill-container">
-                <a href="mailto:ma.javadinasab@gmail.com" class="contact-pill">
-                    <i class="fas fa-envelope icon-ui"></i> ma.javadinasab@gmail.com
+            <div class="contact-container">
+                <a href="mailto:ma.javadinasab@gmail.com" class="contact-link">
+                    <i class="fas fa-envelope lang-icon"></i> ma.javadinasab@gmail.com
                 </a>
-                <a href="https://linkedin.com/in/35majn" target="_blank" class="contact-pill">
-                    <i class="fab fa-linkedin icon-ui"></i> 35majn
+                <a href="https://linkedin.com/in/35majn" target="_blank" class="contact-link">
+                    <i class="fab fa-linkedin lang-icon"></i> 35majn
                 </a>
             </div>
 
-            <div style="margin-top: 10px;">
+            <div>
                 <a href="https://learnamuse.com" target="_blank" style="color: var(--accent); font-weight: 800; text-decoration: none; font-size: 0.9rem;">LEARNAMUSE.COM</a>
             </div>
         </section>
 
-        <h2 style="text-align: center; margin: 40px 0 20px;" data-t="edu-title">Education</h2>
-        <div class="grid-bento" id="about">
+        <h2 style="text-align: center; margin: 30px 0 15px;" data-t="edu-title">Education</h2>
+        <div class="grid-layout" id="about">
             <div class="glass-card card">
                 <span class="date" data-t="edu-1-d">Current</span>
                 <h3 data-t="edu-1-h">Electrical Engineering</h3>
-                <p><strong data-t="edu-1-u">Shahid Beheshti University</strong></p>
+                <p><strong>Shahid Beheshti University</strong></p>
                 <p data-t="edu-1-p">Pursuing advanced studies at the School of Electrical Engineering.</p>
             </div>
             <div class="glass-card card">
                 <span class="date">2019 - 2024</span>
                 <h3 data-t="edu-2-h">B.Sc. Electrical Engineering</h3>
-                <p><strong data-t="edu-2-u">IUST</strong></p>
+                <p><strong>IUST</strong></p>
                 <p data-t="edu-2-p">Thesis: Solving the Inverse Problem for EEG using Deep Learning. GPA: 3.41/4.</p>
             </div>
         </div>
@@ -295,8 +274,8 @@
                 "hero-name": "Mohammadali Javadinasab",
                 "hero-sub": "Co-founder of LearnAmuse | AI Researcher | Electrical Engineer",
                 "edu-title": "Academic Background",
-                "edu-1-h": "Electrical Engineering", "edu-1-u": "Shahid Beheshti University", "edu-1-d": "Active", "edu-1-p": "Advanced research at the School of Electrical Engineering.",
-                "edu-2-h": "B.Sc. Electrical Engineering", "edu-2-u": "IUST", "edu-2-p": "Thesis: Solving the Inverse Problem for EEG using Deep Learning. GPA: 3.41/4.",
+                "edu-1-h": "Electrical Engineering", "edu-1-d": "Active", "edu-1-p": "Advanced research at the School of Electrical Engineering.",
+                "edu-2-h": "B.Sc. Electrical Engineering", "edu-2-p": "Thesis: Solving the Inverse Problem for EEG using Deep Learning. GPA: 3.41/4.",
                 "exp-title": "Experience",
                 "exp-1-h": "Co-founder @ LearnAmuse", "exp-1-d": "Present", "exp-1-p": "Driving innovation in adaptive learning platforms and AI tools.",
                 "exp-2-h": "Research Assistant", "exp-2-p": "Focused on signal processing and neural network teaching.",
@@ -307,8 +286,8 @@
                 "hero-name": "محمدعلی جوادی‌نسب",
                 "hero-sub": "هم‌بنیان‌گذار LearnAmuse | پژوهشگر هوش مصنوعی | مهندس برق",
                 "edu-title": "پیشینه آکادمیک",
-                "edu-1-h": "مهندسی برق", "edu-1-u": "دانشگاه شهید بهشتی", "edu-1-d": "در حال تحصیل", "edu-1-p": "تحصیلات تکمیلی در دانشکده مهندسی برق.",
-                "edu-2-h": "کارشناسی مهندسی برق", "edu-2-u": "دانشگاه علم و صنعت ایران", "edu-2-p": "پایان‌نامه: حل مسئله معکوس EEG با یادگیری عمیق.",
+                "edu-1-h": "مهندسی برق", "edu-1-d": "در حال تحصیل", "edu-1-p": "تحصیلات تکمیلی در دانشکده مهندسی برق.",
+                "edu-2-h": "کارشناسی مهندسی برق", "edu-2-p": "پایان‌نامه: حل مسئله معکوس EEG با یادگیری عمیق.",
                 "exp-title": "تجربیات حرفه‌ای",
                 "exp-1-h": "هم‌بنیان‌گذار LearnAmuse", "exp-1-d": "اکنون", "exp-1-p": "پیشبرد نوآوری در پلتفرم‌های یادگیری تطبیقی و ابزارهای هوش مصنوعی.",
                 "exp-2-h": "دستیار پژوهشی", "exp-2-p": "تمرکز بر پردازش سیگنال و آموزش شبکه‌های عصبی.",
@@ -318,27 +297,18 @@
 
         let currentLang = 'en';
         const langBtn = document.getElementById('lang-btn');
-        const canvas = document.getElementById('bg-canvas');
 
         langBtn.addEventListener('click', () => {
             currentLang = currentLang === 'en' ? 'fa' : 'en';
             document.documentElement.lang = currentLang;
             document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
             
-            const uiIcons = document.querySelectorAll('.icon-ui');
-            if(currentLang === 'fa') {
-                uiIcons.forEach(icon => icon.classList.add('fa-hide'));
-            } else {
-                uiIcons.forEach(icon => icon.classList.remove('fa-hide'));
-            }
-
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
                 el.innerText = translations[currentLang][key];
             });
         });
 
-        // Theme Toggle
         const themeBtn = document.getElementById('theme-btn');
         themeBtn.addEventListener('click', () => {
             const body = document.body;
@@ -352,7 +322,8 @@
             }
         });
 
-        // Neural Net Background Logic
+        // Neural Net Background logic
+        const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         const mouse = { x: null, y: null, radius: 150 };
@@ -367,19 +338,18 @@
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 1.5 + 1;
-                this.speedX = Math.random() * 0.8 - 0.4;
-                this.speedY = Math.random() * 0.8 - 0.4;
+                this.speedX = Math.random() * 0.6 - 0.3;
+                this.speedY = Math.random() * 0.6 - 0.3;
             }
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+                this.x += this.speedX; this.y += this.speedY;
                 if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
                 if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
             }
             draw() {
                 const isDark = document.body.getAttribute('data-theme') === 'dark';
                 ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--accent');
-                ctx.globalAlpha = isDark ? 0.6 : 0.3; 
+                ctx.globalAlpha = isDark ? 0.7 : 0.4;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -388,7 +358,7 @@
 
         function init() {
             particles = [];
-            for (let i = 0; i < 80; i++) particles.push(new Particle());
+            for (let i = 0; i < 70; i++) particles.push(new Particle());
         }
 
         function animate() {
@@ -407,8 +377,8 @@
                     if (distance < (canvas.width / 8) * (canvas.height / 8)) {
                         let opacity = 1 - (distance / 25000);
                         ctx.strokeStyle = accent;
-                        ctx.globalAlpha = isDark ? opacity * 0.4 : opacity * 0.2; 
-                        ctx.lineWidth = isDark ? 1.5 : 1;
+                        ctx.globalAlpha = isDark ? opacity * 0.5 : opacity * 0.25; 
+                        ctx.lineWidth = isDark ? 1.4 : 1;
                         ctx.beginPath();
                         ctx.moveTo(particles[a].x, particles[a].y);
                         ctx.lineTo(particles[b].x, particles[b].y);
@@ -423,3 +393,7 @@
     </script>
 </body>
 </html>
+
+
+
+[Image of a neural network architecture]
