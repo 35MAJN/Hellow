@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohammadali Javadinasab | Portfolio</title>
+    <title>[Your Name] | Portfolio</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,25 +43,42 @@
             background: var(--bg-gradient);
             background-attachment: fixed;
             color: var(--text-main);
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- FONT FIX FOR PERSIAN --- */
-        [lang="fa"] body, [lang="fa"] p, [lang="fa"] h1, [lang="fa"] h2, [lang="fa"] h3, [lang="fa"] span, [lang="fa"] a { 
-            font-family: 'Vazirmatn', sans-serif !important; 
+        /* Persian Font Robust Loading */
+        [lang="fa"] body, [lang="fa"] p, [lang="fa"] h2, [lang="fa"] h3, [lang="fa"] span, [lang="fa"] a { 
+            font-family: 'Vazirmatn', -apple-system, sans-serif !important; 
         }
         
-        /* This ensures FontAwesome icons NEVER get overridden by Vazirmatn */
-        .fas, .fab, .fa-solid, .fa-brands, .fa {
-            font-family: "Font Awesome 6 Free" !important;
-            font-style: normal;
-            font-weight: 900 !important; /* FA solid requires 900 */
+        /* Persian Headline Bold Fixing */
+        [lang="fa"] h1 { 
+            font-family: 'Vazirmatn', sans-serif !important;
+            font-weight: 900 !important; 
+            letter-spacing: 0;
         }
 
-        [lang="fa"] h1 { font-weight: 900 !important; letter-spacing: 0; }
+        /* Critical Fix for Icons in Persian Mode */
+        .fas, .fab, .fa-solid, .fa-brands, [class*="fa-"] {
+            font-style: normal !important;
+            font-variant: normal !important;
+            text-rendering: auto !important;
+            -webkit-font-smoothing: antialiased !important;
+        }
+
+        /* Separation of Solid and Brands font families */
+        .fas, .fa-solid {
+            font-family: "Font Awesome 6 Free" !important;
+            font-weight: 900 !important;
+        }
+
+        .fab, .fa-brands {
+            font-family: "Font Awesome 6 Brands" !important;
+            font-weight: 400 !important;
+        }
 
         #bg-canvas {
             position: fixed;
@@ -77,7 +94,7 @@
             padding: 0 20px;
         }
 
-        /* --- NAVIGATION --- */
+        /* Responsive Navigation */
         nav {
             position: fixed;
             top: 15px;
@@ -87,7 +104,7 @@
             height: var(--nav-height);
             display: flex;
             align-items: center;
-            padding: 0 10px;
+            padding: 0 12px;
             z-index: 1000;
             border-radius: 30px;
             background: var(--glass-bg);
@@ -110,14 +127,14 @@
         .controls { 
             display: flex; 
             align-items: center; 
-            gap: 8px; 
+            gap: 10px; 
             border-left: 1px solid var(--glass-border); 
-            padding-left: 8px; 
+            padding-left: 12px; 
         }
         [dir="rtl"] .controls { 
             border-left: none; 
             border-right: 1px solid var(--glass-border); 
-            padding-right: 8px; 
+            padding-right: 12px; 
             padding-left: 0;
         }
 
@@ -133,7 +150,6 @@
         }
         .btn-icon:hover { background: rgba(0, 113, 227, 0.1); color: var(--accent); }
 
-        /* --- CARDS --- */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
@@ -172,9 +188,7 @@
             color: var(--text-main);
             font-size: 0.95rem;
             display: flex; align-items: center; gap: 8px;
-            transition: color 0.2s;
         }
-        .contact-link:hover { color: var(--accent); }
 
         .grid-layout {
             display: grid;
@@ -189,12 +203,12 @@
         footer { text-align: center; padding: 50px 0; opacity: 0.5; font-size: 0.8rem; }
         
         @media (max-width: 600px) {
-            nav { width: fit-content; max-width: 90%; top: 10px; padding: 0 5px; }
-            .nav-links { gap: 10px; padding: 0 8px; }
+            nav { width: 92%; top: 10px; padding: 0 8px; }
+            .nav-links { gap: 12px; padding: 0 10px; }
             .nav-links a { font-size: 0.75rem; }
-            .controls { gap: 4px; padding-left: 5px; }
-            [dir="rtl"] .controls { padding-right: 5px; }
-            h1 { font-size: 1.9rem; }
+            .controls { gap: 6px; padding-left: 10px; }
+            [dir="rtl"] .controls { padding-right: 10px; }
+            h1 { font-size: 2rem; }
             .glass-card { padding: 25px; }
             #hero { margin-top: 90px; }
         }
@@ -211,10 +225,10 @@
             <a href="#experience" data-t="nav-exp">Experience</a>
         </div>
         <div class="controls">
-            <button class="btn-icon" id="lang-btn" title="Toggle Language">
+            <button class="btn-icon" id="lang-btn" title="Change Language">
                 <i class="fas fa-language"></i>
             </button>
-            <button class="btn-icon" id="theme-btn" title="Toggle Theme">
+            <button class="btn-icon" id="theme-btn" title="Toggle Mode">
                 <i class="fas fa-moon"></i>
             </button>
         </div>
@@ -222,22 +236,22 @@
 
     <div class="container">
         <section id="hero" class="glass-card">
-            <img src="pic.jpg" alt="Mohammadali Javadinasab" class="profile-img">
-            <h1 data-t="hero-name">Mohammadali Javadinasab</h1>
-            <p class="subtitle" data-t="hero-sub">Co-founder of LearnAmuse | AI Researcher | Electrical Engineer</p>
+            <img src="pic.jpg" alt="Profile" class="profile-img">
+            <h1 data-t="hero-name">[Name]</h1>
+            <p class="subtitle" data-t="hero-sub">[Title/Role]</p>
             
             <div class="contact-container">
-                <a href="mailto:ma.javadinasab@gmail.com" class="contact-link">
-                    <i class="fas fa-envelope"></i> ma.javadinasab@gmail.com
+                <a href="mailto:[Email Address]" class="contact-link">
+                    <i class="fas fa-envelope"></i> [Email Address]
                 </a>
-                <a href="https://linkedin.com/in/35majn" target="_blank" class="contact-link">
-                    <i class="fab fa-linkedin"></i> 35majn
+                <a href="https://linkedin.com/in/[Username]" target="_blank" class="contact-link">
+                    <i class="fab fa-linkedin"></i> LinkedIn
                 </a>
             </div>
 
             <div>
-                <a href="https://learnamuse.com" target="_blank" style="color: var(--accent); font-weight: 800; text-decoration: none; font-size: 0.95rem;">
-                    <i class="fas fa-rocket"></i> LEARNAMUSE.COM
+                <a href="https://[Website URL]" target="_blank" style="color: var(--accent); font-weight: 800; text-decoration: none; font-size: 0.95rem;">
+                    <i class="fas fa-rocket"></i> [Website Link]
                 </a>
             </div>
         </section>
@@ -245,35 +259,35 @@
         <h2 style="text-align: center; margin: 30px 0 15px;" data-t="edu-title">Education</h2>
         <div class="grid-layout" id="about">
             <div class="glass-card card">
-                <span class="date" data-t="edu-1-d">Current</span>
-                <h3 data-t="edu-1-h">Electrical Engineering</h3>
-                <p><strong>Shahid Beheshti University</strong></p>
-                <p data-t="edu-1-p">Pursuing advanced studies at the School of Electrical Engineering.</p>
+                <span class="date" data-t="edu-1-d">[Current/Dates]</span>
+                <h3 data-t="edu-1-h">[Degree/Major]</h3>
+                <p><strong>[Institution Name]</strong></p>
+                <p data-t="edu-1-p">[Short description of studies or achievements.]</p>
             </div>
             <div class="glass-card card">
-                <span class="date">2019 - 2024</span>
-                <h3 data-t="edu-2-h">B.Sc. Electrical Engineering</h3>
-                <p><strong>IUST</strong></p>
-                <p data-t="edu-2-p">Thesis: Simulating brain neural activities using head model & retrieving activities using Deep Learning.</p>
+                <span class="date">[Dates]</span>
+                <h3 data-t="edu-2-h">[Degree/Major]</h3>
+                <p><strong>[Institution Name]</strong></p>
+                <p data-t="edu-2-p">[Project title or specialization details.]</p>
             </div>
         </div>
 
         <h2 style="text-align: center; margin: 20px 0;" data-t="exp-title">Professional</h2>
         <div id="experience">
             <div class="glass-card card">
-                <span class="date" data-t="exp-1-d">Active</span>
-                <h3 data-t="exp-1-h">Co-founder @ LearnAmuse</h3>
-                <p data-t="exp-1-p">Orchestrating AI-driven educational technology roadmaps and development strategies.</p>
+                <span class="date" data-t="exp-1-d">[Status]</span>
+                <h3 data-t="exp-1-h">[Position] @ [Organization]</h3>
+                <p data-t="exp-1-p">[Overview of primary responsibilities and impact.]</p>
             </div>
             <div class="glass-card card">
-                <span class="date">2022 - 2024</span>
-                <h3 data-t="exp-2-h">Research Assistant</h3>
-                <p data-t="exp-2-p">Computational models for EEG signal processing and Neural Networks at IUST.</p>
+                <span class="date">[Dates]</span>
+                <h3 data-t="exp-2-h">[Position]</h3>
+                <p data-t="exp-2-p">[Summary of key research or industry tasks performed.]</p>
             </div>
         </div>
 
         <footer data-t="footer-text">
-            © 2026 Mohammadali Javadinasab | Tehran, Iran
+            © 2026 [Name] | [Location]
         </footer>
     </div>
 
@@ -281,27 +295,27 @@
         const translations = {
             en: {
                 "nav-home": "Home", "nav-edu": "Education", "nav-exp": "Experience",
-                "hero-name": "Mohammadali Javadinasab",
-                "hero-sub": "Co-founder of LearnAmuse | AI Researcher | Electrical Engineer",
+                "hero-name": "[Name]",
+                "hero-sub": "[Title/Role]",
                 "edu-title": "Academic Background",
-                "edu-1-h": "Electrical Engineering", "edu-1-d": "Active", "edu-1-p": "Advanced research at the School of Electrical Engineering.",
-                "edu-2-h": "B.Sc. Electrical Engineering", "edu-2-p": "Thesis: Simulating brain neural activities using head model & retrieving activities using Deep Learning.",
+                "edu-1-h": "[Degree/Major]", "edu-1-d": "Active", "edu-1-p": "[Study overview]",
+                "edu-2-h": "[Degree/Major]", "edu-2-p": "[Project overview]",
                 "exp-title": "Experience",
-                "exp-1-h": "Co-founder @ LearnAmuse", "exp-1-d": "Present", "exp-1-p": "Driving innovation in adaptive learning platforms and AI tools.",
-                "exp-2-h": "Research Assistant", "exp-2-p": "Focused on signal processing and neural network teaching.",
-                "footer-text": "© 2026 Mohammadali Javadinasab | Tehran, Iran"
+                "exp-1-h": "[Position]", "exp-1-d": "Present", "exp-1-p": "[Impact overview]",
+                "exp-2-h": "[Position]", "exp-2-p": "[Research summary]",
+                "footer-text": "© 2026 [Name] | [Location]"
             },
             fa: {
                 "nav-home": "خانه", "nav-edu": "تحصیلات", "nav-exp": "تجربیات",
-                "hero-name": "محمدعلی جوادی‌نسب",
-                "hero-sub": "هم‌بنیان‌گذار LearnAmuse | پژوهشگر هوش مصنوعی | مهندس برق",
+                "hero-name": "[نام]",
+                "hero-sub": "[عنوان شغلی]",
                 "edu-title": "پیشینه آکادمیک",
-                "edu-1-h": "مهندسی برق", "edu-1-d": "در حال تحصیل", "edu-1-p": "تحصیلات تکمیلی در دانشکده مهندسی برق.",
-                "edu-2-h": "کارشناسی مهندسی برق", "edu-2-p": "پایان‌نامه: شبیه‌سازی فعالیت‌های عصبی مغز و بازیابی با یادگیری عمیق.",
+                "edu-1-h": "[رشته تحصیلی]", "edu-1-d": "در حال تحصیل", "edu-1-p": "[خلاصه تحصیلات]",
+                "edu-2-h": "[رشته تحصیلی]", "edu-2-p": "[خلاصه پروژه]",
                 "exp-title": "تجربیات حرفه‌ای",
-                "exp-1-h": "هم‌بنیان‌گذار LearnAmuse", "exp-1-d": "اکنون", "exp-1-p": "پیشبرد نوآوری در پلتفرم‌های یادگیری تطبیقی و ابزارهای هوش مصنوعی.",
-                "exp-2-h": "دستیار پژوهشی", "exp-2-p": "تمرکز بر پردازش سیگنال و آموزش شبکه‌های عصبی در دانشگاه علم و صنعت.",
-                "footer-text": "© ۲۰۲۶ محمدعلی جوادی‌نسب | تهران، ایران"
+                "exp-1-h": "[عنوان شغلی]", "exp-1-d": "اکنون", "exp-1-p": "[توضیح مسئولیت‌ها]",
+                "exp-2-h": "[عنوان شغلی]", "exp-2-p": "[توضیح تحقیقات]",
+                "footer-text": "© ۲۰۲۶ [نام] | [مکان]"
             }
         };
 
@@ -332,7 +346,6 @@
             }
         });
 
-        // Neural Net Background logic
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
