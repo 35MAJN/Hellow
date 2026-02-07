@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohammadali Javadinasab | Portfolio</title>
+    <title>[Full Name] | Portfolio</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,15 +49,21 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- FONT FIX FOR PERSIAN --- */
-        [lang="fa"] body, [lang="fa"] p, [lang="fa"] h1, [lang="fa"] h2, [lang="fa"] h3, [lang="fa"] span, [lang="fa"] a, [lang="fa"] li { 
+        /* --- CRITICAL ICON FIX --- */
+        /* Forces the Persian font on text while protecting all icon classes */
+        [lang="fa"] body, [lang="fa"] p, [lang="fa"] h1, [lang="fa"] h2, [lang="fa"] h3, [lang="fa"] span, [lang="fa"] a, [lang="fa"] li, [lang="fa"] strong { 
             font-family: 'Vazirmatn', sans-serif !important; 
         }
         
-        .fas, .fab, .fa-solid, .fa-brands, .fa {
+        /* Re-asserts FontAwesome families for all icon elements */
+        .fas, .fa-solid {
             font-family: "Font Awesome 6 Free" !important;
-            font-style: normal;
             font-weight: 900 !important;
+        }
+
+        .fab, .fa-brands {
+            font-family: "Font Awesome 6 Brands" !important;
+            font-weight: 400 !important;
         }
 
         [lang="fa"] h1 { font-weight: 900 !important; letter-spacing: 0; }
@@ -231,25 +237,25 @@
 
     <div class="container">
         <section id="hero" class="glass-card">
-            <img src="pic.jpg" alt="Mohammadali Javadinasab" class="profile-img">
-            <h1 data-t="hero-name">Mohammadali Javadinasab</h1>
-            <p class="subtitle" data-t="hero-sub">AI Researcher | Electrical Engineer | Co-founder of LearnAmuse</p>
+            <img src="pic.jpg" alt="Profile" class="profile-img">
+            <h1 data-t="hero-name">[Your Name]</h1>
+            <p class="subtitle" data-t="hero-sub">[Your Professional Title]</p>
             
             <div class="contact-container">
-                <a href="mailto:ma.javadinasab@gmail.com" class="contact-link">
-                    <i class="fas fa-envelope"></i> ma.javadinasab@gmail.com
+                <a href="mailto:[Your Email]" class="contact-link">
+                    <i class="fas fa-envelope"></i> [Your Email]
                 </a>
-                <a href="https://linkedin.com/in/35majn" target="_blank" class="contact-link">
-                    <i class="fab fa-linkedin"></i> linkedin.com/in/35majn
+                <a href="https://linkedin.com/in/[Your Username]" target="_blank" class="contact-link">
+                    <i class="fab fa-linkedin"></i> linkedin.com/in/[Your Username]
                 </a>
-                <a href="https://github.com/35MAJN" target="_blank" class="contact-link">
-                    <i class="fab fa-github"></i> github.com/35MAJN
+                <a href="https://github.com/[Your Username]" target="_blank" class="contact-link">
+                    <i class="fab fa-github"></i> github.com/[Your Username]
                 </a>
             </div>
 
             <div style="margin-top: 10px;">
-                <a href="https://learnamuse.com" target="_blank" style="color: var(--accent); font-weight: 800; text-decoration: none; font-size: 1rem;">
-                    <i class="fas fa-globe"></i> LEARNAMUSE.COM
+                <a href="[Your Website]" target="_blank" style="color: var(--accent); font-weight: 800; text-decoration: none; font-size: 1rem;">
+                    <i class="fas fa-globe"></i> [YOURWEBSITE.COM]
                 </a>
             </div>
         </section>
@@ -257,110 +263,73 @@
         <h2 style="text-align: center; margin: 40px 0 20px;" data-t="edu-title">Education</h2>
         <div class="grid-layout" id="education">
             <div class="glass-card card">
-                <span class="date">2019 — 2024</span>
-                <h3 data-t="edu-1-h">B.Sc. Electrical Engineering (Telecommunications)</h3>
-                <p><strong>Iran University of Science & Technology (IUST)</strong></p>
-                <p class="date">GPA: 3.41/4.0</p>
-                <p data-t="edu-1-p">Thesis: Simulating brain neural activities using head model & retrieving activities using Deep Learning (Solving the Inverse Problem for EEG).</p>
+                <span class="date">[Years]</span>
+                <h3 data-t="edu-1-h">[Degree Program]</h3>
+                <p><strong>[University Name]</strong></p>
+                <p class="date">[GPA or Distinction]</p>
+                <p data-t="edu-1-p">[Thesis title or primary academic focus.]</p>
             </div>
             <div class="glass-card card">
-                <span class="date">2020 — 2024</span>
-                <h3 data-t="edu-2-h">B.Sc. Industrial Engineering (Minor)</h3>
-                <p><strong>Iran University of Science & Technology (IUST)</strong></p>
-                <p class="date">GPA: 3.32/4.0</p>
-                <p data-t="edu-2-p">Focus on Decision-Making Analysis, Marketing, and Project Management.</p>
+                <span class="date">[Years]</span>
+                <h3 data-t="edu-2-h">[Minor or Secondary Degree]</h3>
+                <p><strong>[University Name]</strong></p>
+                <p class="date">[GPA or Distinction]</p>
+                <p data-t="edu-2-p">[Key courses or specialized focus area.]</p>
             </div>
         </div>
 
-        <h2 style="text-align: center; margin: 40px 0 20px;" data-t="exp-title">Professional Experience</h2>
+        <h2 style="text-align: center; margin: 40px 0 20px;" data-t="exp-title">Experience</h2>
         <div id="experience">
             <div class="glass-card card">
-                <span class="date" data-t="exp-1-d">2022 — Present</span>
-                <h3 data-t="exp-1-h">Research & Teaching Assistant @ IUST</h3>
+                <span class="date" data-t="exp-1-d">[Years]</span>
+                <h3 data-t="exp-1-h">[Position] @ [Organization]</h3>
                 <ul data-t="exp-1-l">
-                    <li>Specializing in EEG Source Reconstruction Using Deep Learning.</li>
-                    <li>TA for Linear Algebra and AI courses under Dr. Ehsan Darestani.</li>
+                    <li>[Detailed responsibility or achievement.]</li>
+                    <li>[Impact on project or organization goals.]</li>
                 </ul>
             </div>
             <div class="glass-card card">
-                <span class="date">2022 — Present</span>
-                <h3 data-t="exp-2-h">AI & Data Science Specialist (Freelance)</h3>
+                <span class="date">[Years]</span>
+                <h3 data-t="exp-2-h">[Position Name]</h3>
                 <ul data-t="exp-2-l">
-                    <li>Australia Project: Optimizing Satellite Topology for Federated Learning using RL.</li>
-                    <li>Healthcare: Achieved 95% accuracy in Skin Cancer Classification using Transfer Learning.</li>
-                    <li>Optimization: Multi-Attribute Decision Making (TOPSIS, ELECTRE II) for industrial materials.</li>
-                </ul>
-            </div>
-            <div class="glass-card card">
-                <span class="date">2022 — Present</span>
-                <h3 data-t="exp-3-h">Co-founder & Web Developer @ LearnAmuse</h3>
-                <ul data-t="exp-3-l">
-                    <li>Designed and developed a responsive educational web application.</li>
-                    <li>Orchestrating AI-driven educational technology roadmaps.</li>
-                </ul>
-            </div>
-            <div class="glass-card card">
-                <span class="date">2021 — 2022</span>
-                <h3 data-t="exp-4-h">Python Developer & Data Scientist @ LifeWeb</h3>
-                <ul data-t="exp-4-l">
-                    <li>Utilized Elasticsearch, Flask, and MongoDB for large-scale data backend solutions.</li>
-                    <li>Predicted stock signals using Recurrent Neural Networks (RNNs) and NLP on social media data.</li>
-                    <li>Developed Telegram bots with multithreading for supply chain efficiency.</li>
+                    <li>[Technical task or project lead detail.]</li>
+                    <li>[Software used or methodologies applied.]</li>
                 </ul>
             </div>
         </div>
 
-        <h2 style="text-align: center; margin: 40px 0 20px;" data-t="proj-title">Selected Side Projects</h2>
+        <h2 style="text-align: center; margin: 40px 0 20px;" data-t="proj-title">Projects</h2>
         <div class="grid-layout" id="projects">
             <div class="glass-card card">
-                <h3>Syntax (Voice Assistant)</h3>
-                <p data-t="proj-1">Trained a Deep RNN to activate on Persian commands, achieving 99.59% accuracy. Built with TensorFlow and PyQt.</p>
+                <h3>[Project Name]</h3>
+                <p data-t="proj-1">[Brief summary of the project's purpose and technical stack.]</p>
             </div>
             <div class="glass-card card">
-                <h3>Field & Flux App</h3>
-                <p data-t="proj-2">A desktop application calculating and plotting electric fields and flux of point charges in 3D space using NumPy and Matplotlib.</p>
+                <h3>[Project Name]</h3>
+                <p data-t="proj-2">[Explanation of the problem solved and the results achieved.]</p>
             </div>
-            <div class="glass-card card">
-                <h3>IoT Smart Home</h3>
-                <p data-t="proj-3">Implemented a smart home system using Raspberry Pi 3 and NodeMCU ESP8266. Features touchscreen control and Telegram bot monitoring.</p>
-            </div>
-        </div>
-
-        <h2 style="text-align: center; margin: 40px 0 20px;" data-t="award-title">Honors & Awards</h2>
-        <div class="glass-card">
-            <ul style="list-style: none;" data-t="award-l">
-                <li>🏆 <strong>Ranked Top 1%</strong> among 150,000 participants in the nationwide university entrance exam (2019).</li>
-                <li>🥇 <strong>1st Team</strong> at Huawei's Seeds For The Future Program (August 2022).</li>
-                <li>🎓 <strong>Head of Team</strong> for synthetic speech attribution in the IEEE Signal Processing Cup (2022).</li>
-                <li>🥉 <strong>5th Place</strong> out of 20 teams in Decode Cup coding competition (2023).</li>
-            </ul>
         </div>
 
         <div class="glass-card" style="text-align: center;">
             <h2 data-t="skills-title">Technical Arsenal</h2>
             <div class="skills-wrap">
-                <span class="skill-badge">Python</span>
-                <span class="skill-badge">MATLAB</span>
-                <span class="skill-badge">C++</span>
-                <span class="skill-badge">TensorFlow</span>
-                <span class="skill-badge">PyTorch</span>
-                <span class="skill-badge">Keras</span>
-                <span class="skill-badge">Flask</span>
-                <span class="skill-badge">Elasticsearch</span>
-                <span class="skill-badge">MongoDB</span>
-                <span class="skill-badge">FedML</span>
-                <span class="skill-badge">Signal Processing</span>
-                <span class="skill-badge">IoT</span>
-                <span class="skill-badge">PCB Design</span>
+                <span class="skill-badge">[Skill]</span>
+                <span class="skill-badge">[Skill]</span>
+                <span class="skill-badge">[Skill]</span>
+                <span class="skill-badge">[Skill]</span>
+                <span class="skill-badge">[Skill]</span>
+                <span class="skill-badge">[Skill]</span>
             </div>
         </div>
 
         <footer data-t="footer-text">
-            © 2026 Mohammadali Javadinasab | Tehran, Iran
+            © 2026 [Your Name] | [City, Country]
         </footer>
     </div>
 
     <script>
+        const translations = {
+            <script>
         const translations = {
             en: {
                 "nav-home": "Home", "nav-edu": "Education", "nav-exp": "Experience", "nav-proj": "Projects",
@@ -428,7 +397,7 @@
             
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
-                el.innerHTML = translations[currentLang][key]; // innerHTML used to support <li> tags
+                el.innerHTML = translations[currentLang][key];
             });
         });
 
