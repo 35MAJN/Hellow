@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mohammadali Javadinasab | Portfolio</title>
     
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="theme-color" content="#0071e3">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,8 +40,7 @@
         }
 
         * {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             box-sizing: border-box;
             transition: background 0.4s ease, color 0.4s ease, border 0.4s ease;
         }
@@ -49,12 +55,11 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- ROBUST FONT FIX --- */
+        /* --- FONT FIX FOR PERSIAN --- */
         [lang="fa"] body, [lang="fa"] p, [lang="fa"] h1, [lang="fa"] h2, [lang="fa"] h3, [lang="fa"] span, [lang="fa"] a, [lang="fa"] li, [lang="fa"] strong { 
             font-family: 'Vazirmatn', sans-serif !important; 
         }
         
-        /* Protection for all FontAwesome Icon families */
         .fas, .fa-solid {
             font-family: "Font Awesome 6 Free" !important;
             font-weight: 900 !important;
@@ -84,15 +89,12 @@
         /* --- NAVIGATION --- */
         nav {
             position: fixed;
-            top: 15px;
-            left: 50%;
+            top: 15px; left: 50%;
             transform: translateX(-50%);
             width: fit-content;
             height: var(--nav-height);
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            z-index: 1000;
+            display: flex; align-items: center;
+            padding: 0 10px; z-index: 1000;
             border-radius: 30px;
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
@@ -112,9 +114,7 @@
         .nav-links a:hover { opacity: 1; color: var(--accent); }
 
         .controls { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
+            display: flex; align-items: center; gap: 8px; 
             border-left: 1px solid var(--glass-border); 
             padding-left: 8px; 
         }
@@ -127,7 +127,6 @@
         }
         .btn-icon:hover { background: rgba(0, 113, 227, 0.1); color: var(--accent); }
 
-        /* --- CONTENT BLOCKS --- */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
@@ -141,7 +140,7 @@
 
         #hero { margin-top: 110px; text-align: center; }
         .profile-img {
-            width: 135px; height: 135px; border-radius: 50%; object-fit: cover;
+            width: 130px; height: 130px; border-radius: 50%; object-fit: cover;
             margin-bottom: 20px; border: 3px solid var(--accent); padding: 3px;
         }
         h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
@@ -151,15 +150,15 @@
             display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 20px;
         }
         .contact-link {
-            text-decoration: none; color: var(--text-main); font-size: 0.95rem;
+            text-decoration: none; color: var(--text-main); font-size: 0.9rem;
             display: flex; align-items: center; gap: 8px; transition: color 0.2s;
         }
         .contact-link:hover { color: var(--accent); }
 
-        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
         .card { padding: 30px; }
-        .card h3 { font-size: 1.25rem; margin-bottom: 10px; color: var(--accent); }
-        .card .date { font-size: 0.85rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px; display: block; }
+        .card h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--accent); }
+        .card .date { font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px; display: block; }
         .card ul { margin-left: 18px; font-size: 0.9rem; color: var(--text-dim); }
         [dir="rtl"] .card ul { margin-left: 0; margin-right: 18px; }
 
@@ -169,13 +168,12 @@
             font-size: 0.85rem; font-weight: 600; color: var(--accent);
         }
 
-        footer { text-align: center; padding: 50px 0; opacity: 0.5; font-size: 0.85rem; }
+        footer { text-align: center; padding: 50px 0; opacity: 0.5; font-size: 0.8rem; }
         
         @media (max-width: 600px) {
-            nav { width: 92%; top: 10px; }
+            nav { width: fit-content; max-width: 95%; top: 10px; }
             .nav-links { display: none; }
-            .controls { border: none; padding: 0; }
-            h1 { font-size: 2rem; }
+            h1 { font-size: 1.9rem; }
             .glass-card { padding: 25px; }
             #hero { margin-top: 90px; }
         }
@@ -194,7 +192,7 @@
         </div>
         <div class="controls">
             <button class="btn-icon" id="lang-btn" title="Toggle Language"><i class="fas fa-language"></i></button>
-            <button class="btn-icon" id="theme-btn" title="Toggle Mode"><i class="fas fa-moon"></i></button>
+            <button class="btn-icon" id="theme-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
         </div>
     </nav>
 
@@ -229,14 +227,14 @@
                 <span class="date">2019 — 2024</span>
                 <h3 data-t="edu-1-h">B.Sc. Electrical Engineering (Telecommunications)</h3>
                 <p><strong>Iran University of Science & Technology (IUST)</strong></p>
-                <p class="date" data-t="edu-gpa-1">GPA: 3.41/4.0</p>
-                <p data-t="edu-1-p">Thesis: Simulating brain neural activities using head model & retrieving activities using Deep Learning (Solving the Inverse Problem for EEG).</p>
+                <p class="date">GPA: 3.41/4.0</p>
+                <p data-t="edu-1-p">Thesis: Simulating brain neural activities using head model & retrieving activities using Deep Learning (EEG Inverse Problem).</p>
             </div>
             <div class="glass-card card">
                 <span class="date">2020 — 2024</span>
                 <h3 data-t="edu-2-h">B.Sc. Industrial Engineering (Minor)</h3>
                 <p><strong>Iran University of Science & Technology (IUST)</strong></p>
-                <p class="date" data-t="edu-gpa-2">GPA: 3.32/4.0</p>
+                <p class="date">GPA: 3.32/4.0</p>
                 <p data-t="edu-2-p">Focus on Decision-Making Analysis, Marketing, and Project Management.</p>
             </div>
         </div>
@@ -248,15 +246,15 @@
                 <h3 data-t="exp-1-h">Research & Teaching Assistant @ IUST</h3>
                 <ul data-t="exp-1-l">
                     <li>Specializing in EEG Source Reconstruction Using Deep Learning.</li>
-                    <li>TA for Linear Algebra and AI courses under Dr. Ehsan Darestani.</li>
+                    <li>TA for Linear Algebra and AI courses.</li>
                 </ul>
             </div>
             <div class="glass-card card">
                 <span class="date" data-t="exp-2-d">2021 — 2022</span>
                 <h3 data-t="exp-2-h">Python Developer & Data Scientist @ LifeWeb</h3>
                 <ul data-t="exp-2-l">
-                    <li>Developed backend solutions with Elasticsearch, Flask, and MongoDB.</li>
-                    <li>Predicted stock signals using RNNs and NLP on social media data.</li>
+                    <li>Backend solutions with Elasticsearch and Flask.</li>
+                    <li>Stock prediction with RNNs and NLP.</li>
                 </ul>
             </div>
         </div>
@@ -265,11 +263,11 @@
         <div class="grid-layout" id="projects">
             <div class="glass-card card">
                 <h3>Syntax Assistant</h3>
-                <p data-t="proj-1">Trained a Deep RNN for Persian voice commands, achieving 99.59% accuracy. Developed using TensorFlow and PyQt.</p>
+                <p data-t="proj-1">Trained a Deep RNN for Persian voice commands (99.59% accuracy). Built with TensorFlow.</p>
             </div>
             <div class="glass-card card">
                 <h3>Field & Flux 3D</h3>
-                <p data-t="proj-2">Calculates and plots electric fields of point charges in 3D space using NumPy and Matplotlib.</p>
+                <p data-t="proj-2">3D Electric field plotting using NumPy and Matplotlib.</p>
             </div>
         </div>
 
@@ -279,7 +277,7 @@
                 <span class="skill-badge">Python</span> <span class="skill-badge">TensorFlow</span>
                 <span class="skill-badge">PyTorch</span> <span class="skill-badge">MATLAB</span>
                 <span class="skill-badge">Flask</span> <span class="skill-badge">Elasticsearch</span>
-                <span class="skill-badge">FedML</span> <span class="skill-badge">IoT (Raspberry Pi)</span>
+                <span class="skill-badge">FedML</span> <span class="skill-badge">IoT</span>
             </div>
         </div>
 
@@ -299,7 +297,7 @@
                 "edu-1-p": "Thesis: Simulating brain neural activities using head model & retrieving activities using Deep Learning (EEG Inverse Problem).",
                 "edu-2-h": "B.Sc. Industrial Engineering (Minor)",
                 "edu-2-p": "Focus on Decision-Making Analysis, Marketing, and Project Management.",
-                "exp-title": "Professional Experience",
+                "exp-title": "Experience",
                 "exp-1-d": "2022 — Present", "exp-1-h": "Research & Teaching Assistant @ IUST",
                 "exp-1-l": "<li>Specializing in EEG Source Reconstruction Using Deep Learning.</li><li>TA for Linear Algebra and AI courses.</li>",
                 "exp-2-h": "Python Developer & Data Scientist @ LifeWeb",
@@ -339,7 +337,6 @@
             currentLang = currentLang === 'en' ? 'fa' : 'en';
             document.documentElement.lang = currentLang;
             document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
-            
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
                 el.innerHTML = translations[currentLang][key];
@@ -357,7 +354,6 @@
             }
         });
 
-        // Background logic
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
