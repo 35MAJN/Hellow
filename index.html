@@ -485,7 +485,7 @@
                 const isDark = document.body.getAttribute('data-theme') === 'dark';
                 ctxBg.fillStyle = getComputedStyle(document.body).getPropertyValue('--accent');
                 ctxBg.globalAlpha = isDark ? 0.3 : 0.2;
-                ctxBg.beginPath(); ctxBg.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctxBg.fill();
+                ctxBg.beginPath(); ctxBg.arc(this.x, this.y, this.size, 0,  * 2); ctxBg.fill();
             }
         }
         for (let i = 0; i < 60; i++) bgParticles.push(new Particle());
@@ -780,7 +780,7 @@
 
             const brainMesh = new THREE.Points(geometry, material);
             // Correct Anatomical Rotation - upright, no -Math.PI / 2 pitch
-            brainMesh.rotation.set(  Math.PI, Math.PI, Math.PI); 
+            brainMesh.rotation.set(  0, Math.PI, Math.PI); 
             scene.add(brainMesh);
 
             // --- SUDDEN HEAT SOURCES LOGIC ---
