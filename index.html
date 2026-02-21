@@ -642,7 +642,7 @@
             const scene = new THREE.Scene();
             
             const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
-            camera.position.set(25, 5, 25); // Re-positioned for a frontal/lateral anatomical view
+            camera.position.set(25, 2, 25); // Re-positioned for a frontal/lateral anatomical view
             camera.lookAt(0, 0, 0);
             
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -822,7 +822,7 @@
                 time += 0.015;
 
                 // Smooth rotation + slight auto-pan
-                brainMesh.rotation.y += (time * 0.05 - brainMesh.rotation.y) * 0.05;
+                brainMesh.rotation.x += (time * 0.05 - brainMesh.rotation.x) * 0.1;
                 // brainMesh.rotation.x += (targetRotationX - brainMesh.rotation.x) * 0.05;
                 
                 // Manage suddenly appearing and disappearing sources
