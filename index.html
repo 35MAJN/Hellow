@@ -642,7 +642,7 @@
             const scene = new THREE.Scene();
             
             const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
-            camera.position.set(22, 22, 15); // Re-positioned for a frontal/lateral anatomical view
+            camera.position.set(22, 22, 0); // Re-positioned for a frontal/lateral anatomical view
             camera.lookAt(0, 0, 0);
             
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
