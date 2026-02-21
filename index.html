@@ -780,7 +780,7 @@
 
             const brainMesh = new THREE.Points(geometry, material);
             // Correct Anatomical Rotation - upright, no -Math.PI / 2 pitch
-            brainMesh.rotation.set(0, -Math.PI / 4, 0); 
+            brainMesh.rotation.set(0, THREE.MathUtils.degToRad(90), 0); 
             scene.add(brainMesh);
 
             // --- SUDDEN HEAT SOURCES LOGIC ---
