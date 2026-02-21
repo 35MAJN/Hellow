@@ -240,6 +240,20 @@
         
         .brain-overlay h3 { font-size: 1.2rem; margin-bottom: 4px; }
         .brain-overlay p { font-size: 0.85rem; color: var(--text-dim); }
+        
+        #brain-status {
+            position: absolute;
+            top: 20px; left: 30px;
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            background: rgba(0,0,0,0.05);
+            padding: 4px 10px;
+            border-radius: 12px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        [dir="rtl"] #brain-status { left: auto; right: 30px; }
 
         footer { text-align: center; padding: 50px 0; opacity: 0.5; font-size: 0.8rem; }
         
@@ -275,8 +289,6 @@
     <div class="container">
         <section id="hero" class="glass-card">
             
-
-            <!-- Profile image restored and onerror handler removed so it never forcefully hides -->
             <img src="pic.jpg" alt="Mohammadali Javadinasab" class="profile-img">
             
             <!-- Dynamic Morphing SVG Logo -->
@@ -309,6 +321,7 @@
         <!-- Interactive 3D Brain Section -->
         <h2 id="research" style="text-align: center; margin: 40px 0 20px;" data-t="brain-title">Interactive Source Reconstruction</h2>
         <div id="brain-container" class="glass-card">
+            <div id="brain-status">Initializing Simulation...</div>
             <div class="brain-overlay">
                 <h3 data-t="brain-overlay-h">Live EEG Simulation</h3>
                 <p data-t="brain-overlay-p">Visualizing deep neural dipoles mapping to surface potentials.</p>
@@ -467,7 +480,6 @@
         class Particle {
             constructor() {
                 this.x = Math.random() * canvasBg.width; this.y = Math.random() * canvasBg.height;
-                // INCREASED BACKGROUND PARTICLE SIZE: From max 6 to max 10
                 this.size = Math.random() * 6 + 4; 
                 this.speedX = Math.random() * 0.4 - 0.2; this.speedY = Math.random() * 0.4 - 0.2;
             }
@@ -498,9 +510,8 @@
             const svgNS = "http://www.w3.org/2000/svg";
             const width = 800;
             const height = 200;
-            const textToMorph = "MAJN35"; // Logo / Name
+            const textToMorph = "MAJN35"; 
             
-            // Extract text coordinates via hidden canvas
             const tempCanvas = document.createElement('canvas');
             tempCanvas.width = width; tempCanvas.height = height;
             const tCtx = tempCanvas.getContext('2d');
@@ -513,7 +524,6 @@
             const imgData = tCtx.getImageData(0, 0, width, height).data;
             let targetPoints = [];
             
-            // Sample pixels to create target nodes
             for(let y = 0; y < height; y += 7) { 
                 for(let x = 0; x < width; x += 7) {
                     const alpha = imgData[(y * width + x) * 4 + 3];
@@ -523,97 +533,75 @@
                 }
             }
             
-            // Shuffle array to make morphing look chaotic but organized
             targetPoints.sort(() => Math.random() - 0.5);
             
             const nodesCount = targetPoints.length;
             const nodes = [];
             const edges = [];
             
-            // Create SVG Nodes
             for(let i = 0; i < nodesCount; i++) {
                 let circle = document.createElementNS(svgNS, 'circle');
-                // Increased network node size slightly
                 circle.setAttribute('r', Math.random() * 2 + 1.5);
                 circle.setAttribute('class', 'morph-node');
                 svg.appendChild(circle);
                 
                 nodes.push({
-                    el: circle,
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 1.5,
-                    vy: (Math.random() - 0.5) * 1.5,
-                    tx: targetPoints[i].x,
-                    ty: targetPoints[i].y,
-                    isMorphed: false
+                    el: circle, x: Math.random() * width, y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 1.5, vy: (Math.random() - 0.5) * 1.5,
+                    tx: targetPoints[i].x, ty: targetPoints[i].y
                 });
             }
             
-            // Create SVG Edges (limit to prevent performance drop)
             const maxEdges = Math.min(250, nodesCount * 1.5);
             for(let i = 0; i < maxEdges; i++) {
                 let line = document.createElementNS(svgNS, 'line');
                 line.setAttribute('class', 'morph-edge');
-                svg.insertBefore(line, svg.firstChild); // put behind circles
-                edges.push({ el: line, n1: null, n2: null });
+                svg.insertBefore(line, svg.firstChild); 
+                edges.push({ el: line });
             }
 
-            let phase = 'wander'; // wander -> pulse -> morph -> float
+            let phase = 'wander'; 
             let pulseProgress = 0;
             let morphStartTime = 0;
 
-            // State Machine Timers
             setTimeout(() => { phase = 'pulse'; }, 2500);
             setTimeout(() => { phase = 'morph'; morphStartTime = performance.now(); }, 4000);
 
             function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
             function animateMorph(time) {
-                // Update node positions based on phase
                 for(let i=0; i<nodesCount; i++) {
                     let n = nodes[i];
-                    
                     if (phase === 'wander' || phase === 'pulse') {
                         n.x += n.vx; n.y += n.vy;
-                        // Bounce bounds
                         if(n.x < 0 || n.x > width) n.vx *= -1;
                         if(n.y < 0 || n.y > height) n.vy *= -1;
                     } 
                     else if (phase === 'morph' || phase === 'float') {
-                        let t = (time - morphStartTime) / 2500; // 2.5s duration
-                        if (t > 1) { 
-                            t = 1; 
-                            if(phase === 'morph') phase = 'float';
-                        }
+                        let t = (time - morphStartTime) / 2500; 
+                        if (t > 1) { t = 1; if(phase === 'morph') phase = 'float'; }
                         
                         let easeT = easeOutCubic(t);
                         if (phase === 'morph') {
                             n.x = n.x + (n.tx - n.x) * easeT * 0.1;
                             n.y = n.y + (n.ty - n.y) * easeT * 0.1;
                         } else {
-                            // Float gently around text
                             n.x += Math.sin(time * 0.001 + i) * 0.1;
                             n.y += Math.cos(time * 0.002 + i) * 0.1;
-                            // Pull back to target if it wanders too far
                             n.x += (n.tx - n.x) * 0.05;
                             n.y += (n.ty - n.y) * 0.05;
                         }
                     }
-                    
                     n.el.setAttribute('cx', n.x);
                     n.el.setAttribute('cy', n.y);
                 }
 
-                // Handle visual styling for pulses
                 const isDark = document.body.getAttribute('data-theme') === 'dark';
                 const accentColor = getComputedStyle(document.body).getPropertyValue('--accent').trim();
                 const pulseColor = getComputedStyle(document.body).getPropertyValue('--pulse-color').trim();
 
-                // Update Edges
                 let edgeIdx = 0;
                 for(let i=0; i<nodesCount && edgeIdx < maxEdges; i+=2) {
-                    // find closest neighbor
                     let minDist = Infinity;
                     let closest = -1;
                     for(let j=0; j<nodesCount; j++) {
@@ -624,7 +612,7 @@
                         if (dist < minDist) { minDist = dist; closest = j; }
                     }
                     
-                    if (closest !== -1 && minDist < 2500) { // connect if close
+                    if (closest !== -1 && minDist < 2500) { 
                         let line = edges[edgeIdx].el;
                         line.setAttribute('x1', nodes[i].x);
                         line.setAttribute('y1', nodes[i].y);
@@ -633,7 +621,6 @@
                         line.style.opacity = phase === 'float' ? 0.05 : (1 - minDist/2500);
                         
                         if (phase === 'pulse') {
-                            // Flashing effect simulating signal processing
                             pulseProgress += 0.0001;
                             let flash = (Math.sin(time * 0.01 + i) > 0.8);
                             line.style.stroke = flash ? pulseColor : accentColor;
@@ -648,24 +635,19 @@
                     }
                 }
                 
-                // Hide unused edges
-                while(edgeIdx < maxEdges) {
-                    edges[edgeIdx].el.style.opacity = 0;
-                    edgeIdx++;
-                }
-
+                while(edgeIdx < maxEdges) { edges[edgeIdx].el.style.opacity = 0; edgeIdx++; }
                 requestAnimationFrame(animateMorph);
             }
             requestAnimationFrame(animateMorph);
         });
 
 
-        /* --- 2. 3D EEG SOURCE RECONSTRUCTION (REALISTIC OVAL GRAY MATTER) --- */
-        window.addEventListener('load', () => {
+        /* --- 2. 3D EEG SOURCE RECONSTRUCTION (JSON LOADER / PROCEDURAL FALLBACK) --- */
+        window.addEventListener('load', async () => {
             const container = document.getElementById('brain-container');
+            const statusEl = document.getElementById('brain-status');
             const scene = new THREE.Scene();
             
-            // Fixed Camera Position: Centered vertically and adjusted zoom so it fits inside the box
             const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
             camera.position.set(0, 0, 38);
 
@@ -674,7 +656,6 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            // Generate a high-quality Circular Texture for Points
             const circleCanvas = document.createElement('canvas');
             circleCanvas.width = 64; circleCanvas.height = 64;
             const circleCtx = circleCanvas.getContext('2d');
@@ -684,77 +665,119 @@
             circleCtx.fill();
             const circleTexture = new THREE.CanvasTexture(circleCanvas);
 
-            // Exact 6000 points using a Fibonacci Sphere
-            const pointsCount = 6000;
-            const geometry = new THREE.BufferGeometry();
-            const positions = new Float32Array(pointsCount * 3);
-            const colors = new Float32Array(pointsCount * 3);
-            const normals = new Float32Array(pointsCount * 3); // Storing normal approx for lighting
-            
-            // Base gray matter color (Anatomical pinkish-gray)
             const grayMatterColor = new THREE.Color(0xb5aca6);
-            const goldenRatio = (1 + Math.sqrt(5)) / 2;
             
-            let pIdx = 0;
-            for(let i=0; i<pointsCount; i++) {
-                let t = i / pointsCount;
-                let phi = Math.acos(1 - 2 * t);
-                let theta = 2 * Math.PI * i / goldenRatio;
-                
-                let nx = Math.sin(phi) * Math.cos(theta);
-                let ny = Math.cos(phi);
-                let nz = Math.sin(phi) * Math.sin(theta); // +z is front
-                
-                let r = 12;
-                
-                // --- IMPROVED ANATOMICAL TEMPLATE SHAPING ---
-                
-                // 1. Longitudinal Fissure (Deep split down the top middle)
-                let fissureDepth = ny > -0.2 ? Math.exp(-Math.pow(nx * 6, 2)) * (ny + 0.2) : 0;
-                r -= fissureDepth * 4.0;
-                
-                // 2. Frontal Lobe (Tapered front)
-                if (nz > 0) r -= Math.pow(nz, 2) * 2.0;
-                
-                // 3. Occipital Lobe (Rounder back)
-                if (nz < -0.4) r += Math.pow(nz + 0.4, 2) * 1.5;
+            // Core arrays to hold points logic
+            let pointsCount = 0;
+            let finalPositions;
+            let finalBaseColors; // stores the shading unaffected by the heat map
+            let finalNormals;
 
-                // 4. Temporal Lobes (Bulges on the lower sides)
-                let tempLobeL = Math.exp(- (Math.pow(nx + 0.85, 2) + Math.pow(ny + 0.2, 2) + Math.pow(nz, 2)) * 3.5 );
-                let tempLobeR = Math.exp(- (Math.pow(nx - 0.85, 2) + Math.pow(ny + 0.2, 2) + Math.pow(nz, 2)) * 3.5 );
-                r += (tempLobeL + tempLobeR) * 3.0;
+            // --- DATA LOADING & FALLBACK LOGIC ---
+            try {
+                // Attempt to load the JSON file converted from graymatter.npy
+                const response = await fetch('graymatter_coords.json');
+                if (!response.ok) throw new Error("JSON not found locally");
+                const rawPoints = await response.json();
                 
-                // 5. Brain Folds (Gyri/Sulci)
-                let f1 = Math.sin(nx*14) * Math.cos(ny*14) + Math.sin(ny*14) * Math.cos(nz*14) + Math.sin(nz*14) * Math.cos(nx*14);
-                r += f1 * 0.35;
-                
-                // 6. Flatten Bottom (Brainstem cut)
-                if (ny < -0.5) r -= Math.pow(Math.abs(ny + 0.5), 2) * 5;
+                pointsCount = rawPoints.length; // e.g. 7250
+                finalPositions = new Float32Array(pointsCount * 3);
+                finalBaseColors = new Float32Array(pointsCount * 3);
+                finalNormals = new Float32Array(pointsCount * 3);
 
-                // --- OVAL ELLIPSOID PROPORTIONS ---
-                let x = r * nx * 0.72; // Width
-                let y = r * ny * 0.85; // Height
-                let z = r * nz * 1.15; // Length
-
-                positions[pIdx] = x;
-                positions[pIdx+1] = y;
-                positions[pIdx+2] = z;
+                // Find bounding box to center and scale perfectly
+                let min = {x: Infinity, y: Infinity, z: Infinity};
+                let max = {x: -Infinity, y: -Infinity, z: -Infinity};
                 
-                // Store base lighting info (ambient occlusion fake)
-                normals[pIdx] = ny; // Store upward normal for top-down lighting
-                normals[pIdx+1] = f1; // Store fold depth for crease shadows
+                rawPoints.forEach(p => {
+                    min.x = Math.min(min.x, p[0]); max.x = Math.max(max.x, p[0]);
+                    min.y = Math.min(min.y, p[1]); max.y = Math.max(max.y, p[1]);
+                    min.z = Math.min(min.z, p[2]); max.z = Math.max(max.z, p[2]);
+                });
 
-                // Base colors initialized
-                let ambient = 0.6 + 0.4 * ny; 
-                let creaseShadow = (f1 * 0.05); 
-                let c = grayMatterColor.clone().multiplyScalar(ambient - creaseShadow);
+                const center = { x: (min.x+max.x)/2, y: (min.y+max.y)/2, z: (min.z+max.z)/2 };
+                const maxSize = Math.max(max.x-min.x, max.y-min.y, max.z-min.z);
+                const scale = 24.0 / maxSize; // Standardize brain width to ~24 units
+
+                for(let i=0; i<pointsCount; i++) {
+                    // Center and scale
+                    let x = (rawPoints[i][0] - center.x) * scale;
+                    let y = (rawPoints[i][1] - center.y) * scale;
+                    let z = (rawPoints[i][2] - center.z) * scale;
+
+                    finalPositions[i*3] = x;
+                    finalPositions[i*3+1] = y;
+                    finalPositions[i*3+2] = z;
+
+                    // Fake normal/lighting based on height and distance from center
+                    let ny = (y / 12.0); // normalize height roughly
+                    let ambient = 0.55 + 0.45 * Math.max(-0.5, Math.min(1.0, ny)); 
+                    let c = grayMatterColor.clone().multiplyScalar(ambient);
+                    
+                    finalBaseColors[i*3] = c.r;
+                    finalBaseColors[i*3+1] = c.g;
+                    finalBaseColors[i*3+2] = c.b;
+                }
+                statusEl.innerHTML = `Loaded ${pointsCount} points from JSON`;
+                setTimeout(() => statusEl.style.opacity = 0, 3000);
+
+            } catch(e) {
+                console.log("JSON Load Failed, using procedural fallback.", e);
+                statusEl.innerHTML = `Using Procedural Fallback`;
+                setTimeout(() => statusEl.style.opacity = 0, 3000);
+
+                // --- PROCEDURAL BRAIN (If JSON is missing) ---
+                pointsCount = 6000;
+                finalPositions = new Float32Array(pointsCount * 3);
+                finalBaseColors = new Float32Array(pointsCount * 3);
+                const goldenRatio = (1 + Math.sqrt(5)) / 2;
                 
-                colors[pIdx] = c.r; colors[pIdx+1] = c.g; colors[pIdx+2] = c.b;
-                pIdx += 3;
+                let pIdx = 0;
+                for(let i=0; i<pointsCount; i++) {
+                    let t = i / pointsCount;
+                    let phi = Math.acos(1 - 2 * t);
+                    let theta = 2 * Math.PI * i / goldenRatio;
+                    
+                    let nx = Math.sin(phi) * Math.cos(theta);
+                    let ny = Math.cos(phi);
+                    let nz = Math.sin(phi) * Math.sin(theta); 
+                    
+                    let r = 12;
+                    let fissureDepth = ny > -0.2 ? Math.exp(-Math.pow(nx * 6, 2)) * (ny + 0.2) : 0;
+                    r -= fissureDepth * 4.0;
+                    if (nz > 0) r -= Math.pow(nz, 2) * 2.0;
+                    if (nz < -0.4) r += Math.pow(nz + 0.4, 2) * 1.5;
+                    let tempLobeL = Math.exp(- (Math.pow(nx + 0.85, 2) + Math.pow(ny + 0.2, 2) + Math.pow(nz, 2)) * 3.5 );
+                    let tempLobeR = Math.exp(- (Math.pow(nx - 0.85, 2) + Math.pow(ny + 0.2, 2) + Math.pow(nz, 2)) * 3.5 );
+                    r += (tempLobeL + tempLobeR) * 3.0;
+                    let f1 = Math.sin(nx*14) * Math.cos(ny*14) + Math.sin(ny*14) * Math.cos(nz*14) + Math.sin(nz*14) * Math.cos(nx*14);
+                    r += f1 * 0.35;
+                    if (ny < -0.5) r -= Math.pow(Math.abs(ny + 0.5), 2) * 5;
+
+                    let x = r * nx * 0.72; 
+                    let y = r * ny * 0.85; 
+                    let z = r * nz * 1.15; 
+
+                    finalPositions[pIdx] = x;
+                    finalPositions[pIdx+1] = y;
+                    finalPositions[pIdx+2] = z;
+                    
+                    let ambient = 0.6 + 0.4 * ny; 
+                    let creaseShadow = (f1 * 0.05); 
+                    let c = grayMatterColor.clone().multiplyScalar(ambient - creaseShadow);
+                    
+                    finalBaseColors[pIdx] = c.r; finalBaseColors[pIdx+1] = c.g; finalBaseColors[pIdx+2] = c.b;
+                    pIdx += 3;
+                }
             }
 
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            // --- BUILD GEOMETRY ---
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(finalPositions, 3));
+            
+            // We use a clone of base colors so we can freely modify it in the animation loop
+            const dynamicColors = new Float32Array(finalBaseColors);
+            geometry.setAttribute('color', new THREE.BufferAttribute(dynamicColors, 3));
 
             const material = new THREE.PointsMaterial({
                 size: 0.95,
@@ -766,7 +789,6 @@
             });
 
             const brainMesh = new THREE.Points(geometry, material);
-            // Shift brain mesh up to perfectly center it inside the container
             brainMesh.position.y = 2.0; 
             scene.add(brainMesh);
 
@@ -775,19 +797,13 @@
             const sourceGeometry = new THREE.SphereGeometry(0.5, 16, 16);
             const sourceMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
             
-            // Create 3 distinct sources
             for(let i=0; i<3; i++) {
                 const mesh = new THREE.Mesh(sourceGeometry, sourceMaterial);
                 scene.add(mesh);
                 sources.push({
                     mesh: mesh,
-                    // Unique speeds and offsets for chaotic lissajous paths
-                    speedX: 1.1 + i*0.3,
-                    speedY: 0.8 + i*0.4,
-                    speedZ: 1.3 + i*0.2,
-                    offsetX: i * Math.PI/2,
-                    offsetY: i * Math.PI/3,
-                    offsetZ: i * Math.PI/4,
+                    speedX: 1.1 + i*0.3, speedY: 0.8 + i*0.4, speedZ: 1.3 + i*0.2,
+                    offsetX: i * Math.PI/2, offsetY: i * Math.PI/3, offsetZ: i * Math.PI/4,
                 });
             }
 
@@ -817,8 +833,8 @@
             let time = 0;
             const colorAttr = geometry.attributes.color;
             
-            const hotRGB1 = new THREE.Color(0xff2a00); // Bright Red
-            const hotRGB2 = new THREE.Color(0xffaa00); // Yellow/Orange
+            const hotRGB1 = new THREE.Color(0xff2a00); 
+            const hotRGB2 = new THREE.Color(0xffaa00); 
 
             function animate3D() {
                 requestAnimationFrame(animate3D);
@@ -827,30 +843,27 @@
                 brainMesh.rotation.y += (targetRotationY + time * 0.05 - brainMesh.rotation.y) * 0.05;
                 brainMesh.rotation.x += (targetRotationX - brainMesh.rotation.x) * 0.05;
                 
-                // Move all internal sources independently relative to brain mesh center
+                // Move sources
                 sources.forEach(s => {
                     s.mesh.position.set(
-                        Math.sin(time * s.speedX + s.offsetX) * 4.5,
-                        Math.sin(time * s.speedY + s.offsetY) * 2.5 + 2.0, // +2.0 to match brainMesh shift
+                        Math.sin(time * s.speedX + s.offsetX) * 5.0,
+                        Math.sin(time * s.speedY + s.offsetY) * 3.0 + 2.0, 
                         Math.cos(time * s.speedZ + s.offsetZ) * 6.0
                     );
                 });
 
                 // Update surface vertex colors
                 for(let i = 0; i < pointsCount; i++) {
-                    let vx = positions[i*3];
-                    let vy = positions[i*3+1];
-                    let vz = positions[i*3+2];
+                    let vx = finalPositions[i*3];
+                    let vy = finalPositions[i*3+1];
+                    let vz = finalPositions[i*3+2];
                     
-                    // The particles are positioned locally in brainMesh, but sources are in world space.
-                    // We must add brainMesh's local shift (y=2.0) to match world positions.
                     let worldVx = vx;
                     let worldVy = vy + 2.0; 
                     let worldVz = vz;
 
                     let totalIntensity = 0;
                     
-                    // Accumulate proximity heat from ALL sources
                     for(let j=0; j<sources.length; j++) {
                         let sMesh = sources[j].mesh;
                         let dx = worldVx - sMesh.position.x;
@@ -859,25 +872,30 @@
                         let distSq = dx*dx + dy*dy + dz*dz;
                         
                         let intensity = Math.max(0, 1.0 - Math.sqrt(distSq) / 8.5);
-                        totalIntensity += Math.pow(intensity, 2.5); // Steep falloff
+                        totalIntensity += Math.pow(intensity, 2.5); 
                     }
                     
                     totalIntensity = Math.min(1.0, totalIntensity);
 
-                    // Reconstruct base ambient color
-                    let ny = normals[i*3];
-                    let f1 = normals[i*3+1];
-                    let ambient = 0.6 + 0.4 * ny;
-                    let creaseShadow = (f1 * 0.05);
-                    let mixedColor = grayMatterColor.clone().multiplyScalar(ambient - creaseShadow);
+                    // Revert to original shaded color
+                    let baseR = finalBaseColors[i*3];
+                    let baseG = finalBaseColors[i*3+1];
+                    let baseB = finalBaseColors[i*3+2];
                     
-                    // Apply aggregated Heatmap
+                    let r = baseR; let g = baseG; let b = baseB;
+                    
                     if (totalIntensity > 0.02) {
                         let targetHot = (totalIntensity > 0.5) ? hotRGB2 : hotRGB1;
-                        mixedColor.lerp(targetHot, totalIntensity * 2.0);
+                        // Manual lerp for performance
+                        let lerpFactor = totalIntensity * 2.0;
+                        if(lerpFactor > 1) lerpFactor = 1;
+                        
+                        r = baseR + (targetHot.r - baseR) * lerpFactor;
+                        g = baseG + (targetHot.g - baseG) * lerpFactor;
+                        b = baseB + (targetHot.b - baseB) * lerpFactor;
                     }
 
-                    colorAttr.setXYZ(i, mixedColor.r, mixedColor.g, mixedColor.b);
+                    colorAttr.setXYZ(i, r, g, b);
                 }
                 
                 colorAttr.needsUpdate = true;
