@@ -788,15 +788,15 @@
             const activeSources = Array.from({length: maxSources}, () => ({active: false, x: 0, y: 0, z: 0, life: 0}));
 
             brainMesh.rotation.x = -Math.PI / 2;
-            // let targetRotationY = 0;
-
+            brainMesh.rotation.y = 0;
+            brainMesh.rotation.z = 0;
             // Moved listener to window to interact regardless of hero content overlap
             const onMove = (e) => {
                 let clientX = e.touches ? e.touches[0].clientX : e.clientX;
                 let clientY = e.touches ? e.touches[0].clientY : e.clientY;
                 let mx = (clientX / window.innerWidth) * 2 - 1;
                 let my = -(clientY / window.innerHeight) * 2 + 1;
-                // targetRotationY = mx * 1.0;
+                // targetRotationZ = mx * 1.0;
                 // targetRotationX = my * 1.0;
             };
 
@@ -822,7 +822,7 @@
                 time += 0.015;
 
                 // Smooth rotation + slight auto-pan
-                brainMesh.rotation.x += (time * 0.05 - brainMesh.rotation.x) * 0.1;
+                // brainMesh.rotation.y += (time * 0.05 - brainMesh.rotation.y) * 0.1;
                 // brainMesh.rotation.x += (targetRotationX - brainMesh.rotation.x) * 0.05;
                 
                 // Manage suddenly appearing and disappearing sources
