@@ -796,8 +796,8 @@
                 let clientY = e.touches ? e.touches[0].clientY : e.clientY;
                 let mx = (clientX / window.innerWidth) * 2 - 1;
                 let my = -(clientY / window.innerHeight) * 2 + 1;
-                targetRotationZ = mx * 1.0;
-                targetRotationX = my * 1.0;
+                // targetRotationY = mx * 1.0;
+                // targetRotationX = my * 1.0;
             };
 
             window.addEventListener('mousemove', onMove);
@@ -822,8 +822,8 @@
                 time += 0.015;
 
                 // Smooth rotation + slight auto-pan
-                brainMesh.rotation.z += (targetRotationZ + time * 0.05 - brainMesh.rotation.z) * 0.05;
-                brainMesh.rotation.x += (targetRotationX - brainMesh.rotation.x) * 0.05;
+                brainMesh.rotation.z += (time * 0.05 - brainMesh.rotation.z) * 0.05;
+                // brainMesh.rotation.x += (targetRotationX - brainMesh.rotation.x) * 0.05;
                 
                 // Manage suddenly appearing and disappearing sources
                 activeSources.forEach(s => {
