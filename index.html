@@ -295,7 +295,7 @@
         
         <!-- PROFILE CARD (Placed right under the fullscreen view) -->
         <div class="glass-card" style="text-align: center; margin-top: 40px;">
-            <img src="pic.jpg" alt="Mohammadali Javadinasab" class="profile-img">
+            <img src="pic.jpg" alt="Mohammadali Javadinasab" class="profile-img" onerror="this.src='https://via.placeholder.com/130?text=Profile'">
             
             <h1 data-t="hero-name">Mohammadali Javadinasab</h1>
             <p class="subtitle" data-t="hero-sub">AI Researcher | Electrical Engineer | Co-founder of LearnAmuse</p>
@@ -641,11 +641,30 @@
             const statusEl = document.getElementById('brain-status');
             const scene = new THREE.Scene();
             
-            const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
-            camera.position.set(25, 2, 25); // Re-positioned for a frontal/lateral anatomical view
-            camera.lookAt(0, 0, 0);
+            // Initial Camera setup
+            const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+            
+            // Added dynamic camera positioning function 
+            function adjustCamera() {
+                if(!container.clientWidth || !container.clientHeight) return;
+                const aspect = container.clientWidth / container.clientHeight;
+                camera.aspect = aspect;
+                camera.updateProjectionMatrix();
+                
+                // If the screen gets narrow (aspect < 1, like mobile), push the camera back
+                // using an inversely proportional distance multiplier + padding.
+                const distanceMultiplier = aspect < 1 ? (1 / aspect) * 1.2 : 1;
+                const safeMultiplier = Math.min(distanceMultiplier, 2.5); // Cap how far it goes back
+                
+                const baseDist = 25;
+                camera.position.set(baseDist * safeMultiplier, 2 * safeMultiplier, baseDist * safeMultiplier);
+                camera.lookAt(0, 0, 0);
+            }
             
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            // Initialize renderer sizes and camera position
+            adjustCamera(); 
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
@@ -790,23 +809,21 @@
             brainMesh.rotation.x = -Math.PI / 2;
             brainMesh.rotation.y = 0;
             brainMesh.rotation.z = 0;
+            
             // Moved listener to window to interact regardless of hero content overlap
             const onMove = (e) => {
                 let clientX = e.touches ? e.touches[0].clientX : e.clientX;
                 let clientY = e.touches ? e.touches[0].clientY : e.clientY;
                 let mx = (clientX / window.innerWidth) * 2 - 1;
                 let my = -(clientY / window.innerHeight) * 2 + 1;
-                // targetRotationZ = mx * 1.0;
-                // targetRotationX = my * 1.0;
             };
 
             window.addEventListener('mousemove', onMove);
             window.addEventListener('touchmove', onMove, {passive: true});
 
+            // Adjust the camera automatically whenever the user resizes the window/changes orientation
             window.addEventListener('resize', () => {
-                if(!container.clientWidth) return;
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
+                adjustCamera();
                 renderer.setSize(container.clientWidth, container.clientHeight);
             });
 
@@ -822,8 +839,6 @@
                 time += 0.015;
 
                 // Smooth rotation + slight auto-pan
-                // brainMesh.rotation.y += (time * 0.05 - brainMesh.rotation.y) * 0.1;
-                //brainMesh.rotation.x += (time * 0.05 + brainMesh.rotation.x) * 0.05;
                 brainMesh.rotation.z += (time * 0.05 - brainMesh.rotation.z) * 0.3;
                 
                 // Manage suddenly appearing and disappearing sources
