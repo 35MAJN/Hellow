@@ -642,7 +642,7 @@
             const scene = new THREE.Scene();
             
             const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
-            camera.position.set(0, 22, 22); // Re-positioned for a frontal/lateral anatomical view
+            camera.position.set(22, 0, 22); // Re-positioned for a frontal/lateral anatomical view
             camera.lookAt(0, 0, 0);
             
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -796,8 +796,8 @@
                 let clientY = e.touches ? e.touches[0].clientY : e.clientY;
                 let mx = (clientX / window.innerWidth) * 2 - 1;
                 let my = -(clientY / window.innerHeight) * 2 + 1;
-                // targetRotationY = mx * 1.0 - (Math.PI / 4);
-                targetRotationX = -my * 0.5;
+                targetRotationY = mx * 1.0 - (Math.PI / 4);
+                targetRotationX = my * 0.5;
             };
 
             window.addEventListener('mousemove', onMove);
