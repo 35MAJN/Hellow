@@ -815,7 +815,7 @@
             
             // Neon cyan / white bursts for the EEG points
             const hotRGB1 = new THREE.Color(0x00e5ff); 
-            const hotRGB2 = new THREE.Color(0xff0000); 
+            const hotRGB2 = new THREE.Color(0xff00ff); 
 
             function animate3D() {
                 requestAnimationFrame(animate3D);
@@ -824,7 +824,7 @@
                 // Smooth rotation + slight auto-pan
                 // brainMesh.rotation.y += (time * 0.05 - brainMesh.rotation.y) * 0.1;
                 //brainMesh.rotation.x += (time * 0.05 + brainMesh.rotation.x) * 0.05;
-                brainMesh.rotation.z += (time * 0.05 - brainMesh.rotation.z) * 0.2;
+                brainMesh.rotation.z += (time * 0.05 - brainMesh.rotation.z) * 0.3;
                 
                 // Manage suddenly appearing and disappearing sources
                 activeSources.forEach(s => {
