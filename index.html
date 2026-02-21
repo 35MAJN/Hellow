@@ -780,7 +780,7 @@
 
             const brainMesh = new THREE.Points(geometry, material);
             // Correct Anatomical Rotation - upright, no -Math.PI / 2 pitch
-            brainMesh.rotation.set(0, Math.PI/2, 0); 
+            brainMesh.rotation.set(0, 0, 0); 
             scene.add(brainMesh);
 
             // --- SUDDEN HEAT SOURCES LOGIC ---
@@ -797,7 +797,7 @@
                 let mx = (clientX / window.innerWidth) * 2 - 1;
                 let my = -(clientY / window.innerHeight) * 2 + 1;
                 targetRotationY = mx * 1.0 - (Math.PI / 4);
-                targetRotationX = -my * 0.5;
+                // targetRotationX = -my * 0.5;
             };
 
             window.addEventListener('mousemove', onMove);
