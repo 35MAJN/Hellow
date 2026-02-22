@@ -657,7 +657,7 @@
                 const safeMultiplier = Math.min(distanceMultiplier, 2.5); // Cap how far it goes back
                 
                 const baseDist = 25;
-                camera.position.set(baseDist * safeMultiplier, 2 * safeMultiplier, baseDist * safeMultiplier);
+                camera.position.set(baseDist * safeMultiplier, 5 * safeMultiplier, baseDist * safeMultiplier);
                 camera.lookAt(0, 0, 0);
             }
             
@@ -832,7 +832,7 @@
             
             // Neon cyan / white bursts for the EEG points
             const hotRGB1 = new THREE.Color(0x00e5ff); 
-            const hotRGB2 = new THREE.Color(0xff00ff); 
+            const hotRGB2 = new THREE.Color(0x26c485); 
 
             function animate3D() {
                 requestAnimationFrame(animate3D);
