@@ -792,7 +792,7 @@
                 size: 1.0,
                 vertexColors: true,
                 transparent: true,
-                opacity: 0.75, // Changed to 0.65 as requested
+                opacity: 0.7, // Changed to 0.65 as requested
                 depthWrite: false, // Prevents artifacting on overlapping transparent particles
                 map: circleTexture
             });
@@ -839,7 +839,7 @@
                 time += 0.015;
 
                 // Smooth rotation + slight auto-pan
-                brainMesh.rotation.z += (time * 0.05 - brainMesh.rotation.z) * 1.1;
+                brainMesh.rotation.z += (time * 0.05 - brainMesh.rotation.z) * 1.5;
                 
                 // Manage suddenly appearing and disappearing sources
                 activeSources.forEach(s => {
