@@ -784,10 +784,10 @@
             geometry.setAttribute('color', new THREE.BufferAttribute(dynamicColors, 3));
 
             const material = new THREE.PointsMaterial({
-                size: 3.0,
+                size: 2.0,
                 vertexColors: true,
                 transparent: true,
-                opacity: 0.5, // Changed to 0.65 as requested
+                opacity: 0.2, // Changed to 0.65 as requested
                 depthWrite: false, // Prevents artifacting on overlapping transparent particles
                 map: circleTexture
             });
