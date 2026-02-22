@@ -834,7 +834,7 @@
                 time += 0.015;
 
                 // Smooth rotation + slight auto-pan
-                brainMesh.rotation.z += (time * 0.2 - brainMesh.rotation.z) * 0.2;
+                brainMesh.rotation.z += (time * 5 - brainMesh.rotation.z) * 0.2;
                 
                 // Manage suddenly appearing and disappearing sources
                 activeSources.forEach(s => {
