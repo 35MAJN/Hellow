@@ -652,7 +652,7 @@
                 const safeMultiplier = Math.min(distanceMultiplier, 2.5); // Cap how far it goes back
                 
                 const baseDist = 25;
-                camera.position.set(baseDist * safeMultiplier, 3.5 * safeMultiplier, baseDist * safeMultiplier);
+                camera.position.set(baseDist * safeMultiplier, 3.7 * safeMultiplier, baseDist * safeMultiplier);
                 camera.lookAt(0, 0, 0);
             }
             
@@ -834,7 +834,7 @@
                 time += 0.015;
 
                 // Smooth rotation + slight auto-pan
-                brainMesh.rotation.z += (time * 5 - brainMesh.rotation.z) * 0.2;
+                brainMesh.rotation.z += (time * 2 - brainMesh.rotation.z) * 0.2;
                 
                 // Manage suddenly appearing and disappearing sources
                 activeSources.forEach(s => {
