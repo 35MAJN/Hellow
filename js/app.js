@@ -512,7 +512,95 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2D Background Canvas
     initBackgroundParticles();
+
+    // Scroll Elements: Progress Bar, Back to Top Button, Side Navigation Rail
+    initScrollElements();
 });
+
+// Interactive Scroll Elements
+function initScrollElements() {
+    const progressBar = document.getElementById('scroll-progress-bar');
+    const scrollTopBtn = document.getElementById('scroll-to-top-btn');
+    const railDots = document.querySelectorAll('.scroll-rail-dot');
+    const sections = [
+        document.getElementById('hero'),
+        document.getElementById('research'),
+        document.getElementById('education'),
+        document.getElementById('experience'),
+        document.getElementById('projects'),
+        document.getElementById('honors'),
+        document.getElementById('skills'),
+        document.getElementById('references')
+    ].filter(Boolean);
+
+    function onScroll() {
+        const winScroll = window.scrollY || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+        
+        if (progressBar) {
+            progressBar.style.width = `${Math.min(100, Math.max(0, scrolled))}%`;
+        }
+
+        if (scrollTopBtn) {
+            if (winScroll > 360) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        }
+
+        // Active section detection for side scroll dots
+        let currentSectionId = 'hero';
+        const scrollPosition = winScroll + 220;
+        sections.forEach(sec => {
+            if (sec && sec.offsetTop <= scrollPosition) {
+                currentSectionId = sec.id;
+            }
+        });
+
+        railDots.forEach(dot => {
+            if (dot.getAttribute('data-section') === currentSectionId) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    if (scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // Hero scroll cue click smooth scroll
+    const heroScrollBtn = document.querySelector('#hero .scroll-indicator');
+    if (heroScrollBtn) {
+        heroScrollBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.getElementById('research');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+
+    // Side rail dots smooth scroll
+    railDots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            e.preventDefault();
+            const secId = dot.getAttribute('data-section');
+            const target = document.getElementById(secId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+}
 
 // SVG Logo Morphing Logic
 function initSvgMorph() {
