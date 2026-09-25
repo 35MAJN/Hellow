@@ -232,14 +232,16 @@ body {
 
 /* --- FULLSCREEN HERO SECTION --- */
 #hero {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
-    padding-top: calc(var(--nav-height) + 20px);
+    justify-content: space-between;
+    padding-top: calc(var(--nav-height) + 30px);
+    padding-bottom: 30px;
     position: relative;
+    z-index: 10;
 }
 
 #svg-morph-wrapper {
@@ -267,55 +269,92 @@ body {
     opacity: 0.2;
 }
 
-#brain-container {
-    width: 100%;
+.hero-spacer {
     flex: 1;
-    position: relative;
-    cursor: grab;
-    display: flex;
+    min-height: 220px;
+    width: 100%;
+    pointer-events: none;
+}
+
+.scroll-indicator {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
-                height 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
-                transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
-                box-shadow 0.3s ease;
-}
-
-#brain-container:active {
-    cursor: grabbing;
-}
-
-/* Persistent 3D Floating Companion when scrolled */
-#brain-container.docked-mode {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 270px;
-    height: 310px;
-    z-index: 990;
-    border-radius: 22px;
-    background: var(--hud-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    gap: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--glass-card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--glass-border);
+    padding: 8px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: var(--card-shadow);
+    animation: floatScrollCue 2.2s infinite ease-in-out;
+    pointer-events: auto;
+}
+
+@keyframes floatScrollCue {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+}
+
+/* --- FIXED FULL-VIEWPORT 3D SPATIAL BRAIN CANVAS --- */
+#brain-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
     overflow: hidden;
 }
 
-[dir="rtl"] #brain-container.docked-mode {
+#brain-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+}
+
+/* Floating Camera View Indicator */
+#brain-view-badge {
+    position: fixed;
+    bottom: 22px;
+    right: 24px;
+    z-index: 999;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--glass-card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+}
+
+[dir="rtl"] #brain-view-badge {
     right: auto;
     left: 24px;
 }
 
-#brain-container.docked-mode.dock-collapsed {
-    width: 62px;
-    height: 62px;
-    border-radius: 50%;
+#brain-view-badge i {
+    font-size: 0.85rem;
+    color: var(--pulse-color);
 }
 
 #brain-status {
     position: absolute;
-    bottom: 24px;
+    top: calc(var(--nav-height) + 24px);
     left: 50%;
     transform: translateX(-50%);
     font-size: 0.75rem;
@@ -333,51 +372,6 @@ body {
     text-align: center;
     white-space: nowrap;
     max-width: 90%;
-}
-
-#brain-container.docked-mode #brain-status {
-    bottom: auto;
-    top: 10px;
-    width: calc(100% - 20px);
-    border-radius: 12px;
-    padding: 6px 10px;
-    font-size: 0.7rem;
-    line-height: 1.3;
-    white-space: normal;
-}
-
-/* Floating Dock Controls */
-.dock-control-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid var(--glass-border);
-    color: var(--text-main);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    cursor: pointer;
-    z-index: 20;
-    transition: all 0.2s;
-}
-
-[dir="rtl"] .dock-control-btn {
-    right: auto;
-    left: 10px;
-}
-
-#brain-container.docked-mode .dock-control-btn {
-    display: flex;
-}
-
-.dock-control-btn:hover {
-    background: var(--accent);
-    color: #fff;
 }
 
 /* Interactive Cortical Badges in Section Headers */

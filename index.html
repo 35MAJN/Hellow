@@ -62,17 +62,29 @@
         </div>
     </nav>
 
-    <!-- FULLSCREEN HERO SECTION WITH BRAIN -->
+    <!-- Persistent 3D Spatial Brain Canvas -->
+    <div id="brain-container">
+        <div id="brain-status">Initializing Simulation...</div>
+    </div>
+
+    <!-- Floating Camera Perspective Badge -->
+    <div id="brain-view-badge" title="Dynamic 3D Camera Plane synced with current section">
+        <i class="fas fa-video"></i> <span id="camera-view-text">Perspective View · 3D Neural Cortex</span>
+    </div>
+
+    <!-- FULLSCREEN HERO SECTION -->
     <section id="hero">
         <!-- Dynamic Morphing SVG Logo -->
         <div id="svg-morph-wrapper">
             <svg id="morph-svg" viewBox="0 0 800 200"></svg>
         </div>
 
-        <div id="brain-container">
-            <button class="dock-control-btn" onclick="toggleDockCollapse()" title="Toggle View Size"><i class="fas fa-compress-alt"></i></button>
-            <div id="brain-status">Initializing Simulation...</div>
-        </div>
+        <div class="hero-spacer"></div>
+
+        <a href="#research" class="scroll-indicator">
+            <span data-t="scroll-indicator">Explore Core Focus & Research</span>
+            <i class="fas fa-chevron-down"></i>
+        </a>
     </section>
 
     <!-- MAIN PORTFOLIO CONTENT -->

@@ -14,6 +14,7 @@ const translations = {
         "nav-projects": "Projects",
         "nav-skills": "Skills",
         "nav-cv": "Curriculum Vitae",
+        "scroll-indicator": "Explore Core Focus & Research",
         
         // Hero / Brain HUD
         "hud-badge": "Neural Inverse Problem",
@@ -221,6 +222,7 @@ const translations = {
         "nav-projects": "پروژه‌ها",
         "nav-skills": "مهارت‌ها",
         "nav-cv": "رزومه (CV)",
+        "scroll-indicator": "مشاهده تمرکز علمی و پژوهش‌ها",
 
         // Hero / Brain HUD
         "hud-badge": "حل مسئله معکوس عصبی",
