@@ -280,7 +280,7 @@ window.addEventListener('load', async () => {
     let prevPointerY = 0;
 
     window.addEventListener('mousedown', (e) => {
-        if (e.target.closest('a, button, input, textarea')) return;
+        if (e.target.closest('a, button, input, textarea, .glass-card, nav')) return;
         isUserInteracting = true;
         prevPointerX = e.clientX;
         prevPointerY = e.clientY;
@@ -300,7 +300,7 @@ window.addEventListener('load', async () => {
 
     // Touch support
     window.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1 && !e.target.closest('a, button')) {
+        if (e.touches.length === 1 && !e.target.closest('a, button, input, textarea, .glass-card, nav')) {
             isUserInteracting = true;
             prevPointerX = e.touches[0].clientX;
             prevPointerY = e.touches[0].clientY;
