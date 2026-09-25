@@ -1,13 +1,13 @@
 /**
  * 3D EEG Brain Neural Simulation & Multi-Angle Cinematic Camera
  * Mohammadali Javadinasab | Portfolio
- * Features:
- * - The 3D brain mesh remains anatomically static in the background.
- * - The user's camera viewpoint dynamically and smoothly glides to tailored anatomical planes
- *   for each portfolio section (Perspective view for Hero, Front view for Core Focus,
- *   Lateral for Education, Superior for Experience, Oblique for Projects, etc.).
- * - Section cards scroll gracefully over the 3D brain in the foreground.
- * - Interactive mouse parallax and drag exploration with gentle return to section view.
+ * 
+ * Concept:
+ * - When entering the website, the 3D brain is centered in perspective view.
+ * - When scrolling, the brain stays fixed in the background while other contents
+ *   come on top of the brain with glassmorphism.
+ * - For each section, the camera view angle smoothly changes ONLY rotating on X and Y angles
+ *   (e.g., Front view for Core Focus, Lateral for Education, Top-down for Experience, etc.).
  */
 
 window.addEventListener('load', async () => {
@@ -16,7 +16,7 @@ window.addEventListener('load', async () => {
     const statusEl = document.getElementById('brain-status');
     if (!container) return;
 
-    // --- THREE.JS SETUP ---
+    // --- THREE.JS SCENE SETUP ---
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
     
@@ -25,7 +25,7 @@ window.addEventListener('load', async () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // Particle Texture for the Brain Points
+    // Particle Texture for Point Cloud
     const circleCanvas = document.createElement('canvas');
     circleCanvas.width = 64; 
     circleCanvas.height = 64;
@@ -45,85 +45,92 @@ window.addEventListener('load', async () => {
     let brainMesh;
     let colorAttr;
 
-    // --- CINEMATIC SECTION CAMERA ANGLES ---
-    // Note: With mesh rotation.x = -Math.PI / 2:
-    // Front of brain is towards -Z. Back/Occipital is towards +Z.
-    // Up/Top (Vertex) is +Y. Left/Right is ±X.
-    const SECTION_CAMERA_VIEWS = {
+    // --- SECTION SPECIFIC VIEW ANGLES (ONLY ROTATE ON X AND Y ANGLES) ---
+    // rotX = pitch (looking up/down, in radians)
+    // rotY = yaw   (horizontal rotation, in radians)
+    // Coordinates: +Z is Front (Anterior), +Y is Up (Superior), +X is Right (Lateral)
+    const SECTION_ANGLES = {
         'hero': {
-            pos: new THREE.Vector3(18, 10, -22),
-            lookAt: new THREE.Vector3(0, 0, 0),
+            rotX: 0.35,  // ~20 deg pitch
+            rotY: 0.61,  // ~35 deg yaw
             nameEn: 'Perspective View · 3D Neural Cortex',
             nameFa: 'نمای پرسپکتیو · قشر سه‌بعدی عصبی'
         },
         'profile': {
-            pos: new THREE.Vector3(14, 6, -24),
-            lookAt: new THREE.Vector3(0, -1, 0),
+            rotX: 0.24,  // ~14 deg
+            rotY: 0.38,  // ~22 deg
             nameEn: 'Anterolateral View · Executive Prefrontal Cortex',
             nameFa: 'نمای قدامی-جانبی · قشر پیش‌پیشانی اجرایی'
         },
         'research': {
-            // Front view: Looking directly at the front of the brain while Core Focus floats on top!
-            pos: new THREE.Vector3(0, 1.2, -26),
-            lookAt: new THREE.Vector3(0, 0, 0),
+            // Front view: rotX = 0, rotY = 0 (Directly facing the front of the brain!)
+            rotX: 0.00,
+            rotY: 0.00,
             nameEn: 'Frontal View (Anterior) · Core Focus & EEG Inverse Problem',
             nameFa: 'نمای قدامی (روبرو) · تمرکز علمی و حل مسئله معکوس EEG'
         },
         'education': {
-            // Lateral view: Looking at temporal lobe from side
-            pos: new THREE.Vector3(26, 2, 0),
-            lookAt: new THREE.Vector3(0, 0, 0),
+            // Lateral view: rotY = ~80 deg (Side profile, temporal & auditory cortex)
+            rotX: 0.10,
+            rotY: 1.40,
             nameEn: 'Lateral Profile (Sagittal) · Temporal Auditory & Signal Cortex',
             nameFa: 'نمای جانبی (پروفایل) · لوب گیجگاهی و مخابرات'
         },
         'experience': {
-            // Top-down superior view: Looking down at bilateral motor strips
-            pos: new THREE.Vector3(0, 27, -3),
-            lookAt: new THREE.Vector3(0, 0, 0),
+            // Superior view: rotX = ~72 deg (Looking down from above at motor strips)
+            rotX: 1.26,
+            rotY: 0.00,
             nameEn: 'Superior View (Axial Plane) · Motor Strip & Systems Execution',
             nameFa: 'نمای فوقانی (دید از بالا) · نوار حرکتی و اجرای سیستم‌ها'
         },
         'projects': {
-            // Anterolateral left oblique view: Broca's area & frontal systems
-            pos: new THREE.Vector3(-19, 11, -19),
-            lookAt: new THREE.Vector3(0, 0, 0),
-            nameEn: 'Anterolateral View · Broca\'s Area & Spatial Electromagnetics',
-            nameFa: 'نمای مایل قدامی · ناحیه گفتاری بروکا و الکترومغناطیس'
+            // Anterolateral left oblique: rotY = -45 deg, rotX = 22 deg
+            rotX: 0.38,
+            rotY: -0.78,
+            nameEn: 'Anterolateral View · Broca\'s Speech & 3D Spatial Computing',
+            nameFa: 'نمای مایل قدامی · ناحیه گفتاری بروکا و محاسبات سه‌بعدی'
         },
         'honors': {
-            // Elevated perspective with reward network emphasis
-            pos: new THREE.Vector3(16, 14, -20),
-            lookAt: new THREE.Vector3(0, 1, 0),
+            // Dynamic elevated perspective: rotX = 30 deg, rotY = 30 deg
+            rotX: 0.52,
+            rotY: 0.52,
             nameEn: 'Elevated Perspective · Reward Circuits & Academic Honors',
             nameFa: 'دید پرسپکتیو زاویه‌دار · مدارهای پاداش و افتخارات'
         },
         'skills': {
-            // Inferior-posterior cerebellar view
-            pos: new THREE.Vector3(0, -16, 22),
-            lookAt: new THREE.Vector3(0, 0, 0),
+            // Inferior angle: rotX = -35 deg (Looking slightly up towards cerebellar base)
+            rotX: -0.61,
+            rotY: 0.00,
             nameEn: 'Inferior-Posterior View · Cerebellar Synaptic Toolkit',
             nameFa: 'نمای تحتانی-خلفی · مدارهای سیناپسی مخچه و جعبه‌ابزار'
         },
         'references': {
             // Symmetrical Frontal View
-            pos: new THREE.Vector3(0, 5, -26),
-            lookAt: new THREE.Vector3(0, 0, 0),
+            rotX: 0.17,
+            rotY: 0.00,
             nameEn: 'Symmetrical Frontal View · Academic Collaboration Network',
             nameFa: 'نمای متقارن روبرو · شبکه همکاری‌های علمی'
         }
     };
 
-    // Camera smoothing state
+    const ALIAS_MAP = {
+        'occipital': 'research',
+        'temporal': 'education',
+        'motor': 'experience',
+        'broca': 'projects',
+        'reward': 'honors',
+        'cerebellum': 'skills',
+        'commissure': 'references'
+    };
+
+    // Camera Rotation States (X and Y angles)
     let activeSectionKey = 'hero';
-    const currentCamPos = new THREE.Vector3().copy(SECTION_CAMERA_VIEWS['hero'].pos);
-    const targetCamPos = new THREE.Vector3().copy(SECTION_CAMERA_VIEWS['hero'].pos);
-    const currentLookAt = new THREE.Vector3().copy(SECTION_CAMERA_VIEWS['hero'].lookAt);
-    const targetLookAt = new THREE.Vector3().copy(SECTION_CAMERA_VIEWS['hero'].lookAt);
+    let currentRotX = SECTION_ANGLES['hero'].rotX;
+    let targetRotX  = SECTION_ANGLES['hero'].rotX;
+    let currentRotY = SECTION_ANGLES['hero'].rotY;
+    let targetRotY  = SECTION_ANGLES['hero'].rotY;
 
-    camera.position.copy(currentCamPos);
-    camera.lookAt(currentLookAt);
-
-    // Mouse parallax offset
+    // Mouse Parallax Offsets
     let mouseParallaxX = 0;
     let mouseParallaxY = 0;
     let targetParallaxX = 0;
@@ -132,8 +139,8 @@ window.addEventListener('load', async () => {
     window.addEventListener('mousemove', (e) => {
         const nx = (e.clientX / window.innerWidth) * 2 - 1;
         const ny = -(e.clientY / window.innerHeight) * 2 + 1;
-        targetParallaxX = nx * 1.8;
-        targetParallaxY = ny * 1.4;
+        targetParallaxX = nx * 0.08;
+        targetParallaxY = ny * 0.06;
     });
 
     // --- DATA LOADING & FALLBACK ---
@@ -157,22 +164,24 @@ window.addEventListener('load', async () => {
 
         const center = { x: (min.x + max.x) / 2, y: (min.y + max.y) / 2, z: (min.z + max.z) / 2 };
         const maxSize = Math.max(max.x - min.x, max.y - min.y, max.z - min.z);
-        const scale = 24.0 / maxSize; 
+        const scale = 22.0 / maxSize; 
 
+        // Map anatomical coords so:
+        // X = lateral, Y = superior (Up), Z = anterior (Front)
         for (let i = 0; i < pointsCount; i++) {
-            let x = (rawPoints[i][0] - center.x) * scale;
-            let y = (rawPoints[i][1] - center.y) * scale;
-            let z = (rawPoints[i][2] - center.z) * scale;
+            const px = (rawPoints[i][0] - center.x) * scale; // Lateral (X)
+            const py = (rawPoints[i][2] - center.z) * scale; // Superior / Up (Y)
+            const pz = (rawPoints[i][1] - center.y) * scale; // Anterior / Front (Z)
 
-            finalPositions[i * 3] = x;
-            finalPositions[i * 3 + 1] = y;
-            finalPositions[i * 3 + 2] = z;
+            finalPositions[i * 3]     = px;
+            finalPositions[i * 3 + 1] = py;
+            finalPositions[i * 3 + 2] = pz;
 
-            let ny = (y / 12.0); 
-            let ambient = 0.55 + 0.45 * Math.max(-0.5, Math.min(1.0, ny)); 
-            let c = grayMatterColor.clone().multiplyScalar(ambient);
+            const ny = py / 10.0; 
+            const ambient = 0.58 + 0.42 * Math.max(-0.5, Math.min(1.0, ny)); 
+            const c = grayMatterColor.clone().multiplyScalar(ambient);
             
-            finalBaseColors[i * 3] = c.r;
+            finalBaseColors[i * 3]     = c.r;
             finalBaseColors[i * 3 + 1] = c.g;
             finalBaseColors[i * 3 + 2] = c.b;
         }
@@ -205,38 +214,38 @@ window.addEventListener('load', async () => {
             let ny = Math.cos(phi);
             let nz = Math.sin(phi) * Math.sin(theta); 
             
-            let r = 12;
+            let r = 11.5;
             let fissureDepth = ny > -0.2 ? Math.exp(-Math.pow(nx * 6, 2)) * (ny + 0.2) : 0;
-            r -= fissureDepth * 4.0;
-            if (nz > 0) r -= Math.pow(nz, 2) * 2.0;
-            if (nz < -0.4) r += Math.pow(nz + 0.4, 2) * 1.5;
+            r -= fissureDepth * 3.8;
+            if (nz < 0) r -= Math.pow(nz, 2) * 1.8;
+            if (nz > 0.4) r += Math.pow(nz - 0.4, 2) * 1.5;
             let tempLobeL = Math.exp(- (Math.pow(nx + 0.85, 2) + Math.pow(ny + 0.2, 2) + Math.pow(nz, 2)) * 3.5 );
             let tempLobeR = Math.exp(- (Math.pow(nx - 0.85, 2) + Math.pow(ny + 0.2, 2) + Math.pow(nz, 2)) * 3.5 );
             r += (tempLobeL + tempLobeR) * 3.0;
             let f1 = Math.sin(nx * 14) * Math.cos(ny * 14) + Math.sin(ny * 14) * Math.cos(nz * 14) + Math.sin(nz * 14) * Math.cos(nx * 14);
             r += f1 * 0.35;
-            if (ny < -0.5) r -= Math.pow(Math.abs(ny + 0.5), 2) * 5;
+            if (ny < -0.5) r -= Math.pow(Math.abs(ny + 0.5), 2) * 4.5;
 
             let x = r * nx * 0.72; 
             let y = r * ny * 0.85; 
             let z = r * nz * 1.15; 
 
-            finalPositions[pIdx] = x;
+            finalPositions[pIdx]     = x;
             finalPositions[pIdx + 1] = y;
             finalPositions[pIdx + 2] = z;
             
-            let ambient = 0.6 + 0.4 * ny; 
+            let ambient = 0.6 + 0.4 * (y / 10.0); 
             let creaseShadow = (f1 * 0.05); 
             let c = grayMatterColor.clone().multiplyScalar(ambient - creaseShadow);
             
-            finalBaseColors[pIdx] = c.r;
+            finalBaseColors[pIdx]     = c.r;
             finalBaseColors[pIdx + 1] = c.g;
             finalBaseColors[pIdx + 2] = c.b;
             pIdx += 3;
         }
     }
 
-    // --- BUILD STATIC BRAIN MESH ---
+    // --- BUILD STATIC BRAIN MESH AT CENTER (0, 0, 0) ---
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(finalPositions, 3));
     
@@ -247,26 +256,23 @@ window.addEventListener('load', async () => {
         size: 2.1,
         vertexColors: true,
         transparent: true,
-        opacity: 0.72,
+        opacity: 0.75,
         depthWrite: false,
         map: circleTexture
     });
 
-    // The brain mesh stays STATIC in anatomical space!
+    // The brain mesh is static at the origin (0, 0, 0)
     brainMesh = new THREE.Points(geometry, material);
-    brainMesh.rotation.x = -Math.PI / 2;
-    brainMesh.rotation.y = 0;
-    brainMesh.rotation.z = 0;
     brainMesh.position.set(0, 0, 0);
     scene.add(brainMesh);
 
     colorAttr = geometry.attributes.color;
 
-    // --- SUDDEN HEAT SOURCES LOGIC ---
+    // --- SUDDEN NEURAL ACTIVITY SOURCES ---
     const maxSources = 6;
     const activeSources = Array.from({ length: maxSources }, () => ({ active: false, x: 0, y: 0, z: 0, life: 0 }));
 
-    // Interactive Drag to temporarily inspect
+    // Interactive Drag to manually adjust X and Y angles
     let isUserInteracting = false;
     let dragOffsetX = 0;
     let dragOffsetY = 0;
@@ -274,7 +280,6 @@ window.addEventListener('load', async () => {
     let prevPointerY = 0;
 
     window.addEventListener('mousedown', (e) => {
-        // Only if clicking on background or outside inputs
         if (e.target.closest('a, button, input, textarea')) return;
         isUserInteracting = true;
         prevPointerX = e.clientX;
@@ -287,13 +292,11 @@ window.addEventListener('load', async () => {
         const dy = e.clientY - prevPointerY;
         prevPointerX = e.clientX;
         prevPointerY = e.clientY;
-        dragOffsetX += dx * 0.05;
-        dragOffsetY -= dy * 0.05;
+        dragOffsetY += dx * 0.006; // Rotate on Y angle
+        dragOffsetX -= dy * 0.006; // Rotate on X angle
     });
 
-    window.addEventListener('mouseup', () => {
-        isUserInteracting = false;
-    });
+    window.addEventListener('mouseup', () => { isUserInteracting = false; });
 
     // Touch support
     window.addEventListener('touchstart', (e) => {
@@ -310,8 +313,8 @@ window.addEventListener('load', async () => {
         const dy = e.touches[0].clientY - prevPointerY;
         prevPointerX = e.touches[0].clientX;
         prevPointerY = e.touches[0].clientY;
-        dragOffsetX += dx * 0.05;
-        dragOffsetY -= dy * 0.05;
+        dragOffsetY += dx * 0.006;
+        dragOffsetX -= dy * 0.006;
     }, { passive: true });
 
     window.addEventListener('touchend', () => { isUserInteracting = false; });
@@ -323,25 +326,15 @@ window.addEventListener('load', async () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // --- SECTION TO CAMERA VIEW SWITCHER ---
-    const ALIAS_MAP = {
-        'occipital': 'research',
-        'temporal': 'education',
-        'motor': 'experience',
-        'broca': 'projects',
-        'reward': 'honors',
-        'cerebellum': 'skills',
-        'commissure': 'references'
-    };
-
+    // --- VIEW ANGLE SWITCHER (CHANGES ONLY ROTATION ON X AND Y ANGLES) ---
     function setCameraView(sectionKey) {
         const mappedKey = ALIAS_MAP[sectionKey] || sectionKey;
-        if (!SECTION_CAMERA_VIEWS[mappedKey]) return;
+        if (!SECTION_ANGLES[mappedKey]) return;
         activeSectionKey = mappedKey;
-        const view = SECTION_CAMERA_VIEWS[mappedKey];
+        const view = SECTION_ANGLES[mappedKey];
 
-        targetCamPos.copy(view.pos);
-        targetLookAt.copy(view.lookAt);
+        targetRotX = view.rotX;
+        targetRotY = view.rotY;
 
         // Update badge text
         if (viewBadgeText) {
@@ -368,10 +361,9 @@ window.addEventListener('load', async () => {
         }
     }
     window.setCameraView = setCameraView;
-    window.focusBrainRegion = setCameraView; // Aliased for cortical badges
+    window.focusBrainRegion = setCameraView;
 
-    // --- CONTINUOUS SCROLL OBSERVER ---
-    // Smoothly tracks the user's scroll position and selects the primary visible section
+    // --- SCROLL TRACKING TO SWITCH ANGLES ---
     const SECTIONS_TRACKED = ['hero', 'profile', 'research', 'education', 'experience', 'projects', 'honors', 'skills', 'references'];
     
     function updateScrollDrivenCamera() {
@@ -413,29 +405,35 @@ window.addEventListener('load', async () => {
     function animate3D() {
         requestAnimationFrame(animate3D);
 
-        // Slowly return drag offset to zero when user releases
+        // Gradually decay user drag offset back to 0
         if (!isUserInteracting) {
             dragOffsetX *= 0.92;
             dragOffsetY *= 0.92;
         }
 
-        // Interpolate mouse parallax
+        // Mouse Parallax interpolation
         mouseParallaxX += (targetParallaxX - mouseParallaxX) * 0.05;
         mouseParallaxY += (targetParallaxY - mouseParallaxY) * 0.05;
 
-        // Smoothly glide camera position and lookAt target towards target viewpoint!
-        const computedTargetX = targetCamPos.x + mouseParallaxX + dragOffsetX;
-        const computedTargetY = targetCamPos.y + mouseParallaxY + dragOffsetY;
-        const computedTargetZ = targetCamPos.z;
+        // Smoothly interpolate current X and Y rotation angles
+        currentRotX += (targetRotX - currentRotX) * 0.055;
+        currentRotY += (targetRotY - currentRotY) * 0.055;
 
-        currentCamPos.x += (computedTargetX - currentCamPos.x) * 0.055;
-        currentCamPos.y += (computedTargetY - currentCamPos.y) * 0.055;
-        currentCamPos.z += (computedTargetZ - currentCamPos.z) * 0.055;
+        // Spherical coordinates calculation: Only rotating on X and Y angles around (0, 0, 0)!
+        const pitch = currentRotX + mouseParallaxY + dragOffsetX;
+        const yaw   = currentRotY + mouseParallaxX + dragOffsetY;
 
-        currentLookAt.lerp(targetLookAt, 0.055);
+        // Dynamic distance based on aspect ratio
+        const aspect = window.innerWidth / window.innerHeight;
+        const baseRadius = 26.5;
+        const R = aspect < 1 ? baseRadius * Math.min(2.2, 1.15 / aspect) : baseRadius;
 
-        camera.position.copy(currentCamPos);
-        camera.lookAt(currentLookAt);
+        const camX = R * Math.cos(pitch) * Math.sin(yaw);
+        const camY = R * Math.sin(pitch);
+        const camZ = R * Math.cos(pitch) * Math.cos(yaw);
+
+        camera.position.set(camX, camY, camZ);
+        camera.lookAt(0, 0, 0);
 
         // Spontaneous Neural Activity Bursts
         activeSources.forEach(s => {
