@@ -74,6 +74,15 @@ const translations = {
         "sec-ref-kicker": "Endorsements",
         "sec-ref-title": "Academic & Research References",
 
+        // Cortical Regional Focus Badges
+        "badge-occipital": "Cortical Focus: Occipital Lobe [Brodmann 17/18] · Visual & EEG Localization",
+        "badge-temporal": "Cortical Focus: Temporal Lobe [Brodmann 22/41] · Signal & Frequency Analysis",
+        "badge-motor": "Cortical Focus: Primary Motor Strip [Brodmann 4/3] · Engineering Execution",
+        "badge-broca": "Cortical Focus: Broca's Speech Area & Parietal Lobe · Voice Assistant & 3D Math",
+        "badge-reward": "Cortical Focus: Prefrontal Reward Network · National Rank Top 1% & Honors",
+        "badge-cerebellum": "Cortical Focus: Cerebellar Synaptic Circuits · Precision Hardware & AI Toolkit",
+        "badge-commissure": "Cortical Focus: Corpus Callosum · Academic Bridge & Collaboration",
+
         // Research Pillars
         "res-1-title": "Biomedical Signal Processing",
         "res-1-desc": "EEG & speech signal processing, artifact removal, biological wave filtering, and bio-electromagnetics simulation.",
@@ -272,6 +281,15 @@ const translations = {
         "sec-ref-kicker": "معرف‌ها",
         "sec-ref-title": "اساتید و معرف‌های علمی",
 
+        // Cortical Regional Focus Badges (Persian)
+        "badge-occipital": "کانون قشری: لوب پس‌سری (اکسیپیتال) [برودمن ۱۷/۱۸] · مکان‌یابی منبع EEG",
+        "badge-temporal": "کانون قشری: لوب گیجگاهی (تمپورال) [برودمن ۲۲/۴۱] · پردازش سیگنال و فرکانس",
+        "badge-motor": "کانون قشری: نوار حرکتی اولیه [برودمن ۴/۳] · مهندسی و اجرای سیستم‌ها",
+        "badge-broca": "کانون قشری: ناحیه گفتاری بروکا و پاریتال · دستیار صوتی و ریاضیات سه‌بعدی",
+        "badge-reward": "کانون قشری: شبکه پاداش پیش‌پیشانی · رتبه ۱٪ کنکور و افتخارات",
+        "badge-cerebellum": "کانون قشری: مدارهای سیناپسی مخچه · ابزارهای هوش مصنوعی و سخت‌افزار",
+        "badge-commissure": "کانون قشری: جسم پینه‌ای · پل علمی و همکاری‌های بین‌دانشگاهی",
+
         // Research Pillars
         "res-1-title": "پردازش سیگنال‌های زیست‌پزشکی",
         "res-1-desc": "پردازش سیگنال‌های EEG و گفتار، حذف نویز و آرتیفکت، فیلترینگ امواج زیستی و الکترومغناطیس زیستی.",
@@ -422,6 +440,10 @@ function setLanguage(lang) {
     if (langBtn) {
         langBtn.title = (lang === 'en') ? 'Switch to Persian' : 'تغییر به انگلیسی';
     }
+
+    if (typeof window.focusBrainRegion === 'function' && window.currentRegionKey) {
+        window.focusBrainRegion(window.currentRegionKey);
+    }
 }
 
 // Theme Switcher Function
@@ -526,6 +548,7 @@ function initSvgMorph() {
         targetPoints.sort(() => Math.random() - 0.5);
         const nodesCount = targetPoints.length;
         const nodes = [];
+        const edges = [];
 
         for (let i = 0; i < nodesCount; i++) {
             const circle = document.createElementNS(svgNS, 'circle');
@@ -542,6 +565,14 @@ function initSvgMorph() {
                 tx: targetPoints[i].x,
                 ty: targetPoints[i].y
             });
+        }
+
+        const maxEdges = Math.min(220, Math.floor(nodesCount * 1.4));
+        for (let i = 0; i < maxEdges; i++) {
+            const line = document.createElementNS(svgNS, 'line');
+            line.setAttribute('class', 'morph-edge');
+            svg.insertBefore(line, svg.firstChild);
+            edges.push({ el: line });
         }
 
         let phase = 'wander';
@@ -573,6 +604,35 @@ function initSvgMorph() {
                 n.el.setAttribute('cx', n.x.toFixed(1));
                 n.el.setAttribute('cy', n.y.toFixed(1));
             }
+
+            // Draw neural network connecting lines
+            let edgeIdx = 0;
+            for (let i = 0; i < nodesCount && edgeIdx < maxEdges; i += 2) {
+                let minDist = Infinity;
+                let closest = -1;
+                for (let j = 0; j < nodesCount; j++) {
+                    if (i === j) continue;
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = dx * dx + dy * dy;
+                    if (dist < minDist) { minDist = dist; closest = j; }
+                }
+
+                if (closest !== -1 && minDist < 2400) {
+                    const line = edges[edgeIdx].el;
+                    line.setAttribute('x1', nodes[i].x);
+                    line.setAttribute('y1', nodes[i].y);
+                    line.setAttribute('x2', nodes[closest].x);
+                    line.setAttribute('y2', nodes[closest].y);
+                    line.style.opacity = phase === 'float' ? '0.06' : (0.35 - minDist / 7000).toFixed(2);
+                    edgeIdx++;
+                }
+            }
+            while (edgeIdx < maxEdges) {
+                edges[edgeIdx].el.style.opacity = '0';
+                edgeIdx++;
+            }
+
             requestAnimationFrame(animateMorph);
         }
         requestAnimationFrame(animateMorph);

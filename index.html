@@ -62,59 +62,16 @@
         </div>
     </nav>
 
-    <!-- 3D HERO SECTION WITH ADVANCED BRAIN SIMULATION -->
+    <!-- FULLSCREEN HERO SECTION WITH BRAIN -->
     <section id="hero">
-        <!-- SVG Morphing Identity -->
+        <!-- Dynamic Morphing SVG Logo -->
         <div id="svg-morph-wrapper">
-            <svg id="morph-svg" viewBox="0 0 800 180"></svg>
+            <svg id="morph-svg" viewBox="0 0 800 200"></svg>
         </div>
 
-        <!-- 3D Brain Viewport Container -->
         <div id="brain-container">
-            <div id="brain-status" style="position: absolute; top: 15px; left: 50%; transform: translateX(-50%); font-size: 0.78rem; font-weight: 700; color: var(--accent); background: var(--hud-bg); padding: 5px 14px; border-radius: 999px; border: 1px solid var(--glass-border); pointer-events: none; z-index: 10; transition: opacity 0.5s;">
-                Initializing High-Resolution Cortical Manifold...
-            </div>
-
-            <!-- Interactive HUD Controller -->
-            <div class="brain-hud">
-                <div class="hud-top-row">
-                    <div class="hud-title-wrap">
-                        <span class="hud-badge" data-t="hud-badge">Neural Inverse Problem</span>
-                        <span class="hud-desc" data-t="hud-desc">Interactive dipole simulation mapping volumetric gray-matter electrical activity to scalp potentials in real time. (Double-click brain to stimulate)</span>
-                    </div>
-                    <div class="hud-buttons">
-                        <button class="hud-btn preset-btn active" onclick="setBrainPreset('multi', this)" data-t="btn-multi">
-                            <i class="fas fa-network-wired"></i> Multi-Dipole Inverse
-                        </button>
-                        <button class="hud-btn preset-btn" onclick="setBrainPreset('visual', this)" data-t="btn-visual">
-                            <i class="fas fa-eye"></i> Visual (Occipital)
-                        </button>
-                        <button class="hud-btn preset-btn" onclick="setBrainPreset('motor', this)" data-t="btn-motor">
-                            <i class="fas fa-hand"></i> Motor (Central)
-                        </button>
-                        <button class="hud-btn preset-btn" onclick="setBrainPreset('frontal', this)" data-t="btn-frontal">
-                            <i class="fas fa-lightbulb"></i> Frontal
-                        </button>
-                        <button class="hud-btn active" onclick="toggleEegCap(this)" data-t="btn-cap">
-                            <i class="fas fa-circle-nodes"></i> 10-20 EEG Cap
-                        </button>
-                        <button class="hud-btn" onclick="resetBrainView()" data-t="btn-reset">
-                            <i class="fas fa-arrows-rotate"></i> Reset View
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Synchronized Multi-Channel EEG Oscilloscope Strip -->
-                <div class="eeg-trace-strip">
-                    <canvas id="eeg-scope-canvas"></canvas>
-                    <div class="eeg-channel-labels">
-                        <span>CH1: Fz</span>
-                        <span>CH2: Cz</span>
-                        <span>CH3: Pz</span>
-                        <span>CH4: Oz</span>
-                    </div>
-                </div>
-            </div>
+            <button class="dock-control-btn" onclick="toggleDockCollapse()" title="Toggle View Size"><i class="fas fa-compress-alt"></i></button>
+            <div id="brain-status">Initializing Simulation...</div>
         </div>
     </section>
 
@@ -142,9 +99,6 @@
                     </a>
                     <a href="https://github.com/35MAJN" target="_blank" rel="noopener noreferrer" class="contact-item">
                         <i class="fab fa-github"></i> github.com/35MAJN
-                    </a>
-                    <a href="tel:+989120586696" class="contact-item">
-                        <i class="fas fa-phone"></i> +98 (912) 058 6696
                     </a>
                     <a href="https://learnamuse.com" target="_blank" rel="noopener noreferrer" class="contact-item" style="color: var(--accent); font-weight: 700;">
                         <i class="fas fa-globe"></i> LearnAmuse.com
@@ -182,6 +136,9 @@
             <div class="section-header">
                 <p class="section-kicker" data-t="sec-res-kicker">Core Focus</p>
                 <h2 class="section-title" data-t="sec-res-title">Research Interests & Publications</h2>
+                <button class="cortical-badge" data-region="occipital" onclick="focusBrainRegion('occipital')" title="Click to rotate 3D brain to Occipital Lobe">
+                    <i class="fas fa-brain"></i> <span data-t="badge-occipital">Cortical Focus: Occipital Lobe [Brodmann 17/18] · Visual & EEG Localization</span>
+                </button>
                 <p class="section-desc" data-t="sec-res-desc">Intersecting biomedical signal processing, deep neural networks, and neurocomputational modeling.</p>
             </div>
 
@@ -233,6 +190,9 @@
             <div class="section-header">
                 <p class="section-kicker" data-t="sec-edu-kicker">Academic Path</p>
                 <h2 class="section-title" data-t="sec-edu-title">Education</h2>
+                <button class="cortical-badge" data-region="temporal" onclick="focusBrainRegion('temporal')" title="Click to rotate 3D brain to Temporal Lobe">
+                    <i class="fas fa-brain"></i> <span data-t="badge-temporal">Cortical Focus: Temporal Lobe [Brodmann 22/41] · Signal & Frequency Analysis</span>
+                </button>
                 <p class="section-desc" data-t="sec-edu-desc">Formal training in signal processing, telecommunications, and industrial systems engineering.</p>
             </div>
 
@@ -324,6 +284,9 @@
             <div class="section-header">
                 <p class="section-kicker" data-t="sec-exp-kicker">Professional Journey</p>
                 <h2 class="section-title" data-t="sec-exp-title">Experience & Research Roles</h2>
+                <button class="cortical-badge" data-region="motor" onclick="focusBrainRegion('motor')" title="Click to rotate 3D brain to Motor Strip">
+                    <i class="fas fa-brain"></i> <span data-t="badge-motor">Cortical Focus: Primary Motor Strip [Brodmann 4/3] · Engineering Execution</span>
+                </button>
                 <p class="section-desc" data-t="sec-exp-desc">Full-time academic research, freelance data science, and entrepreneurial education technology.</p>
             </div>
 
@@ -474,6 +437,9 @@
             <div class="section-header">
                 <p class="section-kicker" data-t="sec-proj-kicker">Engineering & Code</p>
                 <h2 class="section-title" data-t="sec-proj-title">Selected Projects</h2>
+                <button class="cortical-badge" data-region="broca" onclick="focusBrainRegion('broca')" title="Click to rotate 3D brain to Broca's Area & Parietal Lobe">
+                    <i class="fas fa-brain"></i> <span data-t="badge-broca">Cortical Focus: Broca's Speech Area & Parietal Lobe · Voice Assistant & 3D Math</span>
+                </button>
                 <p class="section-desc" data-t="sec-proj-desc">End-to-end implementations spanning speech recognition, electromagnetic field calculations, and IoT.</p>
             </div>
 
@@ -549,6 +515,9 @@
             <div class="section-header">
                 <p class="section-kicker" data-t="sec-awards-kicker">Achievements</p>
                 <h2 class="section-title" data-t="sec-awards-title">Honors & Awards</h2>
+                <button class="cortical-badge" data-region="reward" onclick="focusBrainRegion('reward')" title="Click to rotate 3D brain to Prefrontal Reward Network">
+                    <i class="fas fa-brain"></i> <span data-t="badge-reward">Cortical Focus: Prefrontal Reward Network · National Rank Top 1% & Honors</span>
+                </button>
             </div>
 
             <div class="cards-grid">
@@ -585,6 +554,9 @@
             <div class="section-header">
                 <p class="section-kicker" data-t="sec-skills-kicker">Arsenal</p>
                 <h2 class="section-title" data-t="sec-skills-title">Technical Skills & Competencies</h2>
+                <button class="cortical-badge" data-region="cerebellum" onclick="focusBrainRegion('cerebellum')" title="Click to rotate 3D brain to Cerebellar Circuits">
+                    <i class="fas fa-brain"></i> <span data-t="badge-cerebellum">Cortical Focus: Cerebellar Synaptic Circuits · Precision Hardware & AI Toolkit</span>
+                </button>
             </div>
 
             <div class="skills-category-grid">
@@ -742,6 +714,9 @@
             <div class="section-header">
                 <p class="section-kicker" data-t="sec-ref-kicker">Endorsements</p>
                 <h2 class="section-title" data-t="sec-ref-title">Academic & Research References</h2>
+                <button class="cortical-badge" data-region="commissure" onclick="focusBrainRegion('commissure')" title="Click to rotate 3D brain to Corpus Callosum Bridge">
+                    <i class="fas fa-brain"></i> <span data-t="badge-commissure">Cortical Focus: Corpus Callosum · Academic Bridge & Collaboration</span>
+                </button>
             </div>
 
             <div class="ref-grid">
