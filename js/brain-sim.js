@@ -164,7 +164,8 @@ window.addEventListener('load', async () => {
 
         const center = { x: (min.x + max.x) / 2, y: (min.y + max.y) / 2, z: (min.z + max.z) / 2 };
         const maxSize = Math.max(max.x - min.x, max.y - min.y, max.z - min.z);
-        const scale = 22.0 / maxSize; 
+        // Half the previous size (22.0 -> 11.0)
+        const scale = 11.0 / maxSize; 
 
         // Map anatomical coords so:
         // X = lateral, Y = superior (Up), Z = anterior (Front)
@@ -177,7 +178,7 @@ window.addEventListener('load', async () => {
             finalPositions[i * 3 + 1] = py;
             finalPositions[i * 3 + 2] = pz;
 
-            const ny = py / 10.0; 
+            const ny = py / 5.0; 
             const ambient = 0.58 + 0.42 * Math.max(-0.5, Math.min(1.0, ny)); 
             const c = grayMatterColor.clone().multiplyScalar(ambient);
             
@@ -198,7 +199,7 @@ window.addEventListener('load', async () => {
             setTimeout(() => { if (statusEl) statusEl.style.opacity = '0'; }, 3000);
         }
 
-        // Procedural Brain Fallback
+        // Procedural Brain Fallback (Half size)
         pointsCount = 6000;
         finalPositions = new Float32Array(pointsCount * 3);
         finalBaseColors = new Float32Array(pointsCount * 3);
@@ -214,17 +215,17 @@ window.addEventListener('load', async () => {
             let ny = Math.cos(phi);
             let nz = Math.sin(phi) * Math.sin(theta); 
             
-            let r = 11.5;
+            let r = 5.75;
             let fissureDepth = ny > -0.2 ? Math.exp(-Math.pow(nx * 6, 2)) * (ny + 0.2) : 0;
-            r -= fissureDepth * 3.8;
-            if (nz < 0) r -= Math.pow(nz, 2) * 1.8;
-            if (nz > 0.4) r += Math.pow(nz - 0.4, 2) * 1.5;
+            r -= fissureDepth * 1.9;
+            if (nz < 0) r -= Math.pow(nz, 2) * 0.9;
+            if (nz > 0.4) r += Math.pow(nz - 0.4, 2) * 0.75;
             let tempLobeL = Math.exp(- (Math.pow(nx + 0.85, 2) + Math.pow(ny + 0.2, 2) + Math.pow(nz, 2)) * 3.5 );
             let tempLobeR = Math.exp(- (Math.pow(nx - 0.85, 2) + Math.pow(ny + 0.2, 2) + Math.pow(nz, 2)) * 3.5 );
-            r += (tempLobeL + tempLobeR) * 3.0;
+            r += (tempLobeL + tempLobeR) * 1.5;
             let f1 = Math.sin(nx * 14) * Math.cos(ny * 14) + Math.sin(ny * 14) * Math.cos(nz * 14) + Math.sin(nz * 14) * Math.cos(nx * 14);
-            r += f1 * 0.35;
-            if (ny < -0.5) r -= Math.pow(Math.abs(ny + 0.5), 2) * 4.5;
+            r += f1 * 0.18;
+            if (ny < -0.5) r -= Math.pow(Math.abs(ny + 0.5), 2) * 2.25;
 
             let x = r * nx * 0.72; 
             let y = r * ny * 0.85; 
@@ -234,7 +235,7 @@ window.addEventListener('load', async () => {
             finalPositions[pIdx + 1] = y;
             finalPositions[pIdx + 2] = z;
             
-            let ambient = 0.6 + 0.4 * (y / 10.0); 
+            let ambient = 0.6 + 0.4 * (y / 5.0); 
             let creaseShadow = (f1 * 0.05); 
             let c = grayMatterColor.clone().multiplyScalar(ambient - creaseShadow);
             
@@ -252,11 +253,12 @@ window.addEventListener('load', async () => {
     const dynamicColors = new Float32Array(finalBaseColors);
     geometry.setAttribute('color', new THREE.BufferAttribute(dynamicColors, 3));
 
+    // Particle dot size reduced to one-quarter (2.1 -> 0.525)
     const material = new THREE.PointsMaterial({
-        size: 2.1,
+        size: 0.525,
         vertexColors: true,
         transparent: true,
-        opacity: 0.75,
+        opacity: 0.82,
         depthWrite: false,
         map: circleTexture
     });
@@ -469,7 +471,7 @@ window.addEventListener('load', async () => {
                         let dz = vz - s.z;
                         let distSq = dx * dx + dy * dy + dz * dz;
                         
-                        let intensity = Math.max(0, 1.0 - Math.sqrt(distSq) / 7.0);
+                        let intensity = Math.max(0, 1.0 - Math.sqrt(distSq) / 3.5);
                         let popMultiplier = s.life > 0.8 ? (1.0 - s.life) / 0.2 : (s.life < 0.2 ? s.life / 0.2 : 1.0);
                         
                         totalIntensity += Math.pow(intensity * popMultiplier, 2.5); 
