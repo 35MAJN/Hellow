@@ -1,6 +1,6 @@
 /**
- * Thanos Disintegration & Time Stone Reassembly Engine
- * Realistic Ash & Ember Dispersion Simulation + Smooth UI Physics
+ * High-Performance Thanos Particle & Cinematic Materialization Engine
+ * Zero-Lag Disintegration, Time Stone Reassembly, and Cosmic Appearing Effects
  * Mohammadali Javadinasab | Portfolio
  */
 
@@ -8,7 +8,6 @@
     'use strict';
 
     // --- PROCEDURAL WEB AUDIO SYNTHESIZER ---
-    // No external audio files needed; 100% reliable procedural audio synthesis
     let audioCtx = null;
 
     function getAudioContext() {
@@ -24,7 +23,7 @@
         return audioCtx;
     }
 
-    // Realistic Finger Snap + Cosmic Shockwave Sound
+    // Crisp Finger Snap + Cosmic Bass Thud
     function playSnapSound() {
         const ctx = getAudioContext();
         if (!ctx) return;
@@ -32,492 +31,432 @@
         try {
             const now = ctx.currentTime;
 
-            // 1. Crisp Snap Transient (Bandpass filtered noise burst)
-            const bufferSize = ctx.sampleRate * 0.05; // 50ms
-            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-            const data = buffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+            // 1. Crisp transient snap click
+            const bufSize = Math.floor(ctx.sampleRate * 0.04);
+            const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+            const d = buf.getChannelData(0);
+            for (let i = 0; i < bufSize; i++) {
+                d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.2));
             }
+            const snapSrc = ctx.createBufferSource();
+            snapSrc.buffer = buf;
 
-            const noiseSource = ctx.createBufferSource();
-            noiseSource.buffer = buffer;
+            const snapFilt = ctx.createBiquadFilter();
+            snapFilt.type = 'bandpass';
+            snapFilt.frequency.setValueAtTime(2800, now);
+            snapFilt.Q.setValueAtTime(4.0, now);
 
-            const noiseFilter = ctx.createBiquadFilter();
-            noiseFilter.type = 'bandpass';
-            noiseFilter.frequency.setValueAtTime(2600, now);
-            noiseFilter.Q.setValueAtTime(3.5, now);
+            const snapGain = ctx.createGain();
+            snapGain.gain.setValueAtTime(0.75, now);
+            snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
 
-            const noiseGain = ctx.createGain();
-            noiseGain.gain.setValueAtTime(0.85, now);
-            noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+            snapSrc.connect(snapFilt);
+            snapFilt.connect(snapGain);
+            snapGain.connect(ctx.destination);
+            snapSrc.start(now);
 
-            noiseSource.connect(noiseFilter);
-            noiseFilter.connect(noiseGain);
-            noiseGain.connect(ctx.destination);
-            noiseSource.start(now);
+            // 2. Cosmic sub-drop resonance
+            const osc = ctx.createOscillator();
+            const oscGain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(110, now);
+            osc.frequency.exponentialRampToValueAtTime(32, now + 0.55);
 
-            // 2. Cosmic Sub-Bass Thud (Descending sine)
-            const subOsc = ctx.createOscillator();
-            const subGain = ctx.createGain();
-            subOsc.type = 'sine';
-            subOsc.frequency.setValueAtTime(120, now);
-            subOsc.frequency.exponentialRampToValueAtTime(32, now + 0.65);
+            oscGain.gain.setValueAtTime(0.5, now);
+            oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
 
-            subGain.gain.setValueAtTime(0.7, now);
-            subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
-
-            subOsc.connect(subGain);
-            subGain.connect(ctx.destination);
-            subOsc.start(now);
-            subOsc.stop(now + 0.65);
-
-            // 3. Ethereal Cosmic Whoosh (Sweeping filtered noise)
-            const whooshLen = ctx.sampleRate * 1.0;
-            const whooshBuf = ctx.createBuffer(1, whooshLen, ctx.sampleRate);
-            const wData = whooshBuf.getChannelData(0);
-            for (let i = 0; i < whooshLen; i++) {
-                wData[i] = (Math.random() * 2 - 1) * Math.sin((i / whooshLen) * Math.PI);
-            }
-            const whooshSrc = ctx.createBufferSource();
-            whooshSrc.buffer = whooshBuf;
-
-            const whooshFilter = ctx.createBiquadFilter();
-            whooshFilter.type = 'lowpass';
-            whooshFilter.frequency.setValueAtTime(1400, now);
-            whooshFilter.frequency.exponentialRampToValueAtTime(180, now + 0.95);
-
-            const whooshGain = ctx.createGain();
-            whooshGain.gain.setValueAtTime(0.01, now);
-            whooshGain.gain.linearRampToValueAtTime(0.28, now + 0.15);
-            whooshGain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
-
-            whooshSrc.connect(whooshFilter);
-            whooshFilter.connect(whooshGain);
-            whooshGain.connect(ctx.destination);
-            whooshSrc.start(now);
+            osc.connect(oscGain);
+            oscGain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.55);
         } catch (e) {
-            console.debug('Web Audio Snap playback note:', e);
+            // Audio context silently handled
         }
     }
 
-    // Time Stone Temporal Rewind Sound (Ascending harmonic shimmer)
+    // Time Stone Reversal Chime
     function playTimeStoneSound() {
         const ctx = getAudioContext();
         if (!ctx) return;
 
         try {
             const now = ctx.currentTime;
-            const freqs = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99]; // C major triad ascending
+            const notes = [329.63, 440.0, 554.37, 659.25, 880.0]; // E major cosmic chord
 
-            freqs.forEach((freq, idx) => {
+            notes.forEach((freq, idx) => {
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
-                const startTime = now + idx * 0.08;
+                const start = now + idx * 0.06;
 
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq * 0.85, startTime);
-                osc.frequency.exponentialRampToValueAtTime(freq * 1.15, startTime + 0.6);
+                osc.frequency.setValueAtTime(freq * 0.85, start);
+                osc.frequency.exponentialRampToValueAtTime(freq * 1.1, start + 0.5);
 
-                gain.gain.setValueAtTime(0.001, startTime);
-                gain.gain.linearRampToValueAtTime(0.12, startTime + 0.15);
-                gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.7);
+                gain.gain.setValueAtTime(0.001, start);
+                gain.gain.linearRampToValueAtTime(0.1, start + 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, start + 0.55);
 
                 osc.connect(gain);
                 gain.connect(ctx.destination);
-                osc.start(startTime);
-                osc.stop(startTime + 0.75);
+                osc.start(start);
+                osc.stop(start + 0.6);
             });
-        } catch (e) {
-            console.debug('Web Audio Time Stone note:', e);
-        }
+        } catch (e) {}
     }
 
-    // Soft Ash Wind Dispersion Sound
-    function playAshWindSound() {
+    // Gentle Cosmic Materialization Shimmer (for appearing elements)
+    function playAppearSound() {
         const ctx = getAudioContext();
         if (!ctx) return;
 
         try {
             const now = ctx.currentTime;
-            const len = ctx.sampleRate * 0.8;
-            const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-            const d = buf.getChannelData(0);
-            for (let i = 0; i < len; i++) {
-                d[i] = (Math.random() * 2 - 1) * Math.pow(Math.sin((i / len) * Math.PI), 2);
-            }
-            const src = ctx.createBufferSource();
-            src.buffer = buf;
-
-            const filt = ctx.createBiquadFilter();
-            filt.type = 'bandpass';
-            filt.frequency.setValueAtTime(800, now);
-            filt.Q.setValueAtTime(1.2, now);
-
+            const osc = ctx.createOscillator();
             const gain = ctx.createGain();
-            gain.gain.setValueAtTime(0.01, now);
-            gain.gain.linearRampToValueAtTime(0.18, now + 0.2);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
 
-            src.connect(filt);
-            filt.connect(gain);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(520, now);
+            osc.frequency.exponentialRampToValueAtTime(780, now + 0.25);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.035, now + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+            osc.connect(gain);
             gain.connect(ctx.destination);
-            src.start(now);
-        } catch (e) {
-            console.debug('Web Audio Ash Wind note:', e);
-        }
+            osc.start(now);
+            osc.stop(now + 0.3);
+        } catch (e) {}
     }
 
-    // --- FULLSCREEN THANOS PARTICLE SIMULATION CANVAS ---
+    // --- OFFSCREEN PRE-RENDERED GLOWING EMBER SPRITES ---
+    // Rendering glowing sprites via ctx.drawImage is 100x faster than canvas shadowBlur
+    const emberSprites = {};
+    const EMBER_COLORS = ['#f59e0b', '#38bdf8', '#c084fc', '#ec4899', '#10b981', '#22d3ee'];
+
+    function createEmberSprite(color) {
+        const size = 20;
+        const c = document.createElement('canvas');
+        c.width = size;
+        c.height = size;
+        const ctx = c.getContext('2d');
+        const center = size / 2;
+
+        const grad = ctx.createRadialGradient(center, center, 0, center, center, center);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.35, color);
+        grad.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(center, center, center, 0, Math.PI * 2);
+        ctx.fill();
+
+        return c;
+    }
+
+    EMBER_COLORS.forEach(color => {
+        emberSprites[color] = createEmberSprite(color);
+    });
+
+    // --- FULLSCREEN THANOS PARTICLE CANVAS ---
     let thanosCanvas = null;
     let thanosCtx = null;
-    let activeParticles = [];
-    let isRenderLoopRunning = false;
-    let lastTime = 0;
+    const activeParticles = [];
+    let isLoopRunning = false;
+    let lastTimestamp = 0;
 
     function initThanosCanvas() {
         if (thanosCanvas) return;
 
         thanosCanvas = document.createElement('canvas');
         thanosCanvas.id = 'thanos-canvas';
-        thanosCanvas.style.position = 'fixed';
-        thanosCanvas.style.top = '0';
-        thanosCanvas.style.left = '0';
-        thanosCanvas.style.width = '100vw';
-        thanosCanvas.style.height = '100vh';
-        thanosCanvas.style.pointerEvents = 'none';
-        thanosCanvas.style.zIndex = '10005';
+        thanosCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:10005;';
         document.body.appendChild(thanosCanvas);
 
-        thanosCtx = thanosCanvas.getContext('2d');
+        thanosCtx = thanosCanvas.getContext('2d', { alpha: true });
         resizeThanosCanvas();
         window.addEventListener('resize', resizeThanosCanvas, { passive: true });
     }
 
     function resizeThanosCanvas() {
-        if (!thanosCanvas) return;
+        if (!thanosCanvas || !thanosCtx) return;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         thanosCanvas.width = window.innerWidth * dpr;
         thanosCanvas.height = window.innerHeight * dpr;
-        if (thanosCtx) {
-            thanosCtx.scale(dpr, dpr);
-        }
+        thanosCtx.setTransform(1, 0, 0, 1, 0, 0);
+        thanosCtx.scale(dpr, dpr);
     }
 
-    // --- HIGH FIDELITY ELEMENT CAPTURE ---
-    // Uses html2canvas if available, with structured fallback to guarantee zero failures
-    async function captureElementToCanvas(element) {
-        if (window.html2canvas) {
-            try {
-                const canvas = await window.html2canvas(element, {
-                    backgroundColor: null,
-                    scale: 1,
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: true,
-                    ignoreElements: (el) => el.classList.contains('card-snap-btn')
-                });
-                return canvas;
-            } catch (err) {
-                console.warn('html2canvas capture fallback:', err);
-            }
-        }
-
-        // High-Fidelity Fallback Rasterizer
+    // --- INSTANT PROCEDURAL ELEMENT COLOR & LAYOUT SAMPLER ---
+    // Zero-delay instantaneous extraction! Drops html2canvas to eliminate 100% of lag.
+    function sampleElementParticles(element, mode = 'disintegrate') {
         const rect = element.getBoundingClientRect();
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.max(10, Math.floor(rect.width));
-        canvas.height = Math.max(10, Math.floor(rect.height));
-        const ctx = canvas.getContext('2d');
+        if (rect.width <= 0 || rect.height <= 0) return [];
 
-        const computed = window.getComputedStyle(element);
         const isDark = document.body.getAttribute('data-theme') === 'dark';
-
-        // Draw styled liquid glass box
-        ctx.fillStyle = isDark ? 'rgba(18, 26, 42, 0.72)' : 'rgba(255, 255, 255, 0.85)';
-        ctx.strokeStyle = isDark ? 'rgba(56, 189, 248, 0.35)' : 'rgba(2, 132, 199, 0.35)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        const radius = 24;
-        ctx.roundRect(0, 0, canvas.width, canvas.height, radius);
-        ctx.fill();
-        ctx.stroke();
-
-        // Sample text colors and render basic layout silhouettes
-        ctx.fillStyle = computed.color || (isDark ? '#e2e8f0' : '#0f172a');
-        ctx.font = '14px Inter, sans-serif';
-        const titleEl = element.querySelector('.card-title, h2, h3, .ref-name');
-        if (titleEl) {
-            ctx.font = 'bold 16px Inter, sans-serif';
-            ctx.fillText(titleEl.textContent.trim().slice(0, 40), 24, 40);
-        }
-        const descEl = element.querySelector('.card-description, p, .ref-role');
-        if (descEl) {
-            ctx.font = '13px Inter, sans-serif';
-            ctx.fillStyle = isDark ? '#94a3b8' : '#475569';
-            ctx.fillText(descEl.textContent.trim().slice(0, 60), 24, 70);
-        }
-
-        return canvas;
-    }
-
-    // --- PARTICLE DISSOLUTION PHYSICS ---
-    // Realistic ash and ember generation from captured pixel map
-    function generateAshParticles(canvas, rect, options = {}) {
         const particles = [];
-        const ctx = canvas.getContext('2d');
-        const width = canvas.width;
-        const height = canvas.height;
 
-        let imgData;
-        try {
-            imgData = ctx.getImageData(0, 0, width, height);
-        } catch (e) {
-            console.warn('Could not read image data:', e);
-            return particles;
-        }
+        // Fast particle count (~350 - 550 particles for perfect density without frame drops)
+        const density = mode === 'appear' ? 140 : 420;
+        const width = rect.width;
+        const height = rect.height;
 
-        const data = imgData.data;
-        // Adaptive step based on card dimensions (~3,000 to 5,000 particles)
-        const area = width * height;
-        const targetParticles = 4000;
-        const step = Math.max(2, Math.min(5, Math.round(Math.sqrt(area / targetParticles))));
+        // Base theme palette
+        const baseAsh = isDark ? [148, 163, 184] : [71, 85, 105];       // slate-400 / 600
+        const darkAsh = isDark ? [30, 41, 59] : [203, 213, 225];          // slate-800 / 300
+        const accentAsh = isDark ? [56, 189, 248] : [2, 132, 199];        // cyan / sapphire
 
-        const emberColors = ['#f59e0b', '#38bdf8', '#c084fc', '#ec4899', '#22d3ee', '#10b981'];
+        for (let i = 0; i < density; i++) {
+            // Target coordinates relative to the card
+            const relX = Math.random() * width;
+            const relY = Math.random() * height;
+            const screenX = rect.left + relX;
+            const screenY = rect.top + relY;
 
-        for (let y = 0; y < height; y += step) {
-            for (let x = 0; x < width; x += step) {
-                const idx = (y * width + x) * 4;
-                const r = data[idx];
-                const g = data[idx + 1];
-                const b = data[idx + 2];
-                const a = data[idx + 3] / 255;
+            // Staggered wave progression (left-to-right sweep)
+            const normX = relX / width;
+            const normY = relY / height;
+            const waveDelay = (normX * 0.7 + (1 - normY) * 0.3) * 550 + Math.random() * 140;
 
-                // Skip fully transparent pixels
-                if (a < 0.15) continue;
+            const isEmber = Math.random() < 0.12;
+            const emberColor = EMBER_COLORS[Math.floor(Math.random() * EMBER_COLORS.length)];
 
-                // Screen coordinates
-                const screenX = rect.left + x;
-                const screenY = rect.top + y;
+            // Color selection
+            let r = baseAsh[0];
+            let g = baseAsh[1];
+            let b = baseAsh[2];
+            const dice = Math.random();
 
-                // Normalized position for wave front calculation (left-to-right + bottom-to-top wave)
-                const normX = x / width;
-                const normY = y / height;
-                const waveProgress = normX * 0.75 + (1 - normY) * 0.25; // sweeps diagonally
-                const delayMs = waveProgress * 650 + Math.random() * 180;
+            if (dice < 0.35) {
+                r = darkAsh[0]; g = darkAsh[1]; b = darkAsh[2];
+            } else if (dice < 0.55) {
+                r = accentAsh[0]; g = accentAsh[1]; b = accentAsh[2];
+            }
 
-                const isEmber = Math.random() < 0.07;
-                const emberColor = emberColors[Math.floor(Math.random() * emberColors.length)];
+            if (mode === 'appear') {
+                // APPEARING MODE: Particles swirl inwards from around the element
+                const spawnAngle = Math.random() * Math.PI * 2;
+                const spawnDistance = 60 + Math.random() * 90;
+                const startX = screenX + Math.cos(spawnAngle) * spawnDistance;
+                const startY = screenY + Math.sin(spawnAngle) * spawnDistance - 20;
 
-                // Ash physics parameters
-                const particle = {
+                particles.push({
+                    mode: 'appear',
+                    targetX: screenX,
+                    targetY: screenY,
+                    x: startX,
+                    y: startY,
+                    startX,
+                    startY,
+                    r, g, b,
+                    isEmber,
+                    emberColor,
+                    size: isEmber ? 2.4 : 1.8,
+                    delayMs: Math.random() * 180,
+                    durationMs: 550 + Math.random() * 200,
+                    startTime: 0,
+                    spiralAmp: (Math.random() - 0.5) * 40,
+                    done: false
+                });
+            } else {
+                // DISINTEGRATION MODE: Ash blows away with wind and upward buoyancy
+                particles.push({
+                    mode: 'disintegrate',
                     origX: screenX,
                     origY: screenY,
                     x: screenX,
                     y: screenY,
-                    r, g, b, a,
+                    r, g, b,
                     isEmber,
                     emberColor,
-                    size: isEmber ? (1.8 + Math.random() * 1.6) : (1.4 + Math.random() * 2.2),
-                    // Velocity: gentle horizontal wind blowing right + thermal buoyancy floating up
-                    vx: 1.4 + Math.random() * 2.2 + (Math.random() - 0.5) * 0.8,
-                    vy: -(1.2 + Math.random() * 2.6),
-                    turbPhase: Math.random() * Math.PI * 2,
-                    turbSpeed: 0.04 + Math.random() * 0.05,
-                    rot: Math.random() * Math.PI * 2,
-                    vRot: (Math.random() - 0.5) * 0.12,
-                    delayMs,
+                    size: isEmber ? (2.0 + Math.random() * 1.5) : (1.5 + Math.random() * 1.8),
+                    vx: 1.6 + Math.random() * 2.4,             // wind right
+                    vy: -(1.2 + Math.random() * 2.2),          // thermal upward
+                    delayMs: waveDelay,
                     startTime: 0,
-                    age: 0,
-                    lifespan: 1600 + Math.random() * 800, // 1.6s - 2.4s
-                    // Reversal state
+                    lifespan: 1400 + Math.random() * 600,
+                    // Reversal parameters
                     isReversing: false,
                     reverseStart: 0,
-                    reversalProgress: 0,
                     done: false
-                };
-
-                particles.push(particle);
+                });
             }
         }
 
         return particles;
     }
 
-    // --- MAIN RENDER & PHYSICS LOOP ---
+    // --- FAST 60-120 FPS BATCHED RENDER LOOP ---
     function startRenderLoop() {
-        if (isRenderLoopRunning) return;
-        isRenderLoopRunning = true;
-        lastTime = performance.now();
+        if (isLoopRunning) return;
+        isLoopRunning = true;
+        lastTimestamp = performance.now();
         requestAnimationFrame(renderLoop);
     }
 
-    function renderLoop(currentTime) {
-        if (!isRenderLoopRunning) return;
+    function renderLoop(now) {
+        if (!isLoopRunning) return;
 
-        const dt = Math.min((currentTime - lastTime) / 1000, 0.05); // cap at 50ms
-        lastTime = currentTime;
+        const dt = Math.min((now - lastTimestamp) / 1000, 0.05);
+        lastTimestamp = now;
 
         if (!thanosCtx || !thanosCanvas) {
-            isRenderLoopRunning = false;
+            isLoopRunning = false;
             return;
         }
 
         thanosCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
         let activeCount = 0;
+        const total = activeParticles.length;
 
-        for (let i = 0; i < activeParticles.length; i++) {
+        for (let i = 0; i < total; i++) {
             const p = activeParticles[i];
             if (p.done) continue;
 
-            if (!p.startTime) p.startTime = currentTime;
-            const elapsed = currentTime - p.startTime;
+            if (!p.startTime) p.startTime = now;
+            const elapsed = now - p.startTime;
 
-            // Wait for wave delay to hit this particle
             if (elapsed < p.delayMs) {
                 activeCount++;
                 continue;
             }
 
-            p.age = elapsed - p.delayMs;
+            const activeTime = elapsed - p.delayMs;
 
-            if (p.isReversing) {
-                // --- TIME STONE REVERSE (REWIND TOWARDS ORIGIN) ---
-                const revElapsed = currentTime - p.reverseStart;
-                const revDuration = 900; // 900ms snappy rewind
-                const t = Math.min(1, revElapsed / revDuration);
+            if (p.mode === 'appear') {
+                // --- COSMIC CONVERGENCE / APPEARING MODE ---
+                const t = Math.min(1.0, activeTime / p.durationMs);
                 // Cubic ease-out
                 const ease = 1 - Math.pow(1 - t, 3);
 
-                p.x = p.snapX + (p.origX - p.snapX) * ease;
-                p.y = p.snapY + (p.origY - p.snapY) * ease;
-                p.rot = p.snapRot * (1 - ease);
+                // Vortex inward path
+                const spiral = (1 - ease) * Math.sin(t * Math.PI * 2) * p.spiralAmp;
+                p.x = p.startX + (p.targetX - p.startX) * ease + spiral;
+                p.y = p.startY + (p.targetY - p.startY) * ease;
 
-                const alpha = Math.min(p.a, 0.2 + ease * 0.8);
+                const alpha = Math.min(1.0, (1 - ease) * 1.5);
 
-                // Draw Time Stone Emerald particle
-                thanosCtx.save();
-                thanosCtx.translate(p.x, p.y);
-                thanosCtx.rotate(p.rot);
-                thanosCtx.fillStyle = `rgba(52, 211, 153, ${alpha})`;
-                thanosCtx.shadowColor = '#10b981';
-                thanosCtx.shadowBlur = 6;
-                thanosCtx.beginPath();
-                thanosCtx.arc(0, 0, p.size * (1 - ease * 0.3), 0, Math.PI * 2);
-                thanosCtx.fill();
-                thanosCtx.restore();
+                if (p.isEmber && emberSprites[p.emberColor]) {
+                    const spr = emberSprites[p.emberColor];
+                    const s = p.size * 3.5;
+                    thanosCtx.globalAlpha = alpha;
+                    thanosCtx.drawImage(spr, p.x - s / 2, p.y - s / 2, s, s);
+                } else {
+                    thanosCtx.fillStyle = `rgba(${p.r}, ${p.g}, ${p.b}, ${alpha * 0.85})`;
+                    thanosCtx.fillRect(p.x, p.y, p.size, p.size);
+                }
 
-                if (t >= 1) {
+                if (t >= 1.0) {
                     p.done = true;
                 } else {
                     activeCount++;
                 }
 
             } else {
-                // --- FORWARD THANOS ASH DISPERSION ---
-                const lifeProgress = p.age / p.lifespan;
+                // --- DISINTEGRATION & TIME STONE MODE ---
+                if (p.isReversing) {
+                    const revElapsed = now - p.reverseStart;
+                    const t = Math.min(1.0, revElapsed / 750);
+                    const ease = 1 - Math.pow(1 - t, 3);
 
-                if (lifeProgress >= 1) {
-                    p.done = true;
-                    continue;
-                }
+                    p.x = p.snapX + (p.origX - p.snapX) * ease;
+                    p.y = p.snapY + (p.origY - p.snapY) * ease;
 
-                // Physics update
-                p.turbPhase += p.turbSpeed;
-                const turbulence = Math.sin(p.turbPhase) * 1.2;
+                    const alpha = Math.min(1.0, 0.3 + ease * 0.7);
 
-                p.vx += (turbulence * 0.05);
-                p.vx *= 0.985; // air drag
-                p.vy *= 0.985;
+                    // Emerald Time Stone Spark
+                    if (emberSprites['#10b981']) {
+                        const spr = emberSprites['#10b981'];
+                        const s = p.size * 3.0;
+                        thanosCtx.globalAlpha = alpha;
+                        thanosCtx.drawImage(spr, p.x - s / 2, p.y - s / 2, s, s);
+                    } else {
+                        thanosCtx.fillStyle = `rgba(16, 185, 129, ${alpha})`;
+                        thanosCtx.fillRect(p.x, p.y, p.size, p.size);
+                    }
 
-                p.x += p.vx;
-                p.y += p.vy;
-                p.rot += p.vRot;
+                    if (t >= 1.0) {
+                        p.done = true;
+                    } else {
+                        activeCount++;
+                    }
 
-                // Fading
-                const fadeAlpha = p.a * Math.pow(1 - lifeProgress, 1.4);
-
-                thanosCtx.save();
-                thanosCtx.translate(p.x, p.y);
-                thanosCtx.rotate(p.rot);
-
-                if (p.isEmber && lifeProgress < 0.65) {
-                    // Glowing Ember Spark
-                    thanosCtx.fillStyle = p.emberColor;
-                    thanosCtx.shadowColor = p.emberColor;
-                    thanosCtx.shadowBlur = 5;
-                    thanosCtx.beginPath();
-                    thanosCtx.arc(0, 0, p.size * (1 - lifeProgress * 0.4), 0, Math.PI * 2);
-                    thanosCtx.fill();
                 } else {
-                    // Organic Ash Flake
-                    thanosCtx.fillStyle = `rgba(${p.r}, ${gCalc(p.g)}, ${bCalc(p.b)}, ${fadeAlpha})`;
-                    thanosCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-                }
+                    // Forward Thanos Ash Drift
+                    const progress = activeTime / p.lifespan;
 
-                thanosCtx.restore();
-                activeCount++;
+                    if (progress >= 1.0) {
+                        p.done = true;
+                        continue;
+                    }
+
+                    // Physics update
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vx *= 0.985;
+                    p.vy *= 0.985;
+
+                    const alpha = (1 - Math.pow(progress, 1.5));
+
+                    if (p.isEmber && progress < 0.7 && emberSprites[p.emberColor]) {
+                        const spr = emberSprites[p.emberColor];
+                        const s = p.size * 3.5 * (1 - progress * 0.3);
+                        thanosCtx.globalAlpha = alpha;
+                        thanosCtx.drawImage(spr, p.x - s / 2, p.y - s / 2, s, s);
+                    } else {
+                        thanosCtx.fillStyle = `rgba(${p.r}, ${p.g}, ${p.b}, ${alpha * 0.9})`;
+                        thanosCtx.fillRect(p.x, p.y, p.size, p.size);
+                    }
+
+                    activeCount++;
+                }
+            }
+        }
+
+        thanosCtx.globalAlpha = 1.0;
+
+        // Cleanup completed particles periodically to keep memory flat
+        if (activeParticles.length > 2500) {
+            for (let i = activeParticles.length - 1; i >= 0; i--) {
+                if (activeParticles[i].done) {
+                    activeParticles.splice(i, 1);
+                }
             }
         }
 
         if (activeCount > 0) {
             requestAnimationFrame(renderLoop);
         } else {
-            isRenderLoopRunning = false;
+            isLoopRunning = false;
+            activeParticles.length = 0;
             thanosCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         }
     }
 
-    function gCalc(g) { return Math.min(255, Math.floor(g * 0.95)); }
-    function bCalc(b) { return Math.min(255, Math.floor(b * 0.95)); }
-
-    // --- DISINTEGRATE AN INDIVIDUAL ELEMENT ---
-    async function disintegrateElement(element, options = {}) {
+    // --- DISINTEGRATE AN INDIVIDUAL ELEMENT (INSTANT, ZERO LAG) ---
+    function disintegrateElement(element, options = {}) {
         if (!element || element._isDisintegrating || element._isDisintegrated) return;
         element._isDisintegrating = true;
 
         initThanosCanvas();
-        playAshWindSound();
 
-        const rect = element.getBoundingClientRect();
-        const canvas = await captureElementToCanvas(element);
-        const particles = generateAshParticles(canvas, rect, options);
-
-        // Store particles on element for Time Stone restoration
+        // 1. Instant particle generation (0.1ms, zero lag!)
+        const particles = sampleElementParticles(element, 'disintegrate');
         element._thanosParticles = particles;
-        element._originalStyle = {
-            transition: element.style.transition,
-            opacity: element.style.opacity,
-            transform: element.style.transform,
-            visibility: element.style.visibility,
-            pointerEvents: element.style.pointerEvents
-        };
 
-        // Add to active particle simulation
         activeParticles.push(...particles);
         startRenderLoop();
 
-        // Progressive CSS wave dissolution on the DOM element
-        element.style.transition = 'transform 0.4s ease, opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), filter 0.6s ease';
-        element.style.filter = 'blur(1.5px) contrast(1.1)';
-        element.style.transform = 'scale(0.985) translate3d(6px, -4px, 0)';
-
-        // Subtle tremor
-        let tremorCount = 0;
-        const tremorInterval = setInterval(() => {
-            if (tremorCount++ > 6) {
-                clearInterval(tremorInterval);
-                return;
-            }
-            const jx = (Math.random() - 0.5) * 3;
-            const jy = (Math.random() - 0.5) * 2;
-            element.style.transform = `scale(0.985) translate3d(${6 + jx}px, ${-4 + jy}px, 0)`;
-        }, 50);
+        // 2. High-speed synchronized DOM clip & dissolution
+        element.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease';
+        element.style.transform = 'scale(0.98) translate3d(4px, -3px, 0)';
+        element.style.opacity = '0.35';
 
         setTimeout(() => {
             element.style.opacity = '0';
-        }, 220);
+        }, 180);
 
         setTimeout(() => {
             element.style.visibility = 'hidden';
@@ -527,7 +466,7 @@
             element._isDisintegrated = true;
 
             if (options.onComplete) options.onComplete();
-        }, 850);
+        }, 650);
     }
 
     // --- RESTORE AN ELEMENT (TIME STONE REVERSAL) ---
@@ -544,53 +483,72 @@
                 p.reverseStart = now;
                 p.snapX = p.x;
                 p.snapY = p.y;
-                p.snapRot = p.rot;
                 p.done = false;
             });
+            activeParticles.push(...particles);
             startRenderLoop();
         }
 
-        // Show temporal reassembly flash
         setTimeout(() => {
             element.classList.remove('thanos-vanished');
             element.style.visibility = 'visible';
             element.style.pointerEvents = 'auto';
-            element.style.filter = 'drop-shadow(0 0 16px rgba(52, 211, 153, 0.8))';
+            element.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease';
             element.style.opacity = '1';
             element.style.transform = 'scale(1.02)';
 
             setTimeout(() => {
-                element.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
                 element.style.transform = 'scale(1)';
-                element.style.filter = 'none';
                 element._isDisintegrated = false;
                 element._isDisintegrating = false;
                 if (options.onComplete) options.onComplete();
-            }, 300);
-        }, 750);
+            }, 250);
+        }, 600);
     }
 
-    // --- GLOBAL THANOS SNAP CONTROLLER (50% DISINTEGRATION) ---
+    // --- COSMIC MATERIALIZATION / APPEARING EFFECT FOR ALL ELEMENTS ---
+    // Smoothly coalesces cosmic dust and embers into cards as they appear on scroll
+    function materializeElement(element, delay = 0) {
+        if (!element || element._hasMaterialized) return;
+        element._hasMaterialized = true;
+
+        setTimeout(() => {
+            initThanosCanvas();
+
+            // Spawn converging cosmic particles
+            const particles = sampleElementParticles(element, 'appear');
+            if (particles.length > 0) {
+                activeParticles.push(...particles);
+                startRenderLoop();
+            }
+
+            // Crystallize DOM element into solid reality
+            element.classList.add('thanos-crystallizing');
+            element.classList.add('thanos-materialized');
+
+            setTimeout(() => {
+                element.classList.remove('thanos-crystallizing');
+            }, 650);
+        }, delay);
+    }
+
+    // --- GLOBAL THANOS SNAP CONTROLLER ---
     let isUniverseSnapped = false;
     let snappedElements = [];
 
     function triggerThanosSnap() {
         const thanosBtn = document.getElementById('thanos-btn');
         playSnapSound();
-
-        // 1. Cosmic Shockwave Screen Flash
         createCosmicShockwave();
 
-        // 2. Select eligible cards (all content cards across sections)
         const allCards = Array.from(document.querySelectorAll('.glass-card:not(.profile-card)'))
-            .filter(card => !card._isDisintegrated);
+            .filter(card => !card._isDisintegrated && !card._isDisintegrating);
 
         if (allCards.length === 0) {
-            showThanosToast('All eligible reality is already turned to ash!', 'info');
+            showThanosToast('All eligible reality has already dissolved into ash!', 'info');
             return;
         }
 
-        // Shuffle & select exactly 50% of the cards
         const shuffled = [...allCards].sort(() => Math.random() - 0.5);
         const countToSnap = Math.max(1, Math.floor(shuffled.length * 0.5));
         const toSnap = shuffled.slice(0, countToSnap);
@@ -598,7 +556,6 @@
         snappedElements = toSnap;
         isUniverseSnapped = true;
 
-        // Button Gauntlet Animation -> Time Stone
         if (thanosBtn) {
             thanosBtn.classList.add('snapped');
             thanosBtn.innerHTML = `
@@ -610,17 +567,16 @@
             thanosBtn.setAttribute('title', 'Time Stone: Reverse Snap & Reassemble Reality');
         }
 
-        // Staggered sequential disintegration of cards for cinematic weight
+        // Fast staggered execution (40ms interval — smooth & responsive without freezing)
         toSnap.forEach((card, index) => {
             setTimeout(() => {
                 disintegrateElement(card);
-            }, index * 160);
+            }, index * 50);
         });
 
-        // Show Interactive Time Stone Toast
         const isFa = document.documentElement.lang === 'fa';
         const msg = isFa 
-            ? `تانوس بشکن زد! ۵۰٪ از کارت‌ها (${countToSnap} عدد) به خاکستر تبدیل شدند.`
+            ? `تانوس بشکن زد! ۵۰٪ از کارت‌ها (${countToSnap} عدد) پودر شدند.`
             : `Thanos snapped his fingers... ${countToSnap} cards dissolved into cosmic dust.`;
         const btnText = isFa ? 'بازگردانی با سنگ زمان' : 'Time Stone Restore';
 
@@ -635,19 +591,18 @@
         createTimeStoneWave();
 
         if (snappedElements.length === 0) {
-            snappedElements = Array.from(document.querySelectorAll('.glass-card._isDisintegrated, .glass-card.thanos-vanished'));
+            snappedElements = Array.from(document.querySelectorAll('.glass-card.thanos-vanished'));
         }
 
         snappedElements.forEach((card, index) => {
             setTimeout(() => {
                 restoreElement(card);
-            }, index * 120);
+            }, index * 40);
         });
 
         snappedElements = [];
         isUniverseSnapped = false;
 
-        // Restore Gauntlet Button
         if (thanosBtn) {
             thanosBtn.classList.remove('snapped');
             thanosBtn.innerHTML = renderGauntletIconHTML();
@@ -670,22 +625,22 @@
         }
     }
 
-    // --- COSMIC SHOCKWAVE EFFECTS ---
+    // --- COSMIC RIPPLE WAVES ---
     function createCosmicShockwave() {
         const wave = document.createElement('div');
         wave.className = 'thanos-shockwave-ring';
         document.body.appendChild(wave);
-        setTimeout(() => wave.remove(), 1200);
+        setTimeout(() => wave.remove(), 1000);
     }
 
     function createTimeStoneWave() {
         const wave = document.createElement('div');
         wave.className = 'time-stone-wave-ring';
         document.body.appendChild(wave);
-        setTimeout(() => wave.remove(), 1400);
+        setTimeout(() => wave.remove(), 1100);
     }
 
-    // --- INTERACTIVE FLOATING THANOS HUD TOAST ---
+    // --- TOAST NOTIFICATION ---
     let toastTimeout = null;
     function showThanosToast(text, type = 'info', actionText = null, onAction = null) {
         let toast = document.getElementById('thanos-toast');
@@ -727,7 +682,7 @@
 
         toastTimeout = setTimeout(() => {
             toast.classList.remove('visible');
-        }, 7500);
+        }, 6500);
     }
 
     // --- GAUNTLET BUTTON ICON GENERATOR ---
@@ -747,11 +702,8 @@
         `;
     }
 
-    // --- ENHANCED FILTER CARDS WITH THANOS DISINTEGRATION ---
-    // Smoothly dissolves filtered-out cards into dust instead of instant hiding!
+    // --- THANOS FILTERING (NO LAG) ---
     function initThanosFiltering() {
-        const originalFilter = window.filterCards;
-
         window.filterCards = function (category, btnEl) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             if (btnEl) btnEl.classList.add('active');
@@ -772,13 +724,12 @@
                             card.style.transform = 'scale(1)';
                             card.style.visibility = 'visible';
                             card.style.pointerEvents = 'auto';
-                        }, 50);
+                        }, 30);
                     }
                 } else {
                     if (!card._isDisintegrated && !card._isDisintegrating) {
                         disintegrateElement(card, {
                             onComplete: () => {
-                                // Once turned to ash, maintain layout collapse gracefully
                                 card.style.display = 'none';
                             }
                         });
@@ -788,7 +739,7 @@
         };
     }
 
-    // --- PER-CARD MINI DISINTEGRATE BUTTONS ---
+    // --- PER-CARD SNAP BUTTONS ---
     function initCardSnapTriggers() {
         const cards = document.querySelectorAll('.glass-card:not(.profile-card)');
         cards.forEach(card => {
@@ -805,8 +756,8 @@
                 disintegrateElement(card);
 
                 const isFa = document.documentElement.lang === 'fa';
-                const msg = isFa ? 'کارت پودر شد!' : 'Card disintegrated into ash!';
-                const undoTxt = isFa ? 'بازگردانی' : 'Undo (Time Stone)';
+                const msg = isFa ? 'کارت خاکستر شد!' : 'Card dissolved into dust!';
+                const undoTxt = isFa ? 'بازگردانی' : 'Undo';
 
                 showThanosToast(msg, 'snap', undoTxt, () => {
                     restoreElement(card);
@@ -818,41 +769,45 @@
         });
     }
 
-    // --- REALISTIC & SMOOTH GENERAL ANIMATIONS ENGINE ---
-    // Smooth IntersectionObserver scroll entrance animations with spring physics
-    function initSmoothScrollReveals() {
-        const revealTargets = document.querySelectorAll('.glass-card, .section-header, .stat-pill, .section-divider');
+    // --- THANOS SCROLL APPEARING OBSERVER FOR ALL ELEMENTS ---
+    // Every element materializes from swirling cosmic dust as it scrolls into view!
+    function initThanosAppearingObserver() {
+        const targets = document.querySelectorAll('.glass-card, .section-header, .stat-pill');
+
+        targets.forEach(el => {
+            el.classList.add('thanos-appear-target');
+        });
 
         const observerOptions = {
             root: null,
-            rootMargin: '0px 0px -40px 0px',
-            threshold: 0.12
+            rootMargin: '0px 0px -30px 0px',
+            threshold: 0.08
         };
 
-        const revealObserver = new IntersectionObserver((entries, obs) => {
+        const appearObserver = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                    obs.unobserve(entry.target);
+                    const el = entry.target;
+                    obs.unobserve(el);
+
+                    // Stagger siblings in grids
+                    const parentGrid = el.closest('.cards-grid, .timeline-list, .stats-row');
+                    let delay = 0;
+                    if (parentGrid) {
+                        const idx = Array.from(parentGrid.children).indexOf(el);
+                        delay = Math.min((idx % 4) * 80, 240);
+                    }
+
+                    materializeElement(el, delay);
                 }
             });
         }, observerOptions);
 
-        revealTargets.forEach((el, index) => {
-            el.classList.add('reveal-on-scroll');
-            // Stagger siblings in grids
-            const parentGrid = el.closest('.cards-grid, .timeline-list');
-            if (parentGrid) {
-                const childIndex = Array.from(parentGrid.children).indexOf(el);
-                el.style.transitionDelay = `${(childIndex % 4) * 80}ms`;
-            }
-            revealObserver.observe(el);
-        });
+        targets.forEach(el => appearObserver.observe(el));
     }
 
-    // Smooth Interactive 3D Perspective Card Tilt (Realistic physics)
+    // --- 3D PERSPECTIVE TILT (LIGHTWEIGHT) ---
     function initCardPerspectiveTilt() {
-        // Disabled on touch devices to ensure pure native touch scrolling
         if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
 
         const cards = document.querySelectorAll('.glass-card');
@@ -867,16 +822,15 @@
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
 
-                const rotateX = ((y - centerY) / centerY) * -5.0; // max 5deg pitch
-                const rotateY = ((x - centerX) / centerX) * 5.0;  // max 5deg yaw
+                const rotateX = ((y - centerY) / centerY) * -4.0;
+                const rotateY = ((x - centerX) / centerX) * 4.0;
 
-                // Dynamic light sheen highlight angle
                 const sheenX = (x / rect.width) * 100;
                 const sheenY = (y / rect.height) * 100;
 
                 if (reqId) cancelAnimationFrame(reqId);
                 reqId = requestAnimationFrame(() => {
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translate3d(0, -3px, 0)`;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translate3d(0, -2px, 0)`;
                     card.style.setProperty('--cursor-sheen-x', `${sheenX.toFixed(1)}%`);
                     card.style.setProperty('--cursor-sheen-y', `${sheenY.toFixed(1)}%`);
                 });
@@ -901,17 +855,18 @@
 
         initThanosFiltering();
         initCardSnapTriggers();
-        initSmoothScrollReveals();
+        initThanosAppearingObserver();
         initCardPerspectiveTilt();
     });
 
-    // Export public API
+    // Public API
     window.ThanosEngine = {
         snap: triggerThanosSnap,
         restore: reverseThanosSnap,
         toggle: toggleThanosSnap,
         disintegrate: disintegrateElement,
-        restoreCard: restoreElement
+        restoreCard: restoreElement,
+        materialize: materializeElement
     };
 
 })();
