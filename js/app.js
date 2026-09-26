@@ -520,9 +520,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Interactive Futuristic Neural Scroll Elements
 function initScrollElements() {
     const progressBar = document.getElementById('scroll-progress-bar');
-    const telemetryElectrode = document.getElementById('telemetry-electrode');
-    const telemetryInfo = document.getElementById('telemetry-info');
-    const telemetryPct = document.getElementById('telemetry-pct');
     const scrollTopBtn = document.getElementById('scroll-to-top-btn');
     const ringCircle = document.getElementById('scroll-ring-circle');
     const btnPct = document.getElementById('scroll-btn-pct');
@@ -553,7 +550,7 @@ function initScrollElements() {
         const boundedScrolled = Math.min(100, Math.max(0, scrolled));
         const roundedScrolled = Math.round(boundedScrolled);
         
-        // 1. Top Neural Oscilloscope Progress Bar
+        // 1. Top Progress Bar
         if (progressBar) {
             progressBar.style.width = `${boundedScrolled}%`;
         }
@@ -575,9 +572,8 @@ function initScrollElements() {
             }
         }
 
-        // 3. Active Section Detection and Bio-Telemetry HUD Update
+        // 3. Active Section Detection for Side Scroll Rail
         let currentSectionId = 'hero';
-        let currentDot = railDots[0];
         const scrollPosition = winScroll + 240;
 
         sections.forEach(sec => {
@@ -589,22 +585,10 @@ function initScrollElements() {
         railDots.forEach(dot => {
             if (dot.getAttribute('data-section') === currentSectionId) {
                 dot.classList.add('active');
-                currentDot = dot;
             } else {
                 dot.classList.remove('active');
             }
         });
-
-        // 4. Update Neural Telemetry readout
-        if (currentDot) {
-            const ch = currentDot.getAttribute('data-ch');
-            const info = currentDot.getAttribute('data-info');
-            if (telemetryElectrode && ch) telemetryElectrode.textContent = ch;
-            if (telemetryInfo && info) telemetryInfo.textContent = info;
-        }
-        if (telemetryPct) {
-            telemetryPct.textContent = `${roundedScrolled}%`;
-        }
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });

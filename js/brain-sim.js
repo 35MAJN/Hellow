@@ -12,7 +12,6 @@
 
 window.addEventListener('load', async () => {
     const container = document.getElementById('brain-container');
-    const viewBadgeText = document.getElementById('camera-view-text');
     const statusEl = document.getElementById('brain-status');
     if (!container) return;
 
@@ -263,6 +262,18 @@ window.addEventListener('load', async () => {
         map: circleTexture
     });
 
+    // Theme awareness for 3D brain
+    function updateBrainTheme() {
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        if (material) {
+            material.opacity = isDark ? 0.82 : 0.88;
+            material.size = isDark ? 0.525 : 0.58;
+        }
+    }
+    const themeObserver = new MutationObserver(updateBrainTheme);
+    themeObserver.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
+    updateBrainTheme();
+
     // The brain mesh is static at the origin (0, 0, 0)
     brainMesh = new THREE.Points(geometry, material);
     brainMesh.position.set(0, 0, 0);
@@ -337,12 +348,6 @@ window.addEventListener('load', async () => {
 
         targetRotX = view.rotX;
         targetRotY = view.rotY;
-
-        // Update badge text
-        if (viewBadgeText) {
-            const isFa = document.documentElement.lang === 'fa';
-            viewBadgeText.textContent = isFa ? view.nameFa : view.nameEn;
-        }
 
         // Highlight cortical badges if any
         document.querySelectorAll('.cortical-badge').forEach(b => {
