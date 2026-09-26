@@ -2,18 +2,23 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Mohammadali Javadinasab | AI Researcher & Electrical Engineer</title>
     <meta name="description" content="Portfolio and interactive 3D EEG neural source reconstruction simulation of Mohammadali Javadinasab, AI Researcher specializing in signal processing, deep learning, and BCI.">
     <meta property="og:title" content="Mohammadali Javadinasab | Portfolio">
     <meta property="og:description" content="Interactive portfolio and 3D EEG neural source localization simulation.">
     
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" href="favicon.ico">
-    <meta name="theme-color" content="#0066cc">
+    <!-- PWA & Mobile Web Capabilities -->
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MAJN 35">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="shortcut icon" href="/favicon.ico">
 
     <!-- Fonts & Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -27,7 +32,7 @@
     <!-- Elevated Glassmorphism Stylesheet -->
     <link rel="stylesheet" href="css/glass.css">
 </head>
-<body data-theme="dark">
+<body data-theme="light">
 
     <!-- SVG Defs for Futuristic Gradient Elements -->
     <svg width="0" height="0" style="position: absolute; pointer-events: none;" aria-hidden="true">
@@ -116,6 +121,10 @@
         </div>
 
         <div class="nav-controls">
+            <button class="btn-icon pwa-install-btn" id="pwa-install-btn" title="Install App (PWA)" aria-label="Install App" style="display: none;">
+                <i class="fas fa-arrow-down-to-bracket"></i>
+                <span class="pwa-badge-pulse" aria-hidden="true"></span>
+            </button>
             <button class="btn-icon thanos-btn" id="thanos-btn" title="Thanos Snap: Disintegrate 50% of Content" aria-label="Thanos Snap">
                 <span class="gauntlet-icon-wrap">
                     <i class="fas fa-hand-sparkles gauntlet-hand"></i>
@@ -132,15 +141,112 @@
             <button class="btn-icon" id="lang-btn" title="Toggle Language (English / Persian)">
                 <i class="fas fa-language"></i>
             </button>
-            <button class="btn-icon" id="theme-btn" title="Toggle Theme (Dark / Light)">
-                <i class="fas fa-sun"></i>
+            <button class="btn-icon" id="theme-btn" title="Toggle Theme (Bright / Dark)">
+                <i class="fas fa-moon"></i>
             </button>
             <a href="mailto:ma.javadinasab@gmail.com" class="btn-cv-pill">
                 <i class="fas fa-paper-plane"></i>
                 <span data-t="nav-cv">Contact</span>
             </a>
+            <button class="btn-icon mobile-menu-btn" id="mobile-menu-btn" title="Open Navigation Menu" aria-label="Open Navigation Menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
+
+    <!-- Glassmorphic Mobile Navigation Drawer (For Tablets & Smartphones) -->
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer" aria-hidden="true">
+        <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop"></div>
+        <div class="mobile-drawer-panel">
+            <div class="mobile-drawer-header">
+                <div class="brand-badge">
+                    <span class="brand-dot"></span>
+                    <span>MAJN 35</span>
+                </div>
+                <button class="btn-icon mobile-drawer-close" id="mobile-drawer-close" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="mobile-drawer-links">
+                <a href="#hero" class="mobile-nav-link" data-t="nav-home">
+                    <i class="fas fa-brain"></i> <span>Home</span>
+                </a>
+                <a href="#research" class="mobile-nav-link" data-t="nav-research">
+                    <i class="fas fa-microscope"></i> <span>Research</span>
+                </a>
+                <a href="#education" class="mobile-nav-link" data-t="nav-education">
+                    <i class="fas fa-graduation-cap"></i> <span>Education</span>
+                </a>
+                <a href="#experience" class="mobile-nav-link" data-t="nav-experience">
+                    <i class="fas fa-briefcase"></i> <span>Experience</span>
+                </a>
+                <a href="#projects" class="mobile-nav-link" data-t="nav-projects">
+                    <i class="fas fa-code-branch"></i> <span>Projects</span>
+                </a>
+                <a href="#skills" class="mobile-nav-link" data-t="nav-skills">
+                    <i class="fas fa-layer-group"></i> <span>Skills</span>
+                </a>
+                <a href="mailto:ma.javadinasab@gmail.com" class="mobile-nav-link mobile-nav-contact">
+                    <i class="fas fa-paper-plane"></i> <span data-t="nav-cv">Contact</span>
+                </a>
+            </div>
+
+            <!-- In-Drawer Install Button -->
+            <div class="mobile-drawer-pwa" id="mobile-drawer-pwa" style="display: none;">
+                <button class="mobile-pwa-btn" id="mobile-drawer-install-btn">
+                    <i class="fas fa-arrow-down-to-bracket"></i>
+                    <span data-t="pwa-install">Install App</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Mobile PWA Install Pill Banner -->
+    <div id="pwa-banner" class="pwa-banner" role="dialog" aria-label="Install App" style="display: none;">
+        <div class="pwa-banner-content">
+            <div class="pwa-banner-icon-wrap">
+                <img src="/android-chrome-192x192.png" alt="MAJN 35 Icon" class="pwa-banner-icon">
+            </div>
+            <div class="pwa-banner-text">
+                <strong class="pwa-banner-title">MAJN 35</strong>
+                <span class="pwa-banner-sub" data-t="pwa-install-banner">Install app for fast offline access</span>
+            </div>
+        </div>
+        <div class="pwa-banner-actions">
+            <button class="pwa-banner-btn-install" id="pwa-banner-install-btn" data-t="pwa-install-btn">Install</button>
+            <button class="pwa-banner-btn-close" id="pwa-banner-close-btn" aria-label="Dismiss">&times;</button>
+        </div>
+    </div>
+
+    <!-- iOS Safari PWA Installation Guidance Modal -->
+    <div id="pwa-ios-modal" class="pwa-ios-modal" aria-hidden="true" style="display: none;">
+        <div class="pwa-ios-backdrop" id="pwa-ios-backdrop"></div>
+        <div class="pwa-ios-sheet glass-card">
+            <div class="pwa-ios-header">
+                <div class="pwa-ios-title-wrap">
+                    <i class="fab fa-apple pwa-ios-apple-icon"></i>
+                    <h3 data-t="pwa-ios-title">Install on iPhone / iPad</h3>
+                </div>
+                <button class="btn-icon" id="pwa-ios-close-btn" aria-label="Close">&times;</button>
+            </div>
+            <div class="pwa-ios-steps">
+                <div class="pwa-ios-step">
+                    <span class="pwa-ios-step-num">1</span>
+                    <p data-t="pwa-ios-step1">Tap the <strong>Share</strong> button <i class="fas fa-arrow-up-from-bracket pwa-ios-icon-highlight"></i> in Safari toolbar below.</p>
+                </div>
+                <div class="pwa-ios-step">
+                    <span class="pwa-ios-step-num">2</span>
+                    <p data-t="pwa-ios-step2">Scroll down and select <i class="fas fa-plus-square pwa-ios-icon-highlight"></i> <strong>Add to Home Screen</strong>.</p>
+                </div>
+                <div class="pwa-ios-step">
+                    <span class="pwa-ios-step-num">3</span>
+                    <p data-t="pwa-ios-step3">Tap <strong>Add</strong> in the top-right corner to install.</p>
+                </div>
+            </div>
+            <button class="pwa-ios-done-btn" id="pwa-ios-done-btn">Got It</button>
+        </div>
+    </div>
 
     <!-- Persistent 3D Spatial Brain Canvas -->
     <div id="brain-container">

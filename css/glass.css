@@ -1,4 +1,4 @@
-:root {
+:root, [data-theme="light"] {
     --bg-gradient: radial-gradient(circle at 50% 0%, #f9fbfe 0%, #edf4fc 40%, #e2effa 100%);
     /* Realistic Liquid Glass - Light Theme */
     --liquid-bg: rgba(255, 255, 255, 0.72);
@@ -861,55 +861,620 @@ footer {
     color: var(--text-dim);
 }
 
-/* --- RESPONSIVE BREAKPOINTS --- */
+/* ==========================================================================
+   PROGRESSIVE WEB APP (PWA) & MOBILE NAVIGATION SYSTEM
+   ========================================================================== */
+
+/* PWA Nav Button */
+.pwa-install-btn {
+    position: relative;
+    color: var(--accent);
+}
+
+.pwa-badge-pulse {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: pwaPulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pwaPulseDot {
+    0%, 100% { transform: scale(0.9); opacity: 0.8; }
+    50% { transform: scale(1.3); opacity: 1; }
+}
+
+.mobile-menu-btn {
+    display: none;
+}
+
+/* Glassmorphic Mobile Navigation Drawer */
+.mobile-nav-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 2500;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+}
+
+.mobile-nav-drawer.open {
+    pointer-events: auto;
+    visibility: visible;
+    opacity: 1;
+}
+
+.mobile-drawer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.mobile-drawer-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(85vw, 340px);
+    height: 100%;
+    background: var(--liquid-bg);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border-left: 1px solid var(--liquid-border);
+    padding: calc(20px + env(safe-area-inset-top, 0px)) 20px calc(24px + env(safe-area-inset-bottom, 0px)) 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transform: translate3d(100%, 0, 0);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -10px 0 35px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
+
+[dir="rtl"] .mobile-drawer-panel {
+    right: auto;
+    left: 0;
+    border-left: none;
+    border-right: 1px solid var(--liquid-border);
+    transform: translate3d(-100%, 0, 0);
+    box-shadow: 10px 0 35px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-nav-drawer.open .mobile-drawer-panel {
+    transform: translate3d(0, 0, 0);
+}
+
+.mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--liquid-border-subtle);
+}
+
+.mobile-drawer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    min-height: 48px;
+}
+
+.mobile-nav-link i {
+    width: 20px;
+    color: var(--accent);
+    font-size: 1.05rem;
+    text-align: center;
+}
+
+.mobile-nav-link:hover, .mobile-nav-link.active {
+    background: var(--accent-glow);
+    color: var(--accent);
+    transform: translateX(4px);
+}
+
+[dir="rtl"] .mobile-nav-link:hover, [dir="rtl"] .mobile-nav-link.active {
+    transform: translateX(-4px);
+}
+
+.mobile-nav-contact {
+    margin-top: 6px;
+    background: var(--accent);
+    color: #fff !important;
+}
+
+.mobile-nav-contact i {
+    color: #fff !important;
+}
+
+.mobile-drawer-pwa {
+    padding-top: 14px;
+    border-top: 1px solid var(--liquid-border-subtle);
+}
+
+.mobile-pwa-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--accent-glow);
+    min-height: 48px;
+}
+
+/* Floating Mobile PWA Install Pill Banner */
+.pwa-banner {
+    position: fixed;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92%, 420px);
+    background: var(--liquid-card-bg);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid var(--liquid-border);
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 10002;
+    animation: pwaSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pwaSlideUp {
+    from { transform: translate(-50%, 40px); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.pwa-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.pwa-banner-icon-wrap {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.pwa-banner-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.pwa-banner-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.pwa-banner-title {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+.pwa-banner-sub {
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pwa-banner-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.pwa-banner-btn-install {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 10px var(--accent-glow);
+    transition: transform 0.2s;
+    min-height: 36px;
+}
+
+.pwa-banner-btn-install:hover {
+    transform: scale(1.04);
+}
+
+.pwa-banner-btn-close {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+}
+
+/* iOS Safari PWA Installation Guidance Modal */
+.pwa-ios-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10003;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 16px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+}
+
+.pwa-ios-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.pwa-ios-sheet {
+    position: relative;
+    width: min(100%, 460px);
+    padding: 24px;
+    border-radius: 24px;
+    background: var(--liquid-card-bg);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid var(--liquid-border);
+    box-shadow: var(--liquid-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    animation: iosModalUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+}
+
+@keyframes iosModalUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.pwa-ios-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pwa-ios-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pwa-ios-apple-icon {
+    font-size: 1.4rem;
+    color: var(--accent);
+}
+
+.pwa-ios-header h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.pwa-ios-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pwa-ios-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(2, 132, 199, 0.06);
+    border: 1px solid var(--liquid-border-subtle);
+    font-size: 0.88rem;
+    color: var(--text-main);
+}
+
+.pwa-ios-step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pwa-ios-icon-highlight {
+    color: var(--accent);
+    margin: 0 4px;
+}
+
+.pwa-ios-done-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    min-height: 48px;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS: TABLETS & SMARTPHONES OPTIMIZATION
+   ========================================================================== */
+
+/* Tablets & Small Laptops (<= 860px) */
 @media (max-width: 860px) {
+    .glass-nav {
+        width: min(95%, 980px);
+        padding: 0 14px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: inline-flex;
+    }
+
     .profile-card {
         grid-template-columns: 1fr;
         text-align: center;
+        gap: 22px;
     }
     
     .profile-avatar {
         margin: 0 auto;
+        width: 130px;
+        height: 130px;
     }
     
     .contact-row {
         justify-content: center;
     }
-    
-    .nav-links {
-        display: none;
+
+    .highlights-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
     }
-    
-    .brain-hud {
-        bottom: 12px;
-        padding: 10px 14px;
+
+    .cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+        gap: 16px;
+    }
+
+    .skills-category-grid,
+    .ref-grid,
+    .research-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+        gap: 16px;
     }
 }
 
+/* Smartphones (<= 600px) */
 @media (max-width: 600px) {
+    .container {
+        padding: 0 16px;
+    }
+
     .glass-nav {
-        padding: 0 14px;
+        height: 56px;
+        padding: 0 10px 0 14px;
+        top: calc(10px + env(safe-area-inset-top, 0px));
+        width: 96%;
     }
-    
-    .glass-card {
-        padding: 22px 18px;
+
+    .brand-badge {
+        font-size: 0.92rem;
+        gap: 6px;
     }
-    
-    .section-title {
-        font-size: 1.5rem;
+
+    .brand-dot {
+        width: 6px;
+        height: 6px;
     }
-    
-    #hero {
-        padding-top: calc(var(--nav-height) + 10px);
+
+    .nav-controls {
+        gap: 3px;
     }
-    
-    #brain-container {
-        height: 55vh;
-        min-height: 380px;
+
+    .btn-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 0.88rem;
     }
-    
-    .hud-desc {
+
+    .btn-cv-pill span {
         display: none;
+    }
+
+    .btn-cv-pill {
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    #hero {
+        min-height: 85vh;
+        padding-top: calc(var(--nav-height) + 24px);
+        padding-bottom: 24px;
+    }
+
+    #svg-morph-wrapper {
+        max-width: 320px;
+        height: 80px;
+    }
+
+    .scroll-indicator {
+        font-size: 0.76rem;
+        padding: 6px 14px;
+    }
+
+    .glass-card {
+        padding: 20px 16px;
+        border-radius: 18px;
+    }
+
+    .section-header {
+        margin: 40px auto 18px;
+        padding: 18px 20px;
+        border-radius: 18px;
+        width: 96%;
+    }
+
+    .section-title {
+        font-size: clamp(1.35rem, 5.5vw, 1.7rem);
+    }
+
+    .section-desc {
+        font-size: 0.84rem;
+    }
+
+    .profile-info h1 {
+        font-size: clamp(1.5rem, 6vw, 1.95rem);
+    }
+
+    .profile-tagline {
+        font-size: 0.92rem;
+    }
+
+    .profile-bio {
+        font-size: 0.86rem;
+        line-height: 1.6;
+    }
+
+    .contact-item {
+        font-size: 0.82rem;
+        word-break: break-all;
+    }
+
+    .highlights-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 14px 12px;
+        border-radius: 14px;
+    }
+
+    .stat-number {
+        font-size: 1.4rem;
+    }
+
+    .stat-label {
+        font-size: 0.78rem;
+    }
+
+    .stat-detail {
+        font-size: 0.70rem;
+    }
+
+    .cards-grid,
+    .skills-category-grid,
+    .ref-grid,
+    .research-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .filter-bar {
+        gap: 6px;
+    }
+
+    .filter-btn {
+        padding: 6px 12px;
+        font-size: 0.76rem;
+    }
+
+    .scroll-top-btn {
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        right: 14px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Extra-Narrow Phones (<= 380px) */
+@media (max-width: 380px) {
+    .glass-nav {
+        padding: 0 8px 0 10px;
+    }
+
+    .brand-badge span {
+        font-size: 0.85rem;
+    }
+
+    .btn-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 0.82rem;
+    }
+
+    .highlights-grid {
+        grid-template-columns: 1fr;
     }
 }
 

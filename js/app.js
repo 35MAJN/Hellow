@@ -15,6 +15,14 @@ const translations = {
         "nav-skills": "Skills",
         "nav-cv": "Curriculum Vitae",
         "scroll-indicator": "Explore Core Focus & Research",
+        "pwa-install": "Install App",
+        "pwa-installed": "Installed",
+        "pwa-install-banner": "Install app for fast offline access",
+        "pwa-install-btn": "Install",
+        "pwa-ios-title": "Install on iPhone / iPad",
+        "pwa-ios-step1": "1. Tap the Share button in Safari toolbar below.",
+        "pwa-ios-step2": "2. Scroll down and select 'Add to Home Screen'.",
+        "pwa-ios-step3": "3. Tap 'Add' in the top-right corner to install.",
         
         // Hero / Brain HUD
         "hud-badge": "Neural Inverse Problem",
@@ -223,6 +231,14 @@ const translations = {
         "nav-skills": "مهارت‌ها",
         "nav-cv": "رزومه (CV)",
         "scroll-indicator": "مشاهده تمرکز علمی و پژوهش‌ها",
+        "pwa-install": "نصب برنامه",
+        "pwa-installed": "نصب شده",
+        "pwa-install-banner": "نصب وب‌اپلیکیشن برای دسترسی سریع و آفلاین",
+        "pwa-install-btn": "نصب",
+        "pwa-ios-title": "نصب در آیفون / آیپد",
+        "pwa-ios-step1": "۱. روی دکمه اشتراک‌گذاری (Share) در نوار پایین مرورگر سافاری ضربه بزنید.",
+        "pwa-ios-step2": "۲. به پایین رفته و گزینه «Add to Home Screen» را انتخاب کنید.",
+        "pwa-ios-step3": "۳. در گوشه بالا دکمه «Add» را برای نصب بزنید.",
 
         // Hero / Brain HUD
         "hud-badge": "حل مسئله معکوس عصبی",
@@ -465,7 +481,7 @@ function toggleTheme() {
     const isDark = body.getAttribute('data-theme') === 'dark';
 
     if (isDark) {
-        body.removeAttribute('data-theme');
+        body.setAttribute('data-theme', 'light');
         if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
         localStorage.setItem('theme', 'light');
     } else {
@@ -495,12 +511,16 @@ window.filterCards = function(category, btnEl) {
 
 // Document Ready Initialization
 document.addEventListener('DOMContentLoaded', () => {
-    // Theme initialization
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    // Theme initialization (default is bright / light theme)
+    const savedTheme = localStorage.getItem('theme') || 'light';
     if (savedTheme === 'dark') {
         document.body.setAttribute('data-theme', 'dark');
         const themeBtn = document.getElementById('theme-btn');
         if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+        document.body.setAttribute('data-theme', 'light');
+        const themeBtn = document.getElementById('theme-btn');
+        if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
     }
 
     // Language Toggle Button
@@ -525,6 +545,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scroll Elements: Progress Bar, Back to Top Button, Side Navigation Rail
     initScrollElements();
+
+    // Progressive Web App (PWA) Features & Service Worker
+    initPWA();
+
+    // Responsive Mobile & Tablet Navigation Drawer
+    initMobileNav();
 });
 
 // Interactive Futuristic Neural Scroll Elements
@@ -814,4 +840,186 @@ function initBackgroundParticles() {
         requestAnimationFrame(loop);
     }
     loop();
+}
+
+// --- PROGRESSIVE WEB APP (PWA) INSTALL & LIFECYCLE CONTROLLER ---
+function initPWA() {
+    // 1. Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then((reg) => {
+                console.log('MAJN 35 PWA: ServiceWorker active, scope:', reg.scope);
+            }).catch((err) => {
+                console.warn('MAJN 35 PWA: ServiceWorker registration error:', err);
+            });
+        });
+    }
+
+    // 2. UI Elements
+    const pwaNavBtn = document.getElementById('pwa-install-btn');
+    const pwaDrawerBtn = document.getElementById('mobile-drawer-pwa');
+    const pwaBanner = document.getElementById('pwa-banner');
+    const iosModal = document.getElementById('pwa-ios-modal');
+    let deferredPrompt = null;
+
+    // Detect if running in standalone mode (already installed on homescreen)
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                         window.navigator.standalone === true;
+
+    // Detect iOS devices (iPhone, iPad, iPod)
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const isIOS = /iphone|ipad|ipod/.test(userAgent) && !window.MSStream;
+
+    if (isStandalone) {
+        if (pwaNavBtn) pwaNavBtn.style.display = 'none';
+        if (pwaDrawerBtn) pwaDrawerBtn.style.display = 'none';
+        if (pwaBanner) pwaBanner.style.display = 'none';
+        return;
+    }
+
+    // On iOS Safari, display-mode beforeinstallprompt is not supported,
+    // so we proactively enable install triggers to guide users!
+    if (isIOS) {
+        if (pwaNavBtn) pwaNavBtn.style.display = 'inline-flex';
+        if (pwaDrawerBtn) pwaDrawerBtn.style.display = 'block';
+        if (pwaBanner && !sessionStorage.getItem('pwa_banner_dismissed')) {
+            setTimeout(() => {
+                pwaBanner.style.display = 'flex';
+            }, 2500);
+        }
+    }
+
+    // Chromium / Android / Edge / Desktop beforeinstallprompt hook
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        if (pwaNavBtn) pwaNavBtn.style.display = 'inline-flex';
+        if (pwaDrawerBtn) pwaDrawerBtn.style.display = 'block';
+        if (pwaBanner && !sessionStorage.getItem('pwa_banner_dismissed')) {
+            setTimeout(() => {
+                pwaBanner.style.display = 'flex';
+            }, 1800);
+        }
+    });
+
+    async function handleInstallClick() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                if (pwaNavBtn) pwaNavBtn.style.display = 'none';
+                if (pwaDrawerBtn) pwaDrawerBtn.style.display = 'none';
+                if (pwaBanner) pwaBanner.style.display = 'none';
+            }
+            deferredPrompt = null;
+        } else if (isIOS) {
+            if (iosModal) {
+                iosModal.style.display = 'flex';
+                iosModal.setAttribute('aria-hidden', 'false');
+            }
+        } else {
+            // General guidance for browsers
+            alert(document.documentElement.lang === 'fa' 
+                ? 'برای نصب، از منوی مرورگر خود گزینه «Install» یا «Add to Home screen» را انتخاب کنید.' 
+                : 'To install, click the Install icon in your browser address bar or select "Add to Home screen" in browser menu.');
+        }
+    }
+
+    if (pwaNavBtn) pwaNavBtn.addEventListener('click', handleInstallClick);
+    const bannerInstallBtn = document.getElementById('pwa-banner-install-btn');
+    if (bannerInstallBtn) bannerInstallBtn.addEventListener('click', handleInstallClick);
+    const drawerInstallBtn = document.getElementById('mobile-drawer-install-btn');
+    if (drawerInstallBtn) drawerInstallBtn.addEventListener('click', handleInstallClick);
+
+    // Dismiss banner
+    const bannerCloseBtn = document.getElementById('pwa-banner-close-btn');
+    if (bannerCloseBtn) {
+        bannerCloseBtn.addEventListener('click', () => {
+            if (pwaBanner) pwaBanner.style.display = 'none';
+            sessionStorage.setItem('pwa_banner_dismissed', 'true');
+        });
+    }
+
+    // iOS Guidance Modal controls
+    const iosCloseBtn = document.getElementById('pwa-ios-close-btn');
+    const iosDoneBtn = document.getElementById('pwa-ios-done-btn');
+    const iosBackdrop = document.getElementById('pwa-ios-backdrop');
+    [iosCloseBtn, iosDoneBtn, iosBackdrop].forEach(el => {
+        if (el) el.addEventListener('click', () => {
+            if (iosModal) {
+                iosModal.style.display = 'none';
+                iosModal.setAttribute('aria-hidden', 'true');
+            }
+        });
+    });
+
+    // App Installed listener
+    window.addEventListener('appinstalled', () => {
+        deferredPrompt = null;
+        if (pwaNavBtn) pwaNavBtn.style.display = 'none';
+        if (pwaDrawerBtn) pwaDrawerBtn.style.display = 'none';
+        if (pwaBanner) pwaBanner.style.display = 'none';
+    });
+}
+
+// --- RESPONSIVE MOBILE & TABLET NAVIGATION DRAWER ---
+function initMobileNav() {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const drawer = document.getElementById('mobile-nav-drawer');
+    const drawerClose = document.getElementById('mobile-drawer-close');
+    const backdrop = document.getElementById('mobile-drawer-backdrop');
+    const links = document.querySelectorAll('.mobile-nav-link');
+
+    if (!menuBtn || !drawer) return;
+
+    function openDrawer() {
+        drawer.classList.add('open');
+        drawer.setAttribute('aria-hidden', 'false');
+        menuBtn.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('mobile-drawer-active');
+    }
+
+    function closeDrawer() {
+        drawer.classList.remove('open');
+        drawer.setAttribute('aria-hidden', 'true');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('mobile-drawer-active');
+    }
+
+    menuBtn.addEventListener('click', () => {
+        if (drawer.classList.contains('open')) {
+            closeDrawer();
+        } else {
+            openDrawer();
+        }
+    });
+
+    if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+    if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            closeDrawer();
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (drawer.classList.contains('open')) closeDrawer();
+            const iosModal = document.getElementById('pwa-ios-modal');
+            if (iosModal && iosModal.style.display !== 'none') {
+                iosModal.style.display = 'none';
+                iosModal.setAttribute('aria-hidden', 'true');
+            }
+        }
+    });
 }
