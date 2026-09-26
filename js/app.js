@@ -443,6 +443,16 @@ function setLanguage(lang) {
         langBtn.title = (lang === 'en') ? 'Switch to Persian' : 'تغییر به انگلیسی';
     }
 
+    const thanosBtn = document.getElementById('thanos-btn');
+    if (thanosBtn) {
+        const isSnapped = thanosBtn.classList.contains('snapped');
+        if (lang === 'fa') {
+            thanosBtn.title = isSnapped ? 'سنگ زمان: بازگردانی واقعیت و کارت‌ها' : 'بشکن تانوس: پودر کردن ۵۰٪ از کارت‌ها';
+        } else {
+            thanosBtn.title = isSnapped ? 'Time Stone: Reverse Snap & Reassemble Reality' : 'Thanos Snap: Disintegrate 50% of Content';
+        }
+    }
+
     if (typeof window.focusBrainRegion === 'function' && window.currentRegionKey) {
         window.focusBrainRegion(window.currentRegionKey);
     }

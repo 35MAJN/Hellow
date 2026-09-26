@@ -1270,3 +1270,361 @@ footer {
         display: none;
     }
 }
+
+/* ==========================================================================
+   THANOS DISINTEGRATION & TIME STONE REASSEMBLY ANIMATIONS
+   Realistic Ash, Cosmic Embers, Temporal Shockwaves, and Smooth Physics
+   ========================================================================== */
+
+/* 1. Infinity Gauntlet Nav Button */
+.thanos-btn {
+    position: relative;
+    overflow: visible;
+}
+
+.gauntlet-icon-wrap {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.gauntlet-hand {
+    font-size: 0.95rem;
+    color: #f59e0b;
+    filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.45));
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.thanos-btn:hover .gauntlet-hand {
+    transform: scale(1.15) rotate(-6deg);
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8));
+}
+
+.infinity-gems-bar {
+    display: flex;
+    gap: 2px;
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.gem-dot {
+    width: 3.5px;
+    height: 3.5px;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 4px currentColor;
+    animation: gemPulse 2s infinite alternate ease-in-out;
+}
+
+.gem-space   { background: #38bdf8; color: #38bdf8; animation-delay: 0.0s; }
+.gem-mind    { background: #facc15; color: #facc15; animation-delay: 0.2s; }
+.gem-reality { background: #ef4444; color: #ef4444; animation-delay: 0.4s; }
+.gem-power   { background: #a855f7; color: #a855f7; animation-delay: 0.6s; }
+.gem-time    { background: #10b981; color: #10b981; animation-delay: 0.8s; }
+.gem-soul    { background: #f97316; color: #f97316; animation-delay: 1.0s; }
+
+@keyframes gemPulse {
+    0% { transform: scale(0.85); opacity: 0.7; }
+    100% { transform: scale(1.3); opacity: 1; }
+}
+
+/* Time Stone Active State on the Nav Button */
+.thanos-btn.snapped {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.15);
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+}
+
+.time-stone-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.time-gem-icon {
+    font-size: 0.95rem;
+    color: #10b981;
+    filter: drop-shadow(0 0 6px #10b981);
+    animation: timeStoneSpin 3.5s infinite linear;
+}
+
+.time-gem-core {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%);
+    animation: timeStonePulse 1.6s infinite alternate ease-in-out;
+}
+
+@keyframes timeStonePulse {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(1.6); opacity: 1; }
+}
+
+@keyframes timeStoneSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 2. Fullscreen Cosmic Shockwave Flash */
+.thanos-shockwave-ring {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 3px solid rgba(245, 158, 11, 0.85);
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.8), inset 0 0 40px rgba(168, 85, 247, 0.6);
+    pointer-events: none;
+    z-index: 10006;
+    animation: cosmicShockwave 1.1s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes cosmicShockwave {
+    0% {
+        width: 10px;
+        height: 10px;
+        opacity: 1;
+        border-width: 6px;
+    }
+    100% {
+        width: 280vmax;
+        height: 280vmax;
+        opacity: 0;
+        border-width: 1px;
+    }
+}
+
+/* Time Stone Temporal Green Wave */
+.time-stone-wave-ring {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 3px solid rgba(16, 185, 129, 0.9);
+    box-shadow: 0 0 50px rgba(16, 185, 129, 0.85), inset 0 0 30px rgba(52, 211, 153, 0.7);
+    pointer-events: none;
+    z-index: 10006;
+    animation: timeStoneRipple 1.25s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes timeStoneRipple {
+    0% {
+        width: 10px;
+        height: 10px;
+        opacity: 1;
+        border-width: 6px;
+    }
+    100% {
+        width: 280vmax;
+        height: 280vmax;
+        opacity: 0;
+        border-width: 1px;
+    }
+}
+
+/* 3. Floating Liquid Thanos HUD Toast */
+.thanos-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(40px) scale(0.94);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 10003;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--liquid-card-bg);
+    backdrop-filter: blur(28px) saturate(210%);
+    -webkit-backdrop-filter: blur(28px) saturate(210%);
+    border: 1px solid var(--liquid-border);
+    box-shadow: var(--liquid-hover-shadow), 0 8px 30px rgba(0, 0, 0, 0.3);
+    color: var(--text-main);
+    font-size: 0.84rem;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+    max-width: 92vw;
+}
+
+.thanos-toast.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.thanos-toast.type-snap {
+    border-color: rgba(245, 158, 11, 0.45);
+}
+
+.thanos-toast.type-restore {
+    border-color: rgba(16, 185, 129, 0.55);
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toast-icon {
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+}
+
+.toast-action-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.toast-action-btn:hover {
+    transform: scale(1.04);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.55);
+    filter: brightness(1.1);
+}
+
+.toast-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+    transition: color 0.2s ease;
+}
+
+.toast-close-btn:hover {
+    color: var(--text-main);
+}
+
+/* 4. Per-Card Mini Disintegrate Trigger */
+.card-snap-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--liquid-card-bg);
+    border: 1px solid var(--liquid-border-subtle);
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    cursor: pointer;
+    opacity: 0.28;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 5;
+}
+
+[dir="rtl"] .card-snap-btn {
+    right: auto;
+    left: 14px;
+}
+
+.glass-card:hover .card-snap-btn {
+    opacity: 0.75;
+}
+
+.card-snap-btn:hover {
+    opacity: 1;
+    background: var(--accent-glow);
+    color: #f59e0b;
+    border-color: #f59e0b;
+    transform: scale(1.18) rotate(15deg);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+/* Disintegrated State */
+.glass-card.thanos-vanished {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+/* ==========================================================================
+   SMOOTH & REALISTIC GENERAL ANIMATIONS
+   Hardware-accelerated Scroll Entrance, 3D Perspective Tilt, Fluid Physics
+   ========================================================================== */
+
+/* Smooth Scroll Entrance Observer */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-on-scroll.in-view {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+/* Realistic 3D Tilt Card Perspective */
+.glass-card {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform, box-shadow;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.35s ease;
+}
+
+/* Dynamic Cursor Specular Sheen on 3D Hover */
+.glass-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        circle 320px at var(--cursor-sheen-x, 50%) var(--cursor-sheen-y, 0%),
+        rgba(255, 255, 255, 0.16) 0%,
+        transparent 70%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.glass-card:hover::after {
+    opacity: 1;
+}
+
+[data-theme="dark"] .glass-card::after {
+    background: radial-gradient(
+        circle 320px at var(--cursor-sheen-x, 50%) var(--cursor-sheen-y, 0%),
+        rgba(56, 189, 248, 0.14) 0%,
+        transparent 70%
+    );
+}
+

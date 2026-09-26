@@ -23,6 +23,8 @@
     
     <!-- Three.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- High-Performance DOM Rasterizer for Thanos Particle Disintegration -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <!-- Elevated Glassmorphism Stylesheet -->
     <link rel="stylesheet" href="css/glass.css">
@@ -116,6 +118,19 @@
         </div>
 
         <div class="nav-controls">
+            <button class="btn-icon thanos-btn" id="thanos-btn" title="Thanos Snap: Disintegrate 50% of Content" aria-label="Thanos Snap">
+                <span class="gauntlet-icon-wrap">
+                    <i class="fas fa-hand-sparkles gauntlet-hand"></i>
+                    <span class="infinity-gems-bar">
+                        <span class="gem-dot gem-space"></span>
+                        <span class="gem-dot gem-mind"></span>
+                        <span class="gem-dot gem-reality"></span>
+                        <span class="gem-dot gem-power"></span>
+                        <span class="gem-dot gem-time"></span>
+                        <span class="gem-dot gem-soul"></span>
+                    </span>
+                </span>
+            </button>
             <button class="btn-icon" id="lang-btn" title="Toggle Language (English / Persian)">
                 <i class="fas fa-language"></i>
             </button>
@@ -882,5 +897,7 @@
     <!-- Application Logic & Brain Simulation Scripts -->
     <script src="js/app.js"></script>
     <script src="js/brain-sim.js"></script>
+    <!-- Thanos Disintegration & Time Stone Reassembly Engine -->
+    <script src="js/thanos.js"></script>
 </body>
 </html>

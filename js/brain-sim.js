@@ -43,6 +43,7 @@ window.addEventListener('load', async () => {
     let finalBaseColors; 
     let brainMesh;
     let colorAttr;
+    let alphaAttr;
 
     // --- SECTION SPECIFIC VIEW ANGLES (ONLY ROTATE ON X AND Y ANGLES) ---
     // rotX = pitch (looking up/down, in radians)
@@ -252,21 +253,40 @@ window.addEventListener('load', async () => {
     const dynamicColors = new Float32Array(finalBaseColors);
     geometry.setAttribute('color', new THREE.BufferAttribute(dynamicColors, 3));
 
-    // Particle dot size reduced to one-quarter (2.1 -> 0.525)
+    // Per-vertex alpha attribute ensuring inactive dots have lower opacity than active regions,
+    // with a strict floor of 0.10 opacity minimum at all times!
+    const alphas = new Float32Array(pointsCount);
+    alphas.fill(0.10);
+    geometry.setAttribute('alpha', new THREE.BufferAttribute(alphas, 1));
+
+    // Particle dot size with per-vertex alpha modulation
     const material = new THREE.PointsMaterial({
         size: 0.525,
         vertexColors: true,
         transparent: true,
-        opacity: 0.82,
+        opacity: 1.0,
         depthWrite: false,
         map: circleTexture
     });
+
+    // Custom shader compilation hook to support per-vertex alpha on PointsMaterial
+    material.onBeforeCompile = (shader) => {
+        shader.vertexShader = 'attribute float alpha;\nvarying float vAlpha;\n' + shader.vertexShader;
+        shader.vertexShader = shader.vertexShader.replace(
+            '#include <color_vertex>',
+            '#include <color_vertex>\nvAlpha = alpha;'
+        );
+        shader.fragmentShader = 'varying float vAlpha;\n' + shader.fragmentShader;
+        shader.fragmentShader = shader.fragmentShader.replace(
+            '#include <color_fragment>',
+            '#include <color_fragment>\ndiffuseColor.a *= vAlpha;'
+        );
+    };
 
     // Theme awareness for 3D brain
     function updateBrainTheme() {
         const isDark = document.body.getAttribute('data-theme') === 'dark';
         if (material) {
-            material.opacity = isDark ? 0.82 : 0.88;
             material.size = isDark ? 0.525 : 0.58;
         }
     }
@@ -280,6 +300,80 @@ window.addEventListener('load', async () => {
     scene.add(brainMesh);
 
     colorAttr = geometry.attributes.color;
+    alphaAttr = geometry.attributes.alpha;
+
+    // --- ANATOMICAL CORTICAL REGION PROFILES FOR ACTIVE REGION HIGHLIGHTING ---
+    const REGION_PROFILES = {
+        'research': {
+            // Occipital / visual cortex & posterior dipole (3D EEG inverse problem focus)
+            check: (x, y, z) => {
+                const dx = x - 0;
+                const dy = y - 0.5;
+                const dz = z - (-3.8);
+                const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                return Math.max(0, 1.0 - dist / 3.8);
+            }
+        },
+        'education': {
+            // Temporal lobes (bilateral signal processing)
+            check: (x, y, z) => {
+                const distL = Math.sqrt(Math.pow(x - 3.4, 2) + Math.pow(y + 0.4, 2) + Math.pow(z + 0.2, 2));
+                const distR = Math.sqrt(Math.pow(x + 3.4, 2) + Math.pow(y + 0.4, 2) + Math.pow(z + 0.2, 2));
+                return Math.max(Math.max(0, 1.0 - distL / 3.4), Math.max(0, 1.0 - distR / 3.4));
+            }
+        },
+        'experience': {
+            // Motor strip (coronal arch across superior cortex)
+            check: (x, y, z) => {
+                const distY = Math.abs(y - 3.4);
+                const distZ = Math.abs(z - 0.2);
+                return Math.max(0, 1.0 - (distY * 0.9 + distZ * 1.3) / 3.2);
+            }
+        },
+        'projects': {
+            // Broca's speech area & anterolateral left cortex
+            check: (x, y, z) => {
+                const dist = Math.sqrt(Math.pow(x - (-2.5), 2) + Math.pow(y - 1.0, 2) + Math.pow(z - 2.4, 2));
+                return Math.max(0, 1.0 - dist / 3.5);
+            }
+        },
+        'honors': {
+            // Frontal pole & reward pathways
+            check: (x, y, z) => {
+                const dist = Math.sqrt(Math.pow(x - 0, 2) + Math.pow(y - 1.8, 2) + Math.pow(z - 3.6, 2));
+                return Math.max(0, 1.0 - dist / 3.5);
+            }
+        },
+        'skills': {
+            // Cerebellar synaptic base & brainstem
+            check: (x, y, z) => {
+                const dist = Math.sqrt(Math.pow(x - 0, 2) + Math.pow(y - (-2.6), 2) + Math.pow(z - (-2.5), 2));
+                return Math.max(0, 1.0 - dist / 3.5);
+            }
+        },
+        'references': {
+            // Medial network / inter-hemispheric commissure
+            check: (x, y, z) => {
+                const distX = Math.abs(x);
+                const dist = Math.sqrt(distX * distX + Math.pow(y - 1.5, 2) + Math.pow(z - 0.5, 2));
+                return Math.max(0, 1.0 - dist / 3.5);
+            }
+        },
+        'profile': {
+            // Prefrontal executive cortex
+            check: (x, y, z) => {
+                const dist = Math.sqrt(Math.pow(x - (-1.0), 2) + Math.pow(y - 1.6, 2) + Math.pow(z - 3.0, 2));
+                return Math.max(0, 1.0 - dist / 3.6);
+            }
+        },
+        'hero': {
+            // Overview: Gentle rhythmic brain wave activity across frontal cortex
+            check: (x, y, z, time) => {
+                const wave = 0.5 + 0.45 * Math.sin(time * 2.0 + (z * 0.4 + y * 0.3));
+                return Math.max(0, Math.min(1.0, wave));
+            }
+        }
+    };
 
     // --- SUDDEN NEURAL ACTIVITY SOURCES ---
     const maxSources = 6;
@@ -459,15 +553,18 @@ window.addEventListener('load', async () => {
             }
         });
 
-        // Update surface vertex colors
-        if (brainMesh && colorAttr) {
+        // Update surface vertex colors and per-point alpha opacity
+        if (brainMesh && colorAttr && alphaAttr) {
+            const clockTime = performance.now() * 0.001;
+            const currentProfile = REGION_PROFILES[activeSectionKey] || REGION_PROFILES['hero'];
+
             for (let i = 0; i < pointsCount; i++) {
                 let vx = finalPositions[i * 3];
                 let vy = finalPositions[i * 3 + 1];
                 let vz = finalPositions[i * 3 + 2];
                 
+                // 1. Spontaneous Neural Dipole Intensity
                 let totalIntensity = 0;
-                
                 for (let j = 0; j < maxSources; j++) {
                     let s = activeSources[j];
                     if (s.active) {
@@ -482,9 +579,29 @@ window.addEventListener('load', async () => {
                         totalIntensity += Math.pow(intensity * popMultiplier, 2.5); 
                     }
                 }
-                
                 totalIntensity = Math.min(1.0, totalIntensity);
 
+                // 2. Active Cortical Region Profile Factor
+                let regionFactor = 0;
+                if (currentProfile && typeof currentProfile.check === 'function') {
+                    regionFactor = currentProfile.check(vx, vy, vz, clockTime);
+                }
+
+                // Combined active potential
+                const combinedActivity = Math.min(1.0, Math.max(regionFactor, totalIntensity));
+
+                // 3. OPACITY CALCULATION:
+                // "inactive dots opacity become less than active region, but all dots must have 0.1 opacity at least"
+                // Inactive dots settle at 0.10. Active dots smoothly rise to ~0.95.
+                const targetAlpha = Math.max(0.10, 0.10 + combinedActivity * 0.85);
+
+                // Smooth temporal easing (prevents visual flashing and gives realistic fluid neural response)
+                const prevAlpha = alphaAttr.getX(i);
+                let currentAlpha = prevAlpha + (targetAlpha - prevAlpha) * 0.12;
+                currentAlpha = Math.max(0.10, Math.min(1.0, currentAlpha));
+                alphaAttr.setX(i, currentAlpha);
+
+                // 4. Color calculation
                 let baseR = finalBaseColors[i * 3];
                 let baseG = finalBaseColors[i * 3 + 1];
                 let baseB = finalBaseColors[i * 3 + 2];
@@ -493,17 +610,17 @@ window.addEventListener('load', async () => {
                 let g = baseG; 
                 let b = baseB;
                 
-                if (totalIntensity > 0.02) {
+                if (combinedActivity > 0.05) {
                     let targetHot;
-                    if (totalIntensity > 0.6) {
+                    if (totalIntensity > 0.6 || combinedActivity > 0.75) {
                         targetHot = hotGold;
-                    } else if (totalIntensity > 0.3) {
+                    } else if (totalIntensity > 0.3 || combinedActivity > 0.45) {
                         targetHot = hotRGB2;
                     } else {
                         targetHot = hotRGB1;
                     }
 
-                    let lerpFactor = totalIntensity * 2.0;
+                    let lerpFactor = combinedActivity * 1.5;
                     if (lerpFactor > 1) lerpFactor = 1;
                     
                     r = baseR + (targetHot.r - baseR) * lerpFactor;
@@ -515,6 +632,7 @@ window.addEventListener('load', async () => {
             }
             
             colorAttr.needsUpdate = true;
+            alphaAttr.needsUpdate = true;
         }
 
         renderer.render(scene, camera);
