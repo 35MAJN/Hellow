@@ -517,11 +517,24 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollElements();
 });
 
-// Interactive Scroll Elements
+// Interactive Futuristic Neural Scroll Elements
 function initScrollElements() {
     const progressBar = document.getElementById('scroll-progress-bar');
+    const telemetryElectrode = document.getElementById('telemetry-electrode');
+    const telemetryInfo = document.getElementById('telemetry-info');
+    const telemetryPct = document.getElementById('telemetry-pct');
     const scrollTopBtn = document.getElementById('scroll-to-top-btn');
+    const ringCircle = document.getElementById('scroll-ring-circle');
+    const btnPct = document.getElementById('scroll-btn-pct');
     const railDots = document.querySelectorAll('.scroll-rail-dot');
+    
+    // Total circumference for r=23 is 2 * PI * 23 ≈ 144.51
+    const circumference = 2 * Math.PI * 23;
+    if (ringCircle) {
+        ringCircle.style.strokeDasharray = `${circumference}`;
+        ringCircle.style.strokeDashoffset = `${circumference}`;
+    }
+
     const sections = [
         document.getElementById('hero'),
         document.getElementById('research'),
@@ -537,22 +550,36 @@ function initScrollElements() {
         const winScroll = window.scrollY || document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+        const boundedScrolled = Math.min(100, Math.max(0, scrolled));
+        const roundedScrolled = Math.round(boundedScrolled);
         
+        // 1. Top Neural Oscilloscope Progress Bar
         if (progressBar) {
-            progressBar.style.width = `${Math.min(100, Math.max(0, scrolled))}%`;
+            progressBar.style.width = `${boundedScrolled}%`;
+        }
+
+        // 2. Circular Back-to-Top Button Ring and Label
+        if (ringCircle) {
+            const offset = circumference - (boundedScrolled / 100) * circumference;
+            ringCircle.style.strokeDashoffset = `${offset}`;
+        }
+        if (btnPct) {
+            btnPct.textContent = `${roundedScrolled}%`;
         }
 
         if (scrollTopBtn) {
-            if (winScroll > 360) {
+            if (winScroll > 340) {
                 scrollTopBtn.classList.add('visible');
             } else {
                 scrollTopBtn.classList.remove('visible');
             }
         }
 
-        // Active section detection for side scroll dots
+        // 3. Active Section Detection and Bio-Telemetry HUD Update
         let currentSectionId = 'hero';
-        const scrollPosition = winScroll + 220;
+        let currentDot = railDots[0];
+        const scrollPosition = winScroll + 240;
+
         sections.forEach(sec => {
             if (sec && sec.offsetTop <= scrollPosition) {
                 currentSectionId = sec.id;
@@ -562,10 +589,22 @@ function initScrollElements() {
         railDots.forEach(dot => {
             if (dot.getAttribute('data-section') === currentSectionId) {
                 dot.classList.add('active');
+                currentDot = dot;
             } else {
                 dot.classList.remove('active');
             }
         });
+
+        // 4. Update Neural Telemetry readout
+        if (currentDot) {
+            const ch = currentDot.getAttribute('data-ch');
+            const info = currentDot.getAttribute('data-info');
+            if (telemetryElectrode && ch) telemetryElectrode.textContent = ch;
+            if (telemetryInfo && info) telemetryInfo.textContent = info;
+        }
+        if (telemetryPct) {
+            telemetryPct.textContent = `${roundedScrolled}%`;
+        }
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -577,7 +616,7 @@ function initScrollElements() {
         });
     }
 
-    // Hero scroll cue click smooth scroll
+    // Hero scroll cue smooth scroll
     const heroScrollBtn = document.querySelector('#hero .scroll-indicator');
     if (heroScrollBtn) {
         heroScrollBtn.addEventListener('click', (e) => {

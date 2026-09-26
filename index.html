@@ -29,47 +29,117 @@
 </head>
 <body data-theme="dark">
 
-    <!-- Top Reading / Scroll Progress Bar -->
-    <div id="scroll-progress-bar" class="scroll-progress-bar" aria-label="Page reading progress"></div>
+    <!-- SVG Defs for Futuristic Gradient Elements -->
+    <svg width="0" height="0" style="position: absolute; pointer-events: none;" aria-hidden="true">
+        <defs>
+            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="50%" stop-color="#22d3ee" />
+                <stop offset="100%" stop-color="#818cf8" />
+            </linearGradient>
+        </defs>
+    </svg>
 
-    <!-- Floating Back-to-Top Button -->
-    <button id="scroll-to-top-btn" class="scroll-top-btn" title="Back to top" aria-label="Back to top">
-        <i class="fas fa-arrow-up"></i>
+    <!-- 1. Futuristic Neural Signal Stream Progress & Telemetry HUD -->
+    <div id="scroll-progress-container" class="scroll-progress-container" aria-label="Page reading depth and neural channel telemetry">
+        <div id="scroll-progress-bar" class="scroll-progress-bar">
+            <span class="scroll-spark-head"></span>
+        </div>
+    </div>
+    <div id="neural-scroll-telemetry" class="neural-scroll-telemetry" aria-label="Neural Telemetry">
+        <span class="telemetry-pulse"></span>
+        <span class="telemetry-tag" id="telemetry-electrode">CH-00 // FPZ</span>
+        <span class="telemetry-sep">|</span>
+        <span class="telemetry-data" id="telemetry-info">RESTING CORTEX · 3D EEG MATRIX</span>
+        <span class="telemetry-pct" id="telemetry-pct">0%</span>
+    </div>
+
+    <!-- 2. Futuristic Liquid Neural Dipole Back-to-Top Button -->
+    <button id="scroll-to-top-btn" class="scroll-top-btn" title="Ascend to Cortex (Top)" aria-label="Back to top">
+        <svg class="scroll-ring-svg" viewBox="0 0 52 52">
+            <circle class="scroll-ring-bg" cx="26" cy="26" r="23"></circle>
+            <circle class="scroll-ring-progress" id="scroll-ring-circle" cx="26" cy="26" r="23"></circle>
+        </svg>
+        <div class="scroll-btn-inner">
+            <i class="fas fa-arrow-up"></i>
+            <span class="scroll-pct-label" id="scroll-btn-pct">0%</span>
+        </div>
     </button>
 
-    <!-- Floating Vertical Side Scroll Rail -->
-    <nav id="scroll-nav-rail" class="scroll-nav-rail" aria-label="Section navigation">
-        <a href="#hero" class="scroll-rail-dot active" data-section="hero" title="Overview">
-            <span class="rail-tooltip">Overview</span>
-            <span class="rail-dot-indicator"></span>
+    <!-- 3. Futuristic 10-20 Stereotaxic BCI Neural Array (Side Scroll Rail) -->
+    <nav id="scroll-nav-rail" class="scroll-nav-rail" aria-label="10-20 Stereotaxic BCI Neural Array Navigation">
+        <div class="rail-neural-bus" aria-hidden="true"></div>
+        <a href="#hero" class="scroll-rail-dot active" data-section="hero" data-ch="CH-00 // FPZ" data-info="RESTING CORTEX · 3D EEG MATRIX" title="Fpz · Overview">
+            <span class="rail-ch-label">Fpz</span>
+            <span class="rail-dot-indicator"><span class="rail-dot-core"></span></span>
+            <div class="rail-tooltip">
+                <span class="rail-tt-ch">CH-00 // FPZ (FRONTAL POLE)</span>
+                <span class="rail-tt-title">Overview & Morphing Logo</span>
+                <span class="rail-tt-meta">Signal Processing & Neural Engineering</span>
+            </div>
         </a>
-        <a href="#research" class="scroll-rail-dot" data-section="research" title="Research">
-            <span class="rail-tooltip">Research</span>
-            <span class="rail-dot-indicator"></span>
+        <a href="#research" class="scroll-rail-dot" data-section="research" data-ch="CH-01 // CZ" data-info="3D INVERSE DIPOLES · TBME MANUSCRIPT" title="Cz · Research & Publications">
+            <span class="rail-ch-label">Cz</span>
+            <span class="rail-dot-indicator"><span class="rail-dot-core"></span></span>
+            <div class="rail-tooltip">
+                <span class="rail-tt-ch">CH-01 // CZ (VERTEX)</span>
+                <span class="rail-tt-title">Research & Publications</span>
+                <span class="rail-tt-meta">IEEE TBME · 3D EEG Source Localization</span>
+            </div>
         </a>
-        <a href="#education" class="scroll-rail-dot" data-section="education" title="Education">
-            <span class="rail-tooltip">Education</span>
-            <span class="rail-dot-indicator"></span>
+        <a href="#education" class="scroll-rail-dot" data-section="education" data-ch="CH-02 // FZ" data-info="SIGNAL PROCESSING ACADEMICS · SBU/IUST" title="Fz · Education">
+            <span class="rail-ch-label">Fz</span>
+            <span class="rail-dot-indicator"><span class="rail-dot-core"></span></span>
+            <div class="rail-tooltip">
+                <span class="rail-tt-ch">CH-02 // FZ (FRONTAL)</span>
+                <span class="rail-tt-title">Education & Degrees</span>
+                <span class="rail-tt-meta">M.Sc. SBU & B.Sc. IUST</span>
+            </div>
         </a>
-        <a href="#experience" class="scroll-rail-dot" data-section="experience" title="Experience">
-            <span class="rail-tooltip">Experience</span>
-            <span class="rail-dot-indicator"></span>
+        <a href="#experience" class="scroll-rail-dot" data-section="experience" data-ch="CH-03 // C3" data-info="BCI LAB PIPELINES · RL & DL MODELS" title="C3 · Experience">
+            <span class="rail-ch-label">C3</span>
+            <span class="rail-dot-indicator"><span class="rail-dot-core"></span></span>
+            <div class="rail-tooltip">
+                <span class="rail-tt-ch">CH-03 // C3 (SENSORIMOTOR)</span>
+                <span class="rail-tt-title">Experience & Lab Roles</span>
+                <span class="rail-tt-meta">Neuroengineering & Data Science</span>
+            </div>
         </a>
-        <a href="#projects" class="scroll-rail-dot" data-section="projects" title="Projects">
-            <span class="rail-tooltip">Projects</span>
-            <span class="rail-dot-indicator"></span>
+        <a href="#projects" class="scroll-rail-dot" data-section="projects" data-ch="CH-04 // PZ" data-info="SPEECH ATTRIBUTION & RNNs · 99.6% ACC" title="Pz · Selected Projects">
+            <span class="rail-ch-label">Pz</span>
+            <span class="rail-dot-indicator"><span class="rail-dot-core"></span></span>
+            <div class="rail-tooltip">
+                <span class="rail-tt-ch">CH-04 // PZ (PARIETAL)</span>
+                <span class="rail-tt-title">Selected Projects</span>
+                <span class="rail-tt-meta">Syntax Voice Assistant & Bio-electromagnetics</span>
+            </div>
         </a>
-        <a href="#honors" class="scroll-rail-dot" data-section="honors" title="Awards">
-            <span class="rail-tooltip">Awards</span>
-            <span class="rail-dot-indicator"></span>
+        <a href="#honors" class="scroll-rail-dot" data-section="honors" data-ch="CH-05 // OZ" data-info="HONORS & SPS CUP HEAD OF 7" title="Oz · Honors & Awards">
+            <span class="rail-ch-label">Oz</span>
+            <span class="rail-dot-indicator"><span class="rail-dot-core"></span></span>
+            <div class="rail-tooltip">
+                <span class="rail-tt-ch">CH-05 // OZ (OCCIPITAL)</span>
+                <span class="rail-tt-title">Honors & Awards</span>
+                <span class="rail-tt-meta">IEEE SPS Cup Head of 7 & Huawei Seeds</span>
+            </div>
         </a>
-        <a href="#skills" class="scroll-rail-dot" data-section="skills" title="Skills">
-            <span class="rail-tooltip">Skills</span>
-            <span class="rail-dot-indicator"></span>
+        <a href="#skills" class="scroll-rail-dot" data-section="skills" data-ch="CH-06 // T7" data-info="NEURAL ARSENAL & COMPUTATIONAL BCI" title="T7 · Technical Skills">
+            <span class="rail-ch-label">T7</span>
+            <span class="rail-dot-indicator"><span class="rail-dot-core"></span></span>
+            <div class="rail-tooltip">
+                <span class="rail-tt-ch">CH-06 // T7 (TEMPORAL LEFT)</span>
+                <span class="rail-tt-title">Technical Skills Arsenal</span>
+                <span class="rail-tt-meta">Deep Learning, BCI Toolboxes, PyTorch</span>
+            </div>
         </a>
-        <a href="#references" class="scroll-rail-dot" data-section="references" title="References">
-            <span class="rail-tooltip">References</span>
-            <span class="rail-dot-indicator"></span>
+        <a href="#references" class="scroll-rail-dot" data-section="references" data-ch="CH-07 // T8" data-info="ACADEMIC ENDORSEMENTS & FACULTY" title="T8 · References">
+            <span class="rail-ch-label">T8</span>
+            <span class="rail-dot-indicator"><span class="rail-dot-core"></span></span>
+            <div class="rail-tooltip">
+                <span class="rail-tt-ch">CH-07 // T8 (TEMPORAL RIGHT)</span>
+                <span class="rail-tt-title">Academic References</span>
+                <span class="rail-tt-meta">IUST, SBU & KU Leuven Faculty</span>
+            </div>
         </a>
     </nav>
 
