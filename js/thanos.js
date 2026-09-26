@@ -1,6 +1,7 @@
 /**
- * High-Performance Thanos Particle & Cinematic Materialization Engine
- * Zero-Lag Disintegration, Time Stone Reassembly, and Cosmic Appearing Effects
+ * Ultra-Lightweight High-Performance Thanos Particle & Cinematic Engine
+ * Zero-Lag Disintegration, Time Stone Reassembly, GPU-Accelerated Appearing Effects,
+ * and Procedural Web Audio Sound Suite
  * Mohammadali Javadinasab | Portfolio
  */
 
@@ -23,148 +24,264 @@
         return audioCtx;
     }
 
-    // Crisp Finger Snap + Cosmic Bass Thud
-    function playSnapSound() {
+    // Auto-unlock Web Audio on first user interaction
+    function unlockAudio() {
         const ctx = getAudioContext();
-        if (!ctx) return;
-
-        try {
-            const now = ctx.currentTime;
-
-            // 1. Crisp transient snap click
-            const bufSize = Math.floor(ctx.sampleRate * 0.04);
-            const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-            const d = buf.getChannelData(0);
-            for (let i = 0; i < bufSize; i++) {
-                d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.2));
-            }
-            const snapSrc = ctx.createBufferSource();
-            snapSrc.buffer = buf;
-
-            const snapFilt = ctx.createBiquadFilter();
-            snapFilt.type = 'bandpass';
-            snapFilt.frequency.setValueAtTime(2800, now);
-            snapFilt.Q.setValueAtTime(4.0, now);
-
-            const snapGain = ctx.createGain();
-            snapGain.gain.setValueAtTime(0.75, now);
-            snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-
-            snapSrc.connect(snapFilt);
-            snapFilt.connect(snapGain);
-            snapGain.connect(ctx.destination);
-            snapSrc.start(now);
-
-            // 2. Cosmic sub-drop resonance
-            const osc = ctx.createOscillator();
-            const oscGain = ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(110, now);
-            osc.frequency.exponentialRampToValueAtTime(32, now + 0.55);
-
-            oscGain.gain.setValueAtTime(0.5, now);
-            oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
-
-            osc.connect(oscGain);
-            oscGain.connect(ctx.destination);
-            osc.start(now);
-            osc.stop(now + 0.55);
-        } catch (e) {
-            // Audio context silently handled
+        if (ctx && ctx.state === 'suspended') {
+            ctx.resume();
         }
     }
+    ['click', 'touchstart', 'scroll', 'keydown', 'pointerdown'].forEach(evt => {
+        window.addEventListener(evt, unlockAudio, { once: true, passive: true });
+    });
 
-    // Time Stone Reversal Chime
-    function playTimeStoneSound() {
-        const ctx = getAudioContext();
-        if (!ctx) return;
+    let lastAppearSoundTime = 0;
+    let appearSoundIndex = 0;
 
-        try {
-            const now = ctx.currentTime;
-            const notes = [329.63, 440.0, 554.37, 659.25, 880.0]; // E major cosmic chord
+    const ThanosAudio = {
+        // Grand Thanos Snap (Iconic finger snap + sub-bass shockwave + wind)
+        snap: function () {
+            const ctx = getAudioContext();
+            if (!ctx) return;
 
-            notes.forEach((freq, idx) => {
+            try {
+                const now = ctx.currentTime;
+
+                // Transient: Crisp finger bone snap click
+                const snapLen = Math.floor(ctx.sampleRate * 0.03);
+                const snapBuf = ctx.createBuffer(1, snapLen, ctx.sampleRate);
+                const sData = snapBuf.getChannelData(0);
+                for (let i = 0; i < snapLen; i++) {
+                    sData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (snapLen * 0.2));
+                }
+                const snapSrc = ctx.createBufferSource();
+                snapSrc.buffer = snapBuf;
+
+                const snapFilter = ctx.createBiquadFilter();
+                snapFilter.type = 'bandpass';
+                snapFilter.frequency.setValueAtTime(3000, now);
+                snapFilter.Q.setValueAtTime(4.0, now);
+
+                const snapGain = ctx.createGain();
+                snapGain.gain.setValueAtTime(0.8, now);
+                snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+
+                snapSrc.connect(snapFilter);
+                snapFilter.connect(snapGain);
+                snapGain.connect(ctx.destination);
+                snapSrc.start(now);
+
+                // Cosmic Sub-Bass Shockwave
+                const subOsc = ctx.createOscillator();
+                const subGain = ctx.createGain();
+                subOsc.type = 'sine';
+                subOsc.frequency.setValueAtTime(95, now);
+                subOsc.frequency.exponentialRampToValueAtTime(28, now + 0.5);
+
+                subGain.gain.setValueAtTime(0.6, now);
+                subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+                subOsc.connect(subGain);
+                subGain.connect(ctx.destination);
+                subOsc.start(now);
+                subOsc.stop(now + 0.5);
+            } catch (e) {}
+        },
+
+        // Individual Card Snap
+        cardSnap: function () {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
+            try {
+                const now = ctx.currentTime;
+                const bufLen = Math.floor(ctx.sampleRate * 0.025);
+                const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+                const d = buf.getChannelData(0);
+                for (let i = 0; i < bufLen; i++) {
+                    d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufLen * 0.15));
+                }
+                const src = ctx.createBufferSource();
+                src.buffer = buf;
+
+                const filt = ctx.createBiquadFilter();
+                filt.type = 'bandpass';
+                filt.frequency.setValueAtTime(3200, now);
+
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.55, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+
+                src.connect(filt);
+                filt.connect(gain);
+                gain.connect(ctx.destination);
+                src.start(now);
+            } catch (e) {}
+        },
+
+        // Disintegration Ash Wind
+        disintegrate: function () {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
+            try {
+                const now = ctx.currentTime;
+                const len = Math.floor(ctx.sampleRate * 0.45);
+                const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+                const d = buf.getChannelData(0);
+                for (let i = 0; i < len; i++) {
+                    d[i] = (Math.random() * 2 - 1) * Math.sin((i / len) * Math.PI);
+                }
+                const src = ctx.createBufferSource();
+                src.buffer = buf;
+
+                const filt = ctx.createBiquadFilter();
+                filt.type = 'lowpass';
+                filt.frequency.setValueAtTime(650, now);
+                filt.frequency.exponentialRampToValueAtTime(180, now + 0.4);
+
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.01, now);
+                gain.gain.linearRampToValueAtTime(0.12, now + 0.06);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+                src.connect(filt);
+                filt.connect(gain);
+                gain.connect(ctx.destination);
+                src.start(now);
+            } catch (e) {}
+        },
+
+        // Time Stone Temporal Rewind
+        timeStone: function () {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
+            try {
+                const now = ctx.currentTime;
+                const freqs = [329.63, 415.30, 493.88, 659.25, 830.61]; // Ascending E major chime
+
+                freqs.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    const start = now + idx * 0.05;
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq * 0.9, start);
+                    osc.frequency.exponentialRampToValueAtTime(freq * 1.1, start + 0.35);
+
+                    gain.gain.setValueAtTime(0.001, start);
+                    gain.gain.linearRampToValueAtTime(0.08, start + 0.06);
+                    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.4);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(start);
+                    osc.stop(start + 0.42);
+                });
+            } catch (e) {}
+        },
+
+        // Appearing Effect (Gentle Pentatonic Starlight Chime)
+        appear: function () {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
+            const now = performance.now();
+            if (now - lastAppearSoundTime < 140) return; // Strict throttle for smooth audio
+            lastAppearSoundTime = now;
+
+            try {
+                const audioNow = ctx.currentTime;
+                const notes = [523.25, 659.25, 783.99, 880.0, 1046.50];
+                const note = notes[appearSoundIndex % notes.length];
+                appearSoundIndex++;
+
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
-                const start = now + idx * 0.06;
 
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq * 0.85, start);
-                osc.frequency.exponentialRampToValueAtTime(freq * 1.1, start + 0.5);
+                osc.frequency.setValueAtTime(note, audioNow);
+                osc.frequency.exponentialRampToValueAtTime(note * 1.04, audioNow + 0.18);
 
-                gain.gain.setValueAtTime(0.001, start);
-                gain.gain.linearRampToValueAtTime(0.1, start + 0.1);
-                gain.gain.exponentialRampToValueAtTime(0.001, start + 0.55);
+                gain.gain.setValueAtTime(0.001, audioNow);
+                gain.gain.linearRampToValueAtTime(0.03, audioNow + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioNow + 0.22);
 
                 osc.connect(gain);
                 gain.connect(ctx.destination);
-                osc.start(start);
-                osc.stop(start + 0.6);
-            });
-        } catch (e) {}
-    }
+                osc.start(audioNow);
+                osc.stop(audioNow + 0.23);
+            } catch (e) {}
+        },
 
-    // Gentle Cosmic Materialization Shimmer (for appearing elements)
-    function playAppearSound() {
-        const ctx = getAudioContext();
-        if (!ctx) return;
+        // Reality Filter Shift
+        filterShift: function () {
+            const ctx = getAudioContext();
+            if (!ctx) return;
 
-        try {
-            const now = ctx.currentTime;
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+            try {
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
 
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(520, now);
-            osc.frequency.exponentialRampToValueAtTime(780, now + 0.25);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(520, now + 0.1);
+                osc.frequency.exponentialRampToValueAtTime(200, now + 0.28);
 
-            gain.gain.setValueAtTime(0.001, now);
-            gain.gain.linearRampToValueAtTime(0.035, now + 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(0.06, now + 0.04);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
 
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start(now);
-            osc.stop(now + 0.3);
-        } catch (e) {}
-    }
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } catch (e) {}
+        },
 
-    // --- OFFSCREEN PRE-RENDERED GLOWING EMBER SPRITES ---
-    // Rendering glowing sprites via ctx.drawImage is 100x faster than canvas shadowBlur
-    const emberSprites = {};
-    const EMBER_COLORS = ['#f59e0b', '#38bdf8', '#c084fc', '#ec4899', '#10b981', '#22d3ee'];
+        // Gauntlet Hover
+        gauntletHum: function () {
+            const ctx = getAudioContext();
+            if (!ctx) return;
 
-    function createEmberSprite(color) {
-        const size = 20;
-        const c = document.createElement('canvas');
-        c.width = size;
-        c.height = size;
-        const ctx = c.getContext('2d');
-        const center = size / 2;
+            try {
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
 
-        const grad = ctx.createRadialGradient(center, center, 0, center, center, center);
-        grad.addColorStop(0, '#ffffff');
-        grad.addColorStop(0.35, color);
-        grad.addColorStop(1, 'transparent');
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(110, now);
 
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(center, center, center, 0, Math.PI * 2);
-        ctx.fill();
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(0.04, now + 0.08);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
 
-        return c;
-    }
-
-    EMBER_COLORS.forEach(color => {
-        emberSprites[color] = createEmberSprite(color);
-    });
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.36);
+            } catch (e) {}
+        }
+    };
 
     // --- FULLSCREEN THANOS PARTICLE CANVAS ---
     let thanosCanvas = null;
     let thanosCtx = null;
-    const activeParticles = [];
+    let activeParticles = [];
     let isLoopRunning = false;
-    let lastTimestamp = 0;
+    let isUserScrolling = false;
+    let scrollTimeout = null;
+
+    // Detect user scrolling to skip canvas particle overhead during rapid scrolling
+    window.addEventListener('scroll', () => {
+        isUserScrolling = true;
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            isUserScrolling = false;
+        }, 120);
+    }, { passive: true });
 
     function initThanosCanvas() {
         if (thanosCanvas) return;
@@ -181,15 +298,15 @@
 
     function resizeThanosCanvas() {
         if (!thanosCanvas || !thanosCtx) return;
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        thanosCanvas.width = window.innerWidth * dpr;
-        thanosCanvas.height = window.innerHeight * dpr;
+        // Cap DPR at 1.25 for buttery smooth rendering and low GPU fillrate
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+        thanosCanvas.width = Math.round(window.innerWidth * dpr);
+        thanosCanvas.height = Math.round(window.innerHeight * dpr);
         thanosCtx.setTransform(1, 0, 0, 1, 0, 0);
         thanosCtx.scale(dpr, dpr);
     }
 
-    // --- INSTANT PROCEDURAL ELEMENT COLOR & LAYOUT SAMPLER ---
-    // Zero-delay instantaneous extraction! Drops html2canvas to eliminate 100% of lag.
+    // --- FEATHER-LIGHT PARTICLE SAMPLER (50-60 PARTICLES PER CARD) ---
     function sampleElementParticles(element, mode = 'disintegrate') {
         const rect = element.getBoundingClientRect();
         if (rect.width <= 0 || rect.height <= 0) return [];
@@ -197,49 +314,29 @@
         const isDark = document.body.getAttribute('data-theme') === 'dark';
         const particles = [];
 
-        // Fast particle count (~350 - 550 particles for perfect density without frame drops)
-        const density = mode === 'appear' ? 140 : 420;
+        // Ultra-light count: 50 for disintegration, 12 for appearing
+        const count = mode === 'appear' ? 12 : 55;
         const width = rect.width;
         const height = rect.height;
 
-        // Base theme palette
-        const baseAsh = isDark ? [148, 163, 184] : [71, 85, 105];       // slate-400 / 600
-        const darkAsh = isDark ? [30, 41, 59] : [203, 213, 225];          // slate-800 / 300
-        const accentAsh = isDark ? [56, 189, 248] : [2, 132, 199];        // cyan / sapphire
+        const baseAsh = isDark ? 'rgba(148, 163, 184, ' : 'rgba(71, 85, 105, ';
+        const accentAsh = isDark ? 'rgba(56, 189, 248, ' : 'rgba(2, 132, 199, ';
+        const emberColor = '#f59e0b';
 
-        for (let i = 0; i < density; i++) {
-            // Target coordinates relative to the card
+        for (let i = 0; i < count; i++) {
             const relX = Math.random() * width;
             const relY = Math.random() * height;
             const screenX = rect.left + relX;
             const screenY = rect.top + relY;
 
-            // Staggered wave progression (left-to-right sweep)
-            const normX = relX / width;
-            const normY = relY / height;
-            const waveDelay = (normX * 0.7 + (1 - normY) * 0.3) * 550 + Math.random() * 140;
-
-            const isEmber = Math.random() < 0.12;
-            const emberColor = EMBER_COLORS[Math.floor(Math.random() * EMBER_COLORS.length)];
-
-            // Color selection
-            let r = baseAsh[0];
-            let g = baseAsh[1];
-            let b = baseAsh[2];
-            const dice = Math.random();
-
-            if (dice < 0.35) {
-                r = darkAsh[0]; g = darkAsh[1]; b = darkAsh[2];
-            } else if (dice < 0.55) {
-                r = accentAsh[0]; g = accentAsh[1]; b = accentAsh[2];
-            }
+            const isEmber = Math.random() < 0.15;
+            const colorPrefix = isEmber ? null : (Math.random() < 0.3 ? accentAsh : baseAsh);
 
             if (mode === 'appear') {
-                // APPEARING MODE: Particles swirl inwards from around the element
-                const spawnAngle = Math.random() * Math.PI * 2;
-                const spawnDistance = 60 + Math.random() * 90;
-                const startX = screenX + Math.cos(spawnAngle) * spawnDistance;
-                const startY = screenY + Math.sin(spawnAngle) * spawnDistance - 20;
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 35 + Math.random() * 45;
+                const startX = screenX + Math.cos(angle) * dist;
+                const startY = screenY + Math.sin(angle) * dist;
 
                 particles.push({
                     mode: 'appear',
@@ -249,34 +346,32 @@
                     y: startY,
                     startX,
                     startY,
-                    r, g, b,
                     isEmber,
-                    emberColor,
-                    size: isEmber ? 2.4 : 1.8,
-                    delayMs: Math.random() * 180,
-                    durationMs: 550 + Math.random() * 200,
+                    colorPrefix,
+                    size: isEmber ? 2.5 : 1.8,
+                    delayMs: Math.random() * 80,
+                    durationMs: 380 + Math.random() * 140,
                     startTime: 0,
-                    spiralAmp: (Math.random() - 0.5) * 40,
                     done: false
                 });
             } else {
-                // DISINTEGRATION MODE: Ash blows away with wind and upward buoyancy
+                // Wave sweep: diagonal delay
+                const delay = (relX / width * 0.6 + (1 - relY / height) * 0.4) * 280;
+
                 particles.push({
                     mode: 'disintegrate',
                     origX: screenX,
                     origY: screenY,
                     x: screenX,
                     y: screenY,
-                    r, g, b,
                     isEmber,
-                    emberColor,
-                    size: isEmber ? (2.0 + Math.random() * 1.5) : (1.5 + Math.random() * 1.8),
-                    vx: 1.6 + Math.random() * 2.4,             // wind right
-                    vy: -(1.2 + Math.random() * 2.2),          // thermal upward
-                    delayMs: waveDelay,
+                    colorPrefix,
+                    size: isEmber ? 2.6 : 1.9,
+                    vx: 1.8 + Math.random() * 2.2,
+                    vy: -(1.0 + Math.random() * 1.8),
+                    delayMs: delay,
                     startTime: 0,
-                    lifespan: 1400 + Math.random() * 600,
-                    // Reversal parameters
+                    lifespan: 850 + Math.random() * 350,
                     isReversing: false,
                     reverseStart: 0,
                     done: false
@@ -287,19 +382,15 @@
         return particles;
     }
 
-    // --- FAST 60-120 FPS BATCHED RENDER LOOP ---
+    // --- HIGH-PERFORMANCE ZERO-GC RENDER LOOP ---
     function startRenderLoop() {
         if (isLoopRunning) return;
         isLoopRunning = true;
-        lastTimestamp = performance.now();
         requestAnimationFrame(renderLoop);
     }
 
     function renderLoop(now) {
         if (!isLoopRunning) return;
-
-        const dt = Math.min((now - lastTimestamp) / 1000, 0.05);
-        lastTimestamp = now;
 
         if (!thanosCtx || !thanosCanvas) {
             isLoopRunning = false;
@@ -326,27 +417,20 @@
             const activeTime = elapsed - p.delayMs;
 
             if (p.mode === 'appear') {
-                // --- COSMIC CONVERGENCE / APPEARING MODE ---
                 const t = Math.min(1.0, activeTime / p.durationMs);
-                // Cubic ease-out
-                const ease = 1 - Math.pow(1 - t, 3);
+                const ease = 1 - (1 - t) * (1 - t);
 
-                // Vortex inward path
-                const spiral = (1 - ease) * Math.sin(t * Math.PI * 2) * p.spiralAmp;
-                p.x = p.startX + (p.targetX - p.startX) * ease + spiral;
+                p.x = p.startX + (p.targetX - p.startX) * ease;
                 p.y = p.startY + (p.targetY - p.startY) * ease;
 
-                const alpha = Math.min(1.0, (1 - ease) * 1.5);
+                const alpha = Math.min(1.0, (1 - ease) * 1.6);
 
-                if (p.isEmber && emberSprites[p.emberColor]) {
-                    const spr = emberSprites[p.emberColor];
-                    const s = p.size * 3.5;
-                    thanosCtx.globalAlpha = alpha;
-                    thanosCtx.drawImage(spr, p.x - s / 2, p.y - s / 2, s, s);
+                if (p.isEmber) {
+                    thanosCtx.fillStyle = `rgba(56, 189, 248, ${alpha})`;
                 } else {
-                    thanosCtx.fillStyle = `rgba(${p.r}, ${p.g}, ${p.b}, ${alpha * 0.85})`;
-                    thanosCtx.fillRect(p.x, p.y, p.size, p.size);
+                    thanosCtx.fillStyle = `${p.colorPrefix}${alpha})`;
                 }
+                thanosCtx.fillRect(p.x, p.y, p.size, p.size);
 
                 if (t >= 1.0) {
                     p.done = true;
@@ -355,27 +439,17 @@
                 }
 
             } else {
-                // --- DISINTEGRATION & TIME STONE MODE ---
                 if (p.isReversing) {
                     const revElapsed = now - p.reverseStart;
-                    const t = Math.min(1.0, revElapsed / 750);
-                    const ease = 1 - Math.pow(1 - t, 3);
+                    const t = Math.min(1.0, revElapsed / 480);
+                    const ease = 1 - (1 - t) * (1 - t);
 
                     p.x = p.snapX + (p.origX - p.snapX) * ease;
                     p.y = p.snapY + (p.origY - p.snapY) * ease;
 
-                    const alpha = Math.min(1.0, 0.3 + ease * 0.7);
-
-                    // Emerald Time Stone Spark
-                    if (emberSprites['#10b981']) {
-                        const spr = emberSprites['#10b981'];
-                        const s = p.size * 3.0;
-                        thanosCtx.globalAlpha = alpha;
-                        thanosCtx.drawImage(spr, p.x - s / 2, p.y - s / 2, s, s);
-                    } else {
-                        thanosCtx.fillStyle = `rgba(16, 185, 129, ${alpha})`;
-                        thanosCtx.fillRect(p.x, p.y, p.size, p.size);
-                    }
+                    const alpha = Math.min(1.0, 0.4 + ease * 0.6);
+                    thanosCtx.fillStyle = `rgba(16, 185, 129, ${alpha})`;
+                    thanosCtx.fillRect(p.x, p.y, p.size, p.size);
 
                     if (t >= 1.0) {
                         p.done = true;
@@ -384,7 +458,6 @@
                     }
 
                 } else {
-                    // Forward Thanos Ash Drift
                     const progress = activeTime / p.lifespan;
 
                     if (progress >= 1.0) {
@@ -392,36 +465,21 @@
                         continue;
                     }
 
-                    // Physics update
                     p.x += p.vx;
                     p.y += p.vy;
                     p.vx *= 0.985;
                     p.vy *= 0.985;
 
-                    const alpha = (1 - Math.pow(progress, 1.5));
+                    const alpha = (1 - progress);
 
-                    if (p.isEmber && progress < 0.7 && emberSprites[p.emberColor]) {
-                        const spr = emberSprites[p.emberColor];
-                        const s = p.size * 3.5 * (1 - progress * 0.3);
-                        thanosCtx.globalAlpha = alpha;
-                        thanosCtx.drawImage(spr, p.x - s / 2, p.y - s / 2, s, s);
+                    if (p.isEmber) {
+                        thanosCtx.fillStyle = `rgba(245, 158, 11, ${alpha})`;
                     } else {
-                        thanosCtx.fillStyle = `rgba(${p.r}, ${p.g}, ${p.b}, ${alpha * 0.9})`;
-                        thanosCtx.fillRect(p.x, p.y, p.size, p.size);
+                        thanosCtx.fillStyle = `${p.colorPrefix}${alpha * 0.9})`;
                     }
+                    thanosCtx.fillRect(p.x, p.y, p.size, p.size);
 
                     activeCount++;
-                }
-            }
-        }
-
-        thanosCtx.globalAlpha = 1.0;
-
-        // Cleanup completed particles periodically to keep memory flat
-        if (activeParticles.length > 2500) {
-            for (let i = activeParticles.length - 1; i >= 0; i--) {
-                if (activeParticles[i].done) {
-                    activeParticles.splice(i, 1);
                 }
             }
         }
@@ -430,33 +488,33 @@
             requestAnimationFrame(renderLoop);
         } else {
             isLoopRunning = false;
-            activeParticles.length = 0;
+            activeParticles = [];
             thanosCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         }
     }
 
-    // --- DISINTEGRATE AN INDIVIDUAL ELEMENT (INSTANT, ZERO LAG) ---
+    // --- DISINTEGRATE AN INDIVIDUAL ELEMENT ---
     function disintegrateElement(element, options = {}) {
         if (!element || element._isDisintegrating || element._isDisintegrated) return;
         element._isDisintegrating = true;
 
         initThanosCanvas();
 
-        // 1. Instant particle generation (0.1ms, zero lag!)
+        if (!options.silent) {
+            ThanosAudio.disintegrate();
+        }
+
+        // Spawn ~55 particles (lightweight & fluid)
         const particles = sampleElementParticles(element, 'disintegrate');
         element._thanosParticles = particles;
-
         activeParticles.push(...particles);
         startRenderLoop();
 
-        // 2. High-speed synchronized DOM clip & dissolution
-        element.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease';
-        element.style.transform = 'scale(0.98) translate3d(4px, -3px, 0)';
-        element.style.opacity = '0.35';
-
-        setTimeout(() => {
-            element.style.opacity = '0';
-        }, 180);
+        // GPU-composited fade and subtle drift
+        element.style.transition = 'transform 0.38s ease, opacity 0.38s ease, filter 0.38s ease';
+        element.style.transform = 'translate3d(4px, -3px, 0) scale(0.98)';
+        element.style.filter = 'blur(2px)';
+        element.style.opacity = '0';
 
         setTimeout(() => {
             element.style.visibility = 'hidden';
@@ -466,14 +524,16 @@
             element._isDisintegrated = true;
 
             if (options.onComplete) options.onComplete();
-        }, 650);
+        }, 400);
     }
 
     // --- RESTORE AN ELEMENT (TIME STONE REVERSAL) ---
     function restoreElement(element, options = {}) {
         if (!element || !element._isDisintegrated) return;
 
-        playTimeStoneSound();
+        if (!options.silent) {
+            ThanosAudio.timeStone();
+        }
 
         const particles = element._thanosParticles;
         if (particles && particles.length > 0) {
@@ -489,46 +549,47 @@
             startRenderLoop();
         }
 
-        setTimeout(() => {
-            element.classList.remove('thanos-vanished');
-            element.style.visibility = 'visible';
-            element.style.pointerEvents = 'auto';
-            element.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease';
-            element.style.opacity = '1';
-            element.style.transform = 'scale(1.02)';
+        element.classList.remove('thanos-vanished');
+        element.style.visibility = 'visible';
+        element.style.pointerEvents = 'auto';
+        element.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.3s ease';
+        element.style.opacity = '1';
+        element.style.filter = 'none';
+        element.style.transform = 'translate3d(0, 0, 0) scale(1)';
 
-            setTimeout(() => {
-                element.style.transform = 'scale(1)';
-                element._isDisintegrated = false;
-                element._isDisintegrating = false;
-                if (options.onComplete) options.onComplete();
-            }, 250);
-        }, 600);
+        setTimeout(() => {
+            element._isDisintegrated = false;
+            element._isDisintegrating = false;
+            if (options.onComplete) options.onComplete();
+        }, 420);
     }
 
-    // --- COSMIC MATERIALIZATION / APPEARING EFFECT FOR ALL ELEMENTS ---
-    // Smoothly coalesces cosmic dust and embers into cards as they appear on scroll
+    // --- COSMIC MATERIALIZATION / APPEARING EFFECT ---
     function materializeElement(element, delay = 0) {
         if (!element || element._hasMaterialized) return;
         element._hasMaterialized = true;
 
         setTimeout(() => {
-            initThanosCanvas();
+            // Sound effect
+            ThanosAudio.appear();
 
-            // Spawn converging cosmic particles
-            const particles = sampleElementParticles(element, 'appear');
-            if (particles.length > 0) {
-                activeParticles.push(...particles);
-                startRenderLoop();
-            }
-
-            // Crystallize DOM element into solid reality
+            // Silky GPU CSS entrance
             element.classList.add('thanos-crystallizing');
             element.classList.add('thanos-materialized');
 
+            // Only spawn stardust particles if the user is NOT actively scrolling (keeps scroll 100% 60fps)
+            if (!isUserScrolling) {
+                initThanosCanvas();
+                const particles = sampleElementParticles(element, 'appear');
+                if (particles.length > 0) {
+                    activeParticles.push(...particles);
+                    startRenderLoop();
+                }
+            }
+
             setTimeout(() => {
                 element.classList.remove('thanos-crystallizing');
-            }, 650);
+            }, 500);
         }, delay);
     }
 
@@ -538,7 +599,8 @@
 
     function triggerThanosSnap() {
         const thanosBtn = document.getElementById('thanos-btn');
-        playSnapSound();
+        
+        ThanosAudio.snap();
         createCosmicShockwave();
 
         const allCards = Array.from(document.querySelectorAll('.glass-card:not(.profile-card)'))
@@ -567,11 +629,11 @@
             thanosBtn.setAttribute('title', 'Time Stone: Reverse Snap & Reassemble Reality');
         }
 
-        // Fast staggered execution (40ms interval — smooth & responsive without freezing)
+        // Staggered by 40ms
         toSnap.forEach((card, index) => {
             setTimeout(() => {
-                disintegrateElement(card);
-            }, index * 50);
+                disintegrateElement(card, { silent: index > 0 });
+            }, index * 45);
         });
 
         const isFa = document.documentElement.lang === 'fa';
@@ -587,7 +649,8 @@
 
     function reverseThanosSnap() {
         const thanosBtn = document.getElementById('thanos-btn');
-        playTimeStoneSound();
+
+        ThanosAudio.timeStone();
         createTimeStoneWave();
 
         if (snappedElements.length === 0) {
@@ -596,8 +659,8 @@
 
         snappedElements.forEach((card, index) => {
             setTimeout(() => {
-                restoreElement(card);
-            }, index * 40);
+                restoreElement(card, { silent: index > 0 });
+            }, index * 35);
         });
 
         snappedElements = [];
@@ -630,14 +693,14 @@
         const wave = document.createElement('div');
         wave.className = 'thanos-shockwave-ring';
         document.body.appendChild(wave);
-        setTimeout(() => wave.remove(), 1000);
+        setTimeout(() => wave.remove(), 900);
     }
 
     function createTimeStoneWave() {
         const wave = document.createElement('div');
         wave.className = 'time-stone-wave-ring';
         document.body.appendChild(wave);
-        setTimeout(() => wave.remove(), 1100);
+        setTimeout(() => wave.remove(), 900);
     }
 
     // --- TOAST NOTIFICATION ---
@@ -682,7 +745,7 @@
 
         toastTimeout = setTimeout(() => {
             toast.classList.remove('visible');
-        }, 6500);
+        }, 6000);
     }
 
     // --- GAUNTLET BUTTON ICON GENERATOR ---
@@ -702,11 +765,13 @@
         `;
     }
 
-    // --- THANOS FILTERING (NO LAG) ---
+    // --- THANOS FILTERING ---
     function initThanosFiltering() {
         window.filterCards = function (category, btnEl) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             if (btnEl) btnEl.classList.add('active');
+
+            ThanosAudio.filterShift();
 
             const cards = document.querySelectorAll('[data-category]');
 
@@ -721,10 +786,10 @@
                         card.style.display = 'block';
                         setTimeout(() => {
                             card.style.opacity = '1';
-                            card.style.transform = 'scale(1)';
+                            card.style.transform = 'translate3d(0, 0, 0) scale(1)';
                             card.style.visibility = 'visible';
                             card.style.pointerEvents = 'auto';
-                        }, 30);
+                        }, 20);
                     }
                 } else {
                     if (!card._isDisintegrated && !card._isDisintegrating) {
@@ -753,7 +818,8 @@
 
             snapBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                disintegrateElement(card);
+                ThanosAudio.cardSnap();
+                disintegrateElement(card, { silent: true });
 
                 const isFa = document.documentElement.lang === 'fa';
                 const msg = isFa ? 'کارت خاکستر شد!' : 'Card dissolved into dust!';
@@ -769,8 +835,7 @@
         });
     }
 
-    // --- THANOS SCROLL APPEARING OBSERVER FOR ALL ELEMENTS ---
-    // Every element materializes from swirling cosmic dust as it scrolls into view!
+    // --- THANOS SCROLL APPEARING OBSERVER (ULTRA LIGHTWEIGHT) ---
     function initThanosAppearingObserver() {
         const targets = document.querySelectorAll('.glass-card, .section-header, .stat-pill');
 
@@ -780,8 +845,8 @@
 
         const observerOptions = {
             root: null,
-            rootMargin: '0px 0px -30px 0px',
-            threshold: 0.08
+            rootMargin: '0px 0px -20px 0px',
+            threshold: 0.05
         };
 
         const appearObserver = new IntersectionObserver((entries, obs) => {
@@ -790,12 +855,12 @@
                     const el = entry.target;
                     obs.unobserve(el);
 
-                    // Stagger siblings in grids
+                    // Clean staggered delay
                     const parentGrid = el.closest('.cards-grid, .timeline-list, .stats-row');
                     let delay = 0;
                     if (parentGrid) {
                         const idx = Array.from(parentGrid.children).indexOf(el);
-                        delay = Math.min((idx % 4) * 80, 240);
+                        delay = Math.min((idx % 4) * 60, 180);
                     }
 
                     materializeElement(el, delay);
@@ -806,7 +871,7 @@
         targets.forEach(el => appearObserver.observe(el));
     }
 
-    // --- 3D PERSPECTIVE TILT (LIGHTWEIGHT) ---
+    // --- 3D PERSPECTIVE TILT (LIGHTWEIGHT RAF) ---
     function initCardPerspectiveTilt() {
         if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
 
@@ -822,19 +887,14 @@
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
 
-                const rotateX = ((y - centerY) / centerY) * -4.0;
-                const rotateY = ((x - centerX) / centerX) * 4.0;
-
-                const sheenX = (x / rect.width) * 100;
-                const sheenY = (y / rect.height) * 100;
+                const rotateX = ((y - centerY) / centerY) * -3.5;
+                const rotateY = ((x - centerX) / centerX) * 3.5;
 
                 if (reqId) cancelAnimationFrame(reqId);
                 reqId = requestAnimationFrame(() => {
                     card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translate3d(0, -2px, 0)`;
-                    card.style.setProperty('--cursor-sheen-x', `${sheenX.toFixed(1)}%`);
-                    card.style.setProperty('--cursor-sheen-y', `${sheenY.toFixed(1)}%`);
                 });
-            });
+            }, { passive: true });
 
             card.addEventListener('mouseleave', () => {
                 if (reqId) cancelAnimationFrame(reqId);
@@ -851,6 +911,12 @@
         if (thanosBtn) {
             thanosBtn.innerHTML = renderGauntletIconHTML();
             thanosBtn.addEventListener('click', toggleThanosSnap);
+
+            thanosBtn.addEventListener('mouseenter', () => {
+                if (!thanosBtn.classList.contains('snapped')) {
+                    ThanosAudio.gauntletHum();
+                }
+            });
         }
 
         initThanosFiltering();
@@ -866,7 +932,8 @@
         toggle: toggleThanosSnap,
         disintegrate: disintegrateElement,
         restoreCard: restoreElement,
-        materialize: materializeElement
+        materialize: materializeElement,
+        audio: ThanosAudio
     };
 
 })();

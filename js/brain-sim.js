@@ -503,8 +503,10 @@ window.addEventListener('load', async () => {
     const hotGold = new THREE.Color(0xffb703); // amber
 
     // --- RENDER LOOP ---
+    let frameCount = 0;
     function animate3D() {
         requestAnimationFrame(animate3D);
+        frameCount++;
 
         // Gradually decay user drag offset back to 0
         if (!isUserInteracting) {
@@ -553,15 +555,16 @@ window.addEventListener('load', async () => {
             }
         });
 
-        // Update surface vertex colors and per-point alpha opacity
-        if (brainMesh && colorAttr && alphaAttr) {
+        // Update surface vertex colors and per-point alpha opacity (alternating frames for ultra-high FPS)
+        if (brainMesh && colorAttr && alphaAttr && (frameCount % 2 === 0)) {
             const clockTime = performance.now() * 0.001;
             const currentProfile = REGION_PROFILES[activeSectionKey] || REGION_PROFILES['hero'];
 
             for (let i = 0; i < pointsCount; i++) {
-                let vx = finalPositions[i * 3];
-                let vy = finalPositions[i * 3 + 1];
-                let vz = finalPositions[i * 3 + 2];
+                const i3 = i * 3;
+                let vx = finalPositions[i3];
+                let vy = finalPositions[i3 + 1];
+                let vz = finalPositions[i3 + 2];
                 
                 // 1. Spontaneous Neural Dipole Intensity
                 let totalIntensity = 0;
@@ -573,13 +576,14 @@ window.addEventListener('load', async () => {
                         let dz = vz - s.z;
                         let distSq = dx * dx + dy * dy + dz * dz;
                         
-                        let intensity = Math.max(0, 1.0 - Math.sqrt(distSq) / 3.5);
-                        let popMultiplier = s.life > 0.8 ? (1.0 - s.life) / 0.2 : (s.life < 0.2 ? s.life / 0.2 : 1.0);
-                        
-                        totalIntensity += Math.pow(intensity * popMultiplier, 2.5); 
+                        if (distSq < 12.25) { // 3.5 * 3.5
+                            let intensity = 1.0 - Math.sqrt(distSq) / 3.5;
+                            let popMultiplier = s.life > 0.8 ? (1.0 - s.life) / 0.2 : (s.life < 0.2 ? s.life / 0.2 : 1.0);
+                            totalIntensity += intensity * intensity * popMultiplier; 
+                        }
                     }
                 }
-                totalIntensity = Math.min(1.0, totalIntensity);
+                if (totalIntensity > 1.0) totalIntensity = 1.0;
 
                 // 2. Active Cortical Region Profile Factor
                 let regionFactor = 0;
@@ -591,24 +595,18 @@ window.addEventListener('load', async () => {
                 const combinedActivity = Math.min(1.0, Math.max(regionFactor, totalIntensity));
 
                 // 3. OPACITY CALCULATION:
-                // "inactive dots opacity become less than active region, but all dots must have 0.1 opacity at least"
-                // Inactive dots settle at 0.10. Active dots smoothly rise to ~0.95.
+                // Strict floor of 0.10 opacity minimum at all times!
                 const targetAlpha = Math.max(0.10, 0.10 + combinedActivity * 0.85);
-
-                // Smooth temporal easing (prevents visual flashing and gives realistic fluid neural response)
-                const prevAlpha = alphaAttr.getX(i);
-                let currentAlpha = prevAlpha + (targetAlpha - prevAlpha) * 0.12;
-                currentAlpha = Math.max(0.10, Math.min(1.0, currentAlpha));
-                alphaAttr.setX(i, currentAlpha);
+                const prevAlpha = alphas[i];
+                let currentAlpha = prevAlpha + (targetAlpha - prevAlpha) * 0.18;
+                if (currentAlpha < 0.10) currentAlpha = 0.10;
+                if (currentAlpha > 1.0) currentAlpha = 1.0;
+                alphas[i] = currentAlpha;
 
                 // 4. Color calculation
-                let baseR = finalBaseColors[i * 3];
-                let baseG = finalBaseColors[i * 3 + 1];
-                let baseB = finalBaseColors[i * 3 + 2];
-                
-                let r = baseR; 
-                let g = baseG; 
-                let b = baseB;
+                let baseR = finalBaseColors[i3];
+                let baseG = finalBaseColors[i3 + 1];
+                let baseB = finalBaseColors[i3 + 2];
                 
                 if (combinedActivity > 0.05) {
                     let targetHot;
@@ -623,12 +621,14 @@ window.addEventListener('load', async () => {
                     let lerpFactor = combinedActivity * 1.5;
                     if (lerpFactor > 1) lerpFactor = 1;
                     
-                    r = baseR + (targetHot.r - baseR) * lerpFactor;
-                    g = baseG + (targetHot.g - baseG) * lerpFactor;
-                    b = baseB + (targetHot.b - baseB) * lerpFactor;
+                    dynamicColors[i3] = baseR + (targetHot.r - baseR) * lerpFactor;
+                    dynamicColors[i3 + 1] = baseG + (targetHot.g - baseG) * lerpFactor;
+                    dynamicColors[i3 + 2] = baseB + (targetHot.b - baseB) * lerpFactor;
+                } else {
+                    dynamicColors[i3] = baseR;
+                    dynamicColors[i3 + 1] = baseG;
+                    dynamicColors[i3 + 2] = baseB;
                 }
-
-                colorAttr.setXYZ(i, r, g, b);
             }
             
             colorAttr.needsUpdate = true;

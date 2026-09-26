@@ -1574,25 +1574,22 @@ footer {
    Hardware-accelerated Scroll Entrance, 3D Perspective Tilt, Fluid Physics
    ========================================================================== */
 
-/* Smooth Thanos Cosmic Materialization Observer */
+/* Smooth Thanos Cosmic Materialization Observer (Ultra-light, GPU-accelerated) */
 .thanos-appear-target {
     opacity: 0;
-    transform: translate3d(0, 22px, 0) scale(0.975);
-    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.45s ease;
+    transform: translate3d(0, 18px, 0);
+    transition: opacity 0.48s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.48s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
 }
 
 .thanos-appear-target.thanos-crystallizing {
-    border-color: rgba(56, 189, 248, 0.65) !important;
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.4), 0 0 40px rgba(168, 85, 247, 0.2) !important;
+    outline: 1px solid rgba(56, 189, 248, 0.45);
 }
 
 .thanos-appear-target.thanos-materialized {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
 }
 
 /* Realistic 3D Tilt Card Perspective */
