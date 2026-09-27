@@ -748,117 +748,187 @@
         const isFa = document.documentElement.lang === 'fa';
         return `
             <div class="thanos-btn-inner">
-                <svg class="gauntlet-svg" viewBox="0 0 100 120" width="44" height="52" aria-hidden="true">
+                <svg class="gauntlet-svg" viewBox="0 0 100 124" width="50" height="60" aria-hidden="true">
                     <defs>
-                        <linearGradient id="gGoldBase" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#fef08a" />
-                            <stop offset="25%" stop-color="#f59e0b" />
-                            <stop offset="65%" stop-color="#d97706" />
+                        <!-- 3D Metallic Uru Gold Armor Gradients -->
+                        <linearGradient id="gUruSpecular" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fffbeb" />
+                            <stop offset="18%" stop-color="#fef08a" />
+                            <stop offset="45%" stop-color="#f59e0b" />
+                            <stop offset="75%" stop-color="#d97706" />
                             <stop offset="100%" stop-color="#78350f" />
                         </linearGradient>
-                        <linearGradient id="gGoldLight" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#fffbeb" />
-                            <stop offset="40%" stop-color="#fbbf24" />
+                        <linearGradient id="gUruPlate" x1="20%" y1="0%" x2="80%" y2="100%">
+                            <stop offset="0%" stop-color="#fef9c3" />
+                            <stop offset="30%" stop-color="#fbbf24" />
+                            <stop offset="70%" stop-color="#b45309" />
+                            <stop offset="100%" stop-color="#451a03" />
+                        </linearGradient>
+                        <linearGradient id="gUruDark" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#270e02" />
+                            <stop offset="30%" stop-color="#451a03" />
+                            <stop offset="70%" stop-color="#78350f" />
                             <stop offset="100%" stop-color="#b45309" />
                         </linearGradient>
-                        <linearGradient id="gGoldDark" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#451a03" />
-                            <stop offset="60%" stop-color="#92400e" />
-                            <stop offset="100%" stop-color="#d97706" />
+                        <linearGradient id="gGoldHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+                            <stop offset="100%" stop-color="#fde047" stop-opacity="0.1" />
                         </linearGradient>
-                        <radialGradient id="gMind" cx="35%" cy="35%" r="65%">
+                        <!-- Gem Radiant Gradients -->
+                        <radialGradient id="gGemMind" cx="35%" cy="35%" r="65%">
                             <stop offset="0%" stop-color="#ffffff" />
-                            <stop offset="35%" stop-color="#fef08a" />
-                            <stop offset="70%" stop-color="#eab308" />
-                            <stop offset="100%" stop-color="#854d0e" />
+                            <stop offset="25%" stop-color="#fef08a" />
+                            <stop offset="60%" stop-color="#eab308" />
+                            <stop offset="85%" stop-color="#ca8a04" />
+                            <stop offset="100%" stop-color="#713f12" />
                         </radialGradient>
-                        <radialGradient id="gSpace" cx="35%" cy="35%" r="65%">
+                        <radialGradient id="gGemTime" cx="35%" cy="35%" r="65%">
                             <stop offset="0%" stop-color="#ffffff" />
-                            <stop offset="35%" stop-color="#7dd3fc" />
-                            <stop offset="70%" stop-color="#0284c7" />
-                            <stop offset="100%" stop-color="#0369a1" />
-                        </radialGradient>
-                        <radialGradient id="gPower" cx="35%" cy="35%" r="65%">
-                            <stop offset="0%" stop-color="#ffffff" />
-                            <stop offset="35%" stop-color="#d8b4fe" />
-                            <stop offset="70%" stop-color="#a855f7" />
-                            <stop offset="100%" stop-color="#581c87" />
-                        </radialGradient>
-                        <radialGradient id="gReality" cx="35%" cy="35%" r="65%">
-                            <stop offset="0%" stop-color="#ffffff" />
-                            <stop offset="35%" stop-color="#fca5a5" />
-                            <stop offset="70%" stop-color="#ef4444" />
-                            <stop offset="100%" stop-color="#991b1b" />
-                        </radialGradient>
-                        <radialGradient id="gTime" cx="35%" cy="35%" r="65%">
-                            <stop offset="0%" stop-color="#ffffff" />
-                            <stop offset="35%" stop-color="#6ee7b7" />
-                            <stop offset="70%" stop-color="#10b981" />
+                            <stop offset="25%" stop-color="#a7f3d0" />
+                            <stop offset="60%" stop-color="#10b981" />
+                            <stop offset="85%" stop-color="#047857" />
                             <stop offset="100%" stop-color="#064e3b" />
                         </radialGradient>
-                        <radialGradient id="gSoul" cx="35%" cy="35%" r="65%">
+                        <radialGradient id="gGemSpace" cx="35%" cy="35%" r="65%">
                             <stop offset="0%" stop-color="#ffffff" />
-                            <stop offset="35%" stop-color="#fdba74" />
-                            <stop offset="70%" stop-color="#f97316" />
-                            <stop offset="100%" stop-color="#7c2d12" />
+                            <stop offset="25%" stop-color="#bae6fd" />
+                            <stop offset="60%" stop-color="#0284c7" />
+                            <stop offset="85%" stop-color="#0369a1" />
+                            <stop offset="100%" stop-color="#082f49" />
+                        </radialGradient>
+                        <radialGradient id="gGemPower" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="25%" stop-color="#f3e8ff" />
+                            <stop offset="60%" stop-color="#a855f7" />
+                            <stop offset="85%" stop-color="#7e22ce" />
+                            <stop offset="100%" stop-color="#3b0764" />
+                        </radialGradient>
+                        <radialGradient id="gGemReality" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="25%" stop-color="#fecaca" />
+                            <stop offset="60%" stop-color="#ef4444" />
+                            <stop offset="85%" stop-color="#b91c1c" />
+                            <stop offset="100%" stop-color="#450a0a" />
+                        </radialGradient>
+                        <radialGradient id="gGemSoul" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="25%" stop-color="#fed7aa" />
+                            <stop offset="60%" stop-color="#f97316" />
+                            <stop offset="85%" stop-color="#c2410c" />
+                            <stop offset="100%" stop-color="#431407" />
                         </radialGradient>
                     </defs>
-                    <path d="M22,90 L78,90 L74,116 L26,116 Z" fill="url(#gGoldDark)" stroke="#451a03" stroke-width="1.2" />
-                    <path d="M28,93 L72,93 L69,112 L31,112 Z" fill="url(#gGoldBase)" stroke="#92400e" stroke-width="0.8" />
-                    <line x1="33" y1="102" x2="67" y2="102" stroke="#451a03" stroke-width="1.5" stroke-dasharray="3 2" />
-                    <circle cx="50" cy="102" r="3" fill="#fef08a" stroke="#b45309" stroke-width="0.8" />
-                    <path d="M24,84 L76,84 L78,90 L22,90 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="1" />
-                    <path d="M24,84 L22,60 L28,48 L72,48 L78,60 L76,84 Z" fill="url(#gGoldBase)" stroke="#451a03" stroke-width="1.2" />
-                    <path d="M28,48 L50,62 L72,48" fill="none" stroke="#92400e" stroke-width="1" />
-                    <path d="M50,62 L50,84" fill="none" stroke="#92400e" stroke-width="1" />
-                    <path d="M22,60 L38,68 L50,84 L62,68 L78,60" fill="none" stroke="#78350f" stroke-width="0.8" />
-                    <path d="M14,56 Q32,64 45,66" fill="none" stroke="#10b981" stroke-width="0.9" opacity="0.8" />
-                    <path d="M32,46 Q40,54 46,63" fill="none" stroke="#a855f7" stroke-width="0.9" opacity="0.8" />
-                    <path d="M50,44 L50,60" fill="none" stroke="#38bdf8" stroke-width="0.9" opacity="0.8" />
-                    <path d="M68,46 Q60,54 54,63" fill="none" stroke="#ef4444" stroke-width="0.9" opacity="0.8" />
-                    <path d="M83,52 Q70,60 55,66" fill="none" stroke="#f97316" stroke-width="0.9" opacity="0.8" />
-                    <g class="g-finger">
-                        <path d="M22,60 L12,62 L8,55 L16,50 L24,56 Z" fill="url(#gGoldDark)" stroke="#451a03" stroke-width="1" />
-                        <ellipse cx="14" cy="56" rx="4.5" ry="4" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
-                        <ellipse cx="14" cy="56" rx="3.5" ry="3.2" fill="url(#gTime)" class="stone-glow gem-time" />
+
+                    <!-- 1. GAUNTLET FOREARM CUFF (BRACER) -->
+                    <path d="M20,94 L80,94 L76,120 L24,120 Z" fill="url(#gUruDark)" stroke="#3b1a06" stroke-width="1.4" />
+                    <path d="M24,96 L76,96 L72,117 L28,117 Z" fill="url(#gUruPlate)" stroke="#92400e" stroke-width="0.9" />
+                    <path d="M29,103 L71,103" stroke="#451a03" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="3.5 2" />
+                    <path d="M31,110 L69,110" stroke="#78350f" stroke-width="1.2" stroke-dasharray="2 2" />
+                    <circle cx="36" cy="103" r="2.2" fill="#fef08a" stroke="#78350f" stroke-width="0.8" />
+                    <circle cx="50" cy="103" r="2.8" fill="#fef08a" stroke="#92400e" stroke-width="0.9" />
+                    <circle cx="64" cy="103" r="2.2" fill="#fef08a" stroke="#78350f" stroke-width="0.8" />
+                    <path d="M21,94 L79,94" stroke="url(#gGoldHighlight)" stroke-width="1.2" stroke-linecap="round" />
+
+                    <!-- 2. WRIST CARPAL BAND -->
+                    <path d="M23,86 L77,86 L79,94 L21,94 Z" fill="url(#gUruSpecular)" stroke="#78350f" stroke-width="1" />
+                    <line x1="40" y1="87" x2="40" y2="93" stroke="#78350f" stroke-width="0.8" />
+                    <line x1="60" y1="87" x2="60" y2="93" stroke="#78350f" stroke-width="0.8" />
+
+                    <!-- 3. METACARPAL PALM / BACK OF HAND CARAPACE -->
+                    <path d="M23,86 L20,62 L26,48 L74,48 L80,62 L77,86 Z" fill="url(#gUruPlate)" stroke="#451a03" stroke-width="1.4" />
+                    <path d="M26,48 L50,60 L74,48" fill="none" stroke="#78350f" stroke-width="1.1" />
+                    <path d="M50,60 L50,86" fill="none" stroke="#92400e" stroke-width="1.1" />
+                    <path d="M20,62 L38,67 L50,86 L62,67 L80,62" fill="none" stroke="#78350f" stroke-width="0.9" />
+                    <path d="M21,63 L26,49 L38,49" fill="none" stroke="url(#gGoldHighlight)" stroke-width="1" opacity="0.8" />
+
+                    <!-- 4. COSMIC ENERGY CONDUITS (Glowing Veins to Mind Stone) -->
+                    <path d="M15,57 Q32,63 44,67" fill="none" stroke="#10b981" stroke-width="1.1" opacity="0.85" class="conduit-vein" />
+                    <path d="M32,45 Q38,53 45,64" fill="none" stroke="#a855f7" stroke-width="1.1" opacity="0.85" class="conduit-vein" />
+                    <path d="M50,42 L50,61" fill="none" stroke="#38bdf8" stroke-width="1.1" opacity="0.85" class="conduit-vein" />
+                    <path d="M68,45 Q62,53 55,64" fill="none" stroke="#ef4444" stroke-width="1.1" opacity="0.85" class="conduit-vein" />
+                    <path d="M83,52 Q72,61 56,67" fill="none" stroke="#f97316" stroke-width="1.1" opacity="0.85" class="conduit-vein" />
+
+                    <!-- 5. FIVE ARMORED DIGITS (WITH ARTICULATED PHALANGES & GEMSTONES) -->
+                    <!-- THUMB + TIME STONE -->
+                    <g class="gauntlet-digit thumb-digit">
+                        <path d="M20,62 L11,64 L6,57 L14,51 L22,58 Z" fill="url(#gUruDark)" stroke="#3b1a06" stroke-width="1.2" />
+                        <path d="M11,64 L4,62 L1,54 L8,51 L13,56 Z" fill="url(#gUruPlate)" stroke="#78350f" stroke-width="0.9" />
+                        <path d="M4,62 L0,59 L1,54 Z" fill="url(#gUruDark)" />
+                        <ellipse cx="14" cy="57" rx="5" ry="4.6" fill="#3b1a06" stroke="#b45309" stroke-width="1" />
+                        <ellipse cx="14" cy="57" rx="4.2" ry="3.8" fill="#78350f" />
+                        <polygon points="14,53 17,56 16,61 12,61 11,56" fill="url(#gGemTime)" class="stone-glow gem-time" />
+                        <polygon points="14,53 11,56 12,61" fill="#ffffff" opacity="0.4" />
+                        <circle cx="13" cy="55" r="1" fill="#ffffff" opacity="0.9" />
                     </g>
-                    <g class="g-finger">
-                        <path d="M26,48 L27,28 L37,28 L38,48 Z" fill="url(#gGoldBase)" stroke="#451a03" stroke-width="1" />
-                        <path d="M27,28 L28,16 L36,16 L37,28 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="0.8" />
-                        <path d="M28,16 Q32,10 36,16 Z" fill="url(#gGoldDark)" />
-                        <line x1="27" y1="34" x2="37" y2="34" stroke="#451a03" stroke-width="1" />
-                        <ellipse cx="32" cy="46" rx="4.5" ry="4" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
-                        <ellipse cx="32" cy="46" rx="3.5" ry="3.2" fill="url(#gPower)" class="stone-glow gem-power" />
+
+                    <!-- INDEX FINGER + POWER STONE -->
+                    <g class="gauntlet-digit index-digit">
+                        <path d="M25,48 L26,29 L37,29 L38,48 Z" fill="url(#gUruPlate)" stroke="#451a03" stroke-width="1.2" />
+                        <path d="M26,29 L27,17 L36,17 L37,29 Z" fill="url(#gUruSpecular)" stroke="#78350f" stroke-width="0.9" />
+                        <path d="M27,17 Q31.5,10 36,17 Z" fill="url(#gUruDark)" stroke="#451a03" stroke-width="0.8" />
+                        <line x1="26" y1="35" x2="37" y2="35" stroke="#3b1a06" stroke-width="1.2" />
+                        <line x1="27" y1="23" x2="36" y2="23" stroke="#3b1a06" stroke-width="1" />
+                        <ellipse cx="32" cy="45" rx="5.2" ry="4.5" fill="#3b1a06" stroke="#b45309" stroke-width="1" />
+                        <polygon points="32,41 36,44 35,49 29,49 28,44" fill="url(#gGemPower)" class="stone-glow gem-power" />
+                        <polygon points="32,41 28,44 29,49" fill="#ffffff" opacity="0.4" />
+                        <circle cx="31" cy="43" r="1" fill="#ffffff" opacity="0.9" />
                     </g>
-                    <g class="g-finger">
-                        <path d="M44,45 L45,24 L55,24 L56,45 Z" fill="url(#gGoldBase)" stroke="#451a03" stroke-width="1" />
-                        <path d="M45,24 L46,10 L54,10 L55,24 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="0.8" />
-                        <path d="M46,10 Q50,4 54,10 Z" fill="url(#gGoldDark)" />
-                        <line x1="45" y1="32" x2="55" y2="32" stroke="#451a03" stroke-width="1" />
-                        <ellipse cx="50" cy="44" rx="4.5" ry="4" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
-                        <ellipse cx="50" cy="44" rx="3.5" ry="3.2" fill="url(#gSpace)" class="stone-glow gem-space" />
+
+                    <!-- MIDDLE FINGER + SPACE STONE -->
+                    <g class="gauntlet-digit middle-digit">
+                        <path d="M43,45 L44,24 L56,24 L57,45 Z" fill="url(#gUruPlate)" stroke="#451a03" stroke-width="1.2" />
+                        <path d="M44,24 L45,11 L55,11 L56,24 Z" fill="url(#gUruSpecular)" stroke="#78350f" stroke-width="0.9" />
+                        <path d="M45,11 Q50,4 55,11 Z" fill="url(#gUruDark)" stroke="#451a03" stroke-width="0.8" />
+                        <line x1="44" y1="32" x2="56" y2="32" stroke="#3b1a06" stroke-width="1.2" />
+                        <line x1="45" y1="18" x2="55" y2="18" stroke="#3b1a06" stroke-width="1" />
+                        <ellipse cx="50" cy="42" rx="5.5" ry="4.7" fill="#3b1a06" stroke="#b45309" stroke-width="1" />
+                        <polygon points="50,38 54.5,41.5 53.5,46.5 46.5,46.5 45.5,41.5" fill="url(#gGemSpace)" class="stone-glow gem-space" />
+                        <polygon points="50,38 45.5,41.5 46.5,46.5" fill="#ffffff" opacity="0.4" />
+                        <circle cx="49" cy="40" r="1.1" fill="#ffffff" opacity="0.9" />
                     </g>
-                    <g class="g-finger">
-                        <path d="M62,48 L63,28 L73,28 L74,48 Z" fill="url(#gGoldBase)" stroke="#451a03" stroke-width="1" />
-                        <path d="M63,28 L64,16 L72,16 L73,28 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="0.8" />
-                        <path d="M64,16 Q68,10 72,16 Z" fill="url(#gGoldDark)" />
-                        <line x1="63" y1="34" x2="73" y2="34" stroke="#451a03" stroke-width="1" />
-                        <ellipse cx="68" cy="46" rx="4.5" ry="4" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
-                        <ellipse cx="68" cy="46" rx="3.5" ry="3.2" fill="url(#gReality)" class="stone-glow gem-reality" />
+
+                    <!-- RING FINGER + REALITY STONE -->
+                    <g class="gauntlet-digit ring-digit">
+                        <path d="M62,48 L63,29 L74,29 L75,48 Z" fill="url(#gUruPlate)" stroke="#451a03" stroke-width="1.2" />
+                        <path d="M63,29 L64,17 L73,17 L74,29 Z" fill="url(#gUruSpecular)" stroke="#78350f" stroke-width="0.9" />
+                        <path d="M64,17 Q68.5,10 73,17 Z" fill="url(#gUruDark)" stroke="#451a03" stroke-width="0.8" />
+                        <line x1="63" y1="35" x2="74" y2="35" stroke="#3b1a06" stroke-width="1.2" />
+                        <line x1="64" y1="23" x2="73" y2="23" stroke="#3b1a06" stroke-width="1" />
+                        <ellipse cx="68" cy="45" rx="5.2" ry="4.5" fill="#3b1a06" stroke="#b45309" stroke-width="1" />
+                        <polygon points="68,41 72,44 71,49 65,49 64,44" fill="url(#gGemReality)" class="stone-glow gem-reality" />
+                        <polygon points="68,41 64,44 65,49" fill="#ffffff" opacity="0.4" />
+                        <circle cx="67" cy="43" r="1" fill="#ffffff" opacity="0.9" />
                     </g>
-                    <g class="g-finger">
-                        <path d="M78,54 L80,36 L88,36 L87,54 Z" fill="url(#gGoldDark)" stroke="#451a03" stroke-width="1" />
-                        <path d="M80,36 L81,24 L87,24 L88,36 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="0.8" />
-                        <path d="M81,24 Q84,18 87,24 Z" fill="url(#gGoldDark)" />
-                        <line x1="80" y1="42" x2="87" y2="42" stroke="#451a03" stroke-width="0.8" />
-                        <ellipse cx="83" cy="52" rx="4" ry="3.6" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
-                        <ellipse cx="83" cy="52" rx="3.2" ry="2.9" fill="url(#gSoul)" class="stone-glow gem-soul" />
+
+                    <!-- PINKY FINGER + SOUL STONE -->
+                    <g class="gauntlet-digit pinky-digit">
+                        <path d="M78,54 L80,36 L88,36 L88,54 Z" fill="url(#gUruDark)" stroke="#451a03" stroke-width="1.2" />
+                        <path d="M80,36 L81,24 L88,24 L88,36 Z" fill="url(#gUruPlate)" stroke="#78350f" stroke-width="0.8" />
+                        <path d="M81,24 Q85,17 88,24 Z" fill="url(#gUruDark)" />
+                        <line x1="80" y1="42" x2="88" y2="42" stroke="#3b1a06" stroke-width="1" />
+                        <ellipse cx="84" cy="52" rx="4.6" ry="4" fill="#3b1a06" stroke="#b45309" stroke-width="1" />
+                        <polygon points="84,48 87.5,51 86.5,55.5 81.5,55.5 80.5,51" fill="url(#gGemSoul)" class="stone-glow gem-soul" />
+                        <polygon points="84,48 80.5,51 81.5,55.5" fill="#ffffff" opacity="0.4" />
+                        <circle cx="83" cy="50" r="0.9" fill="#ffffff" opacity="0.9" />
                     </g>
-                    <g class="g-mind-cluster">
-                        <polygon points="50,55 62,64 58,78 42,78 38,64" fill="#451a03" stroke="#f59e0b" stroke-width="1.2" />
-                        <polygon points="50,57 60,65 56,76 44,76 40,65" fill="#92400e" />
-                        <polygon points="50,59 58,66 55,75 45,75 42,66" fill="url(#gMind)" class="stone-glow gem-mind" />
-                        <circle cx="48" cy="65" r="1.5" fill="#ffffff" opacity="0.9" />
+
+                    <!-- 6. THE CENTERPIECE: MIND STONE & ORNATE PRONG BEZEL -->
+                    <g class="gauntlet-mind-cluster">
+                        <polygon points="50,55 64,65 59,81 41,81 36,65" fill="#270e02" stroke="#f59e0b" stroke-width="1.5" />
+                        <polygon points="50,57 62,66 57,79 43,79 38,66" fill="url(#gUruPlate)" stroke="#92400e" stroke-width="0.8" />
+                        <circle cx="50" cy="56" r="1.8" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
+                        <circle cx="63" cy="65" r="1.8" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
+                        <circle cx="58" cy="80" r="1.8" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
+                        <circle cx="42" cy="80" r="1.8" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
+                        <circle cx="37" cy="65" r="1.8" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
+                        <polygon points="50,60 59,67 56,77 44,77 41,67" fill="#3b1a06" />
+                        <polygon points="50,61 58,68 55,76 45,76 42,68" fill="url(#gGemMind)" class="stone-glow gem-mind" />
+                        <polygon points="50,61 42,68 45,76" fill="#ffffff" opacity="0.35" />
+                        <polygon points="50,61 58,68 50,66" fill="#ffffff" opacity="0.45" />
+                        <polygon points="50,66 58,68 55,76 50,71" fill="#ca8a04" opacity="0.3" />
+                        <ellipse cx="47" cy="66" rx="2.2" ry="1.8" fill="#ffffff" opacity="0.95" />
+                        <line x1="47" y1="62" x2="47" y2="70" stroke="#ffffff" stroke-width="0.8" opacity="0.85" />
+                        <line x1="43" y1="66" x2="51" y2="66" stroke="#ffffff" stroke-width="0.8" opacity="0.85" />
                     </g>
                 </svg>
             </div>
