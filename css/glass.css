@@ -892,10 +892,27 @@ footer {
     display: none;
 }
 
+@media (min-width: 861px) {
+    .mobile-nav-drawer,
+    #mobile-nav-drawer,
+    .mobile-menu-btn,
+    #mobile-menu-btn {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
 /* Glassmorphic Mobile Navigation Drawer */
 .mobile-nav-drawer {
+    display: none;
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: 2500;
     pointer-events: none;
     visibility: hidden;
@@ -904,6 +921,7 @@ footer {
 }
 
 .mobile-nav-drawer.open {
+    display: block !important;
     pointer-events: auto;
     visibility: visible;
     opacity: 1;
@@ -1451,9 +1469,17 @@ footer {
 
     .scroll-top-btn {
         bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-        right: 14px;
+        left: calc(16px + env(safe-area-inset-left, 0px));
+        right: auto;
         width: 44px;
         height: 44px;
+    }
+
+    .thanos-floating-btn {
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        right: calc(16px + env(safe-area-inset-right, 0px));
+        width: 52px;
+        height: 52px;
     }
 }
 
@@ -1613,8 +1639,8 @@ footer {
 }
 
 [dir="rtl"] .scroll-top-btn {
-    left: auto;
-    right: 24px;
+    left: 24px;
+    right: auto;
 }
 
 .scroll-top-btn.visible {
@@ -1841,101 +1867,208 @@ footer {
    Realistic Ash, Cosmic Embers, Temporal Shockwaves, and Smooth Physics
    ========================================================================== */
 
-/* 1. Infinity Gauntlet Nav Button */
-.thanos-btn {
-    position: relative;
-    overflow: visible;
-}
-
-.gauntlet-icon-wrap {
-    display: inline-flex;
-    flex-direction: column;
+/* 1. Dedicated Thanos Infinity Gauntlet Floating Action Button (Down Right) */
+.thanos-floating-btn {
+    position: fixed;
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    right: calc(24px + env(safe-area-inset-right, 0px));
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    background: linear-gradient(135deg, rgba(20, 18, 45, 0.88) 0%, rgba(15, 23, 42, 0.95) 100%);
+    backdrop-filter: blur(24px) saturate(210%);
+    -webkit-backdrop-filter: blur(24px) saturate(210%);
+    border: 1.5px solid rgba(245, 158, 11, 0.55);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45),
+                0 0 20px rgba(245, 158, 11, 0.35),
+                inset 0 1px 2px rgba(254, 240, 138, 0.4);
+    z-index: 1000;
+    cursor: pointer;
+    display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    outline: none;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease,
+                background 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+[data-theme="light"] .thanos-floating-btn {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(254, 243, 199, 0.9) 100%);
+    border-color: rgba(217, 119, 6, 0.6);
+    box-shadow: 0 10px 26px rgba(217, 119, 6, 0.28),
+                0 0 20px rgba(245, 158, 11, 0.25),
+                inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.thanos-floating-btn:hover {
+    transform: translateY(-5px) scale(1.08);
+    border-color: #f59e0b;
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.5),
+                0 0 32px rgba(245, 158, 11, 0.65),
+                0 0 50px rgba(168, 85, 247, 0.35);
+}
+
+.thanos-floating-btn:active {
+    transform: translateY(-1px) scale(0.96);
+}
+
+.thanos-btn-inner {
     position: relative;
-}
-
-.gauntlet-hand {
-    font-size: 0.95rem;
-    color: #f59e0b;
-    filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.45));
-    transition: transform 0.25s ease, filter 0.25s ease;
-}
-
-.thanos-btn:hover .gauntlet-hand {
-    transform: scale(1.15) rotate(-6deg);
-    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8));
-}
-
-.infinity-gems-bar {
     display: flex;
-    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Infinity Gauntlet Armored SVG */
+.gauntlet-svg {
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+}
+
+.thanos-floating-btn:hover .gauntlet-svg {
+    transform: scale(1.06) rotate(-3deg);
+    filter: drop-shadow(0 6px 14px rgba(245, 158, 11, 0.5));
+}
+
+/* Infinity Stones Radiance & Breathing Animations */
+.stone-glow {
+    filter: drop-shadow(0 0 3px currentColor);
+    animation: gemCosmicBreathe 2.4s infinite alternate ease-in-out;
+}
+
+.gem-mind    { color: #facc15; animation-delay: 0.0s; }
+.gem-space   { color: #38bdf8; animation-delay: 0.4s; }
+.gem-power   { color: #a855f7; animation-delay: 0.8s; }
+.gem-reality { color: #ef4444; animation-delay: 1.2s; }
+.gem-time    { color: #10b981; animation-delay: 1.6s; }
+.gem-soul    { color: #f97316; animation-delay: 2.0s; }
+
+@keyframes gemCosmicBreathe {
+    0% {
+        opacity: 0.8;
+        transform-origin: center;
+        filter: drop-shadow(0 0 2px currentColor);
+    }
+    100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 10px currentColor);
+    }
+}
+
+.thanos-floating-btn:hover .stone-glow {
+    animation-duration: 1.2s;
+    filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 14px currentColor);
+}
+
+/* Ambient Cosmic Pulsing Ring behind the Gauntlet */
+.thanos-fab-glow {
     position: absolute;
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%);
+    inset: -6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, transparent 70%);
     pointer-events: none;
+    z-index: -1;
+    animation: fabAuraPulse 3s infinite alternate ease-in-out;
 }
 
-.gem-dot {
-    width: 3.5px;
-    height: 3.5px;
-    border-radius: 50%;
-    display: inline-block;
-    box-shadow: 0 0 4px currentColor;
-    animation: gemPulse 2s infinite alternate ease-in-out;
+@keyframes fabAuraPulse {
+    0% { transform: scale(0.9); opacity: 0.5; }
+    100% { transform: scale(1.25); opacity: 0.9; }
 }
 
-.gem-space   { background: #38bdf8; color: #38bdf8; animation-delay: 0.0s; }
-.gem-mind    { background: #facc15; color: #facc15; animation-delay: 0.2s; }
-.gem-reality { background: #ef4444; color: #ef4444; animation-delay: 0.4s; }
-.gem-power   { background: #a855f7; color: #a855f7; animation-delay: 0.6s; }
-.gem-time    { background: #10b981; color: #10b981; animation-delay: 0.8s; }
-.gem-soul    { background: #f97316; color: #f97316; animation-delay: 1.0s; }
-
-@keyframes gemPulse {
-    0% { transform: scale(0.85); opacity: 0.7; }
-    100% { transform: scale(1.3); opacity: 1; }
+/* Tooltip on Hover */
+.thanos-fab-tooltip {
+    position: absolute;
+    right: calc(100% + 14px);
+    top: 50%;
+    transform: translateY(-50%) scale(0.92);
+    background: var(--liquid-card-bg);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    color: var(--text-main);
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    z-index: 1001;
 }
 
-/* Time Stone Active State on the Nav Button */
-.thanos-btn.snapped {
+[dir="rtl"] .thanos-fab-tooltip {
+    right: auto;
+    left: calc(100% + 14px);
+}
+
+.thanos-floating-btn:hover .thanos-fab-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) scale(1);
+}
+
+/* Time Stone Active State on Floating Button (When Universe is Snapped) */
+.thanos-floating-btn.snapped {
     border-color: #10b981;
-    background: rgba(16, 185, 129, 0.15);
-    box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5),
+                0 0 28px rgba(16, 185, 129, 0.6),
+                0 0 50px rgba(52, 211, 153, 0.35);
 }
 
-.time-stone-wrap {
+.time-stone-fab-wrapper {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
-.time-gem-icon {
-    font-size: 0.95rem;
-    color: #10b981;
-    filter: drop-shadow(0 0 6px #10b981);
-    animation: timeStoneSpin 3.5s infinite linear;
+.time-stone-mandala-svg {
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.85));
 }
 
-.time-gem-core {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%);
-    animation: timeStonePulse 1.6s infinite alternate ease-in-out;
+.time-ring-outer {
+    animation: timeRuneSpin 10s infinite linear;
+    transform-origin: 50px 50px;
 }
 
-@keyframes timeStonePulse {
-    0% { transform: scale(0.8); opacity: 0.5; }
-    100% { transform: scale(1.6); opacity: 1; }
+.time-mandala-1 {
+    animation: timeRuneSpin 6s infinite linear reverse;
+    transform-origin: 50px 50px;
 }
 
-@keyframes timeStoneSpin {
+.time-mandala-2 {
+    animation: timeRuneSpin 4s infinite linear;
+    transform-origin: 50px 50px;
+}
+
+.time-core-gem {
+    animation: timeGemPulse 1.6s infinite alternate ease-in-out;
+}
+
+@keyframes timeRuneSpin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@keyframes timeGemPulse {
+    0% { transform: scale(0.9); opacity: 0.85; filter: drop-shadow(0 0 4px #10b981); }
+    100% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 12px #34d399); }
 }
 
 /* 2. Fullscreen Cosmic Shockwave Flash */

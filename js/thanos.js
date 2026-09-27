@@ -620,12 +620,7 @@
 
         if (thanosBtn) {
             thanosBtn.classList.add('snapped');
-            thanosBtn.innerHTML = `
-                <span class="time-stone-wrap" title="Time Stone: Reverse Reality">
-                    <span class="time-gem-core"></span>
-                    <i class="fas fa-gem time-gem-icon"></i>
-                </span>
-            `;
+            thanosBtn.innerHTML = renderTimeStoneHTML();
             thanosBtn.setAttribute('title', 'Time Stone: Reverse Snap & Reassemble Reality');
         }
 
@@ -748,20 +743,155 @@
         }, 6000);
     }
 
-    // --- GAUNTLET BUTTON ICON GENERATOR ---
+    // --- AUTHENTIC THANOS INFINITY GAUNTLET & TIME STONE RENDERERS ---
     function renderGauntletIconHTML() {
+        const isFa = document.documentElement.lang === 'fa';
         return `
-            <span class="gauntlet-icon-wrap" aria-label="Infinity Gauntlet">
-                <i class="fas fa-hand-sparkles gauntlet-hand"></i>
-                <span class="infinity-gems-bar">
-                    <span class="gem-dot gem-space" title="Space Stone"></span>
-                    <span class="gem-dot gem-mind" title="Mind Stone"></span>
-                    <span class="gem-dot gem-reality" title="Reality Stone"></span>
-                    <span class="gem-dot gem-power" title="Power Stone"></span>
-                    <span class="gem-dot gem-time" title="Time Stone"></span>
-                    <span class="gem-dot gem-soul" title="Soul Stone"></span>
-                </span>
-            </span>
+            <div class="thanos-btn-inner">
+                <svg class="gauntlet-svg" viewBox="0 0 100 120" width="44" height="52" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="gGoldBase" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fef08a" />
+                            <stop offset="25%" stop-color="#f59e0b" />
+                            <stop offset="65%" stop-color="#d97706" />
+                            <stop offset="100%" stop-color="#78350f" />
+                        </linearGradient>
+                        <linearGradient id="gGoldLight" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#fffbeb" />
+                            <stop offset="40%" stop-color="#fbbf24" />
+                            <stop offset="100%" stop-color="#b45309" />
+                        </linearGradient>
+                        <linearGradient id="gGoldDark" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#451a03" />
+                            <stop offset="60%" stop-color="#92400e" />
+                            <stop offset="100%" stop-color="#d97706" />
+                        </linearGradient>
+                        <radialGradient id="gMind" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="35%" stop-color="#fef08a" />
+                            <stop offset="70%" stop-color="#eab308" />
+                            <stop offset="100%" stop-color="#854d0e" />
+                        </radialGradient>
+                        <radialGradient id="gSpace" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="35%" stop-color="#7dd3fc" />
+                            <stop offset="70%" stop-color="#0284c7" />
+                            <stop offset="100%" stop-color="#0369a1" />
+                        </radialGradient>
+                        <radialGradient id="gPower" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="35%" stop-color="#d8b4fe" />
+                            <stop offset="70%" stop-color="#a855f7" />
+                            <stop offset="100%" stop-color="#581c87" />
+                        </radialGradient>
+                        <radialGradient id="gReality" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="35%" stop-color="#fca5a5" />
+                            <stop offset="70%" stop-color="#ef4444" />
+                            <stop offset="100%" stop-color="#991b1b" />
+                        </radialGradient>
+                        <radialGradient id="gTime" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="35%" stop-color="#6ee7b7" />
+                            <stop offset="70%" stop-color="#10b981" />
+                            <stop offset="100%" stop-color="#064e3b" />
+                        </radialGradient>
+                        <radialGradient id="gSoul" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="35%" stop-color="#fdba74" />
+                            <stop offset="70%" stop-color="#f97316" />
+                            <stop offset="100%" stop-color="#7c2d12" />
+                        </radialGradient>
+                    </defs>
+                    <path d="M22,90 L78,90 L74,116 L26,116 Z" fill="url(#gGoldDark)" stroke="#451a03" stroke-width="1.2" />
+                    <path d="M28,93 L72,93 L69,112 L31,112 Z" fill="url(#gGoldBase)" stroke="#92400e" stroke-width="0.8" />
+                    <line x1="33" y1="102" x2="67" y2="102" stroke="#451a03" stroke-width="1.5" stroke-dasharray="3 2" />
+                    <circle cx="50" cy="102" r="3" fill="#fef08a" stroke="#b45309" stroke-width="0.8" />
+                    <path d="M24,84 L76,84 L78,90 L22,90 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="1" />
+                    <path d="M24,84 L22,60 L28,48 L72,48 L78,60 L76,84 Z" fill="url(#gGoldBase)" stroke="#451a03" stroke-width="1.2" />
+                    <path d="M28,48 L50,62 L72,48" fill="none" stroke="#92400e" stroke-width="1" />
+                    <path d="M50,62 L50,84" fill="none" stroke="#92400e" stroke-width="1" />
+                    <path d="M22,60 L38,68 L50,84 L62,68 L78,60" fill="none" stroke="#78350f" stroke-width="0.8" />
+                    <path d="M14,56 Q32,64 45,66" fill="none" stroke="#10b981" stroke-width="0.9" opacity="0.8" />
+                    <path d="M32,46 Q40,54 46,63" fill="none" stroke="#a855f7" stroke-width="0.9" opacity="0.8" />
+                    <path d="M50,44 L50,60" fill="none" stroke="#38bdf8" stroke-width="0.9" opacity="0.8" />
+                    <path d="M68,46 Q60,54 54,63" fill="none" stroke="#ef4444" stroke-width="0.9" opacity="0.8" />
+                    <path d="M83,52 Q70,60 55,66" fill="none" stroke="#f97316" stroke-width="0.9" opacity="0.8" />
+                    <g class="g-finger">
+                        <path d="M22,60 L12,62 L8,55 L16,50 L24,56 Z" fill="url(#gGoldDark)" stroke="#451a03" stroke-width="1" />
+                        <ellipse cx="14" cy="56" rx="4.5" ry="4" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
+                        <ellipse cx="14" cy="56" rx="3.5" ry="3.2" fill="url(#gTime)" class="stone-glow gem-time" />
+                    </g>
+                    <g class="g-finger">
+                        <path d="M26,48 L27,28 L37,28 L38,48 Z" fill="url(#gGoldBase)" stroke="#451a03" stroke-width="1" />
+                        <path d="M27,28 L28,16 L36,16 L37,28 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="0.8" />
+                        <path d="M28,16 Q32,10 36,16 Z" fill="url(#gGoldDark)" />
+                        <line x1="27" y1="34" x2="37" y2="34" stroke="#451a03" stroke-width="1" />
+                        <ellipse cx="32" cy="46" rx="4.5" ry="4" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
+                        <ellipse cx="32" cy="46" rx="3.5" ry="3.2" fill="url(#gPower)" class="stone-glow gem-power" />
+                    </g>
+                    <g class="g-finger">
+                        <path d="M44,45 L45,24 L55,24 L56,45 Z" fill="url(#gGoldBase)" stroke="#451a03" stroke-width="1" />
+                        <path d="M45,24 L46,10 L54,10 L55,24 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="0.8" />
+                        <path d="M46,10 Q50,4 54,10 Z" fill="url(#gGoldDark)" />
+                        <line x1="45" y1="32" x2="55" y2="32" stroke="#451a03" stroke-width="1" />
+                        <ellipse cx="50" cy="44" rx="4.5" ry="4" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
+                        <ellipse cx="50" cy="44" rx="3.5" ry="3.2" fill="url(#gSpace)" class="stone-glow gem-space" />
+                    </g>
+                    <g class="g-finger">
+                        <path d="M62,48 L63,28 L73,28 L74,48 Z" fill="url(#gGoldBase)" stroke="#451a03" stroke-width="1" />
+                        <path d="M63,28 L64,16 L72,16 L73,28 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="0.8" />
+                        <path d="M64,16 Q68,10 72,16 Z" fill="url(#gGoldDark)" />
+                        <line x1="63" y1="34" x2="73" y2="34" stroke="#451a03" stroke-width="1" />
+                        <ellipse cx="68" cy="46" rx="4.5" ry="4" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
+                        <ellipse cx="68" cy="46" rx="3.5" ry="3.2" fill="url(#gReality)" class="stone-glow gem-reality" />
+                    </g>
+                    <g class="g-finger">
+                        <path d="M78,54 L80,36 L88,36 L87,54 Z" fill="url(#gGoldDark)" stroke="#451a03" stroke-width="1" />
+                        <path d="M80,36 L81,24 L87,24 L88,36 Z" fill="url(#gGoldLight)" stroke="#78350f" stroke-width="0.8" />
+                        <path d="M81,24 Q84,18 87,24 Z" fill="url(#gGoldDark)" />
+                        <line x1="80" y1="42" x2="87" y2="42" stroke="#451a03" stroke-width="0.8" />
+                        <ellipse cx="83" cy="52" rx="4" ry="3.6" fill="#451a03" stroke="#b45309" stroke-width="0.8" />
+                        <ellipse cx="83" cy="52" rx="3.2" ry="2.9" fill="url(#gSoul)" class="stone-glow gem-soul" />
+                    </g>
+                    <g class="g-mind-cluster">
+                        <polygon points="50,55 62,64 58,78 42,78 38,64" fill="#451a03" stroke="#f59e0b" stroke-width="1.2" />
+                        <polygon points="50,57 60,65 56,76 44,76 40,65" fill="#92400e" />
+                        <polygon points="50,59 58,66 55,75 45,75 42,66" fill="url(#gMind)" class="stone-glow gem-mind" />
+                        <circle cx="48" cy="65" r="1.5" fill="#ffffff" opacity="0.9" />
+                    </g>
+                </svg>
+            </div>
+            <span class="thanos-fab-glow" aria-hidden="true"></span>
+            <span class="thanos-fab-tooltip" data-t="thanos-tooltip">${isFa ? 'بشکن تانوس' : 'Infinity Gauntlet Snap'}</span>
+        `;
+    }
+
+    function renderTimeStoneHTML() {
+        const isFa = document.documentElement.lang === 'fa';
+        return `
+            <div class="thanos-btn-inner">
+                <div class="time-stone-fab-wrapper">
+                    <svg class="time-stone-mandala-svg" viewBox="0 0 100 100" width="46" height="46" aria-hidden="true">
+                        <defs>
+                            <radialGradient id="timeAura" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#ffffff"/>
+                                <stop offset="30%" stop-color="#6ee7b7"/>
+                                <stop offset="70%" stop-color="#10b981"/>
+                                <stop offset="100%" stop-color="#047857"/>
+                            </radialGradient>
+                        </defs>
+                        <circle cx="50" cy="50" r="44" fill="none" stroke="#10b981" stroke-width="1.6" stroke-dasharray="8 4 2 4" class="time-ring-outer"/>
+                        <rect x="24" y="24" width="52" height="52" fill="none" stroke="#34d399" stroke-width="1.2" class="time-mandala-1"/>
+                        <rect x="24" y="24" width="52" height="52" fill="none" stroke="#6ee7b7" stroke-width="1.2" transform="rotate(45 50 50)" class="time-mandala-2"/>
+                        <circle cx="50" cy="50" r="18" fill="#064e3b" stroke="#34d399" stroke-width="1.5"/>
+                        <polygon points="50,38 59,50 50,62 41,50" fill="url(#timeAura)" class="time-core-gem"/>
+                        <circle cx="50" cy="50" r="3" fill="#ffffff"/>
+                    </svg>
+                </div>
+            </div>
+            <span class="thanos-fab-glow" aria-hidden="true"></span>
+            <span class="thanos-fab-tooltip" data-t="thanos-restore-tooltip">${isFa ? 'بازگردانی با سنگ زمان' : 'Time Stone: Reverse Reality'}</span>
         `;
     }
 

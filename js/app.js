@@ -23,6 +23,8 @@ const translations = {
         "pwa-ios-step1": "1. Tap the Share button in Safari toolbar below.",
         "pwa-ios-step2": "2. Scroll down and select 'Add to Home Screen'.",
         "pwa-ios-step3": "3. Tap 'Add' in the top-right corner to install.",
+        "thanos-tooltip": "Infinity Gauntlet Snap",
+        "thanos-restore-tooltip": "Time Stone: Reverse Reality",
         
         // Hero / Brain HUD
         "hud-badge": "Neural Inverse Problem",
@@ -239,6 +241,8 @@ const translations = {
         "pwa-ios-step1": "۱. روی دکمه اشتراک‌گذاری (Share) در نوار پایین مرورگر سافاری ضربه بزنید.",
         "pwa-ios-step2": "۲. به پایین رفته و گزینه «Add to Home Screen» را انتخاب کنید.",
         "pwa-ios-step3": "۳. در گوشه بالا دکمه «Add» را برای نصب بزنید.",
+        "thanos-tooltip": "بشکن تانوس",
+        "thanos-restore-tooltip": "بازگردانی با سنگ زمان",
 
         // Hero / Brain HUD
         "hud-badge": "حل مسئله معکوس عصبی",
@@ -974,10 +978,13 @@ function initMobileNav() {
     if (!menuBtn || !drawer) return;
 
     function openDrawer() {
-        drawer.classList.add('open');
-        drawer.setAttribute('aria-hidden', 'false');
-        menuBtn.setAttribute('aria-expanded', 'true');
-        document.body.classList.add('mobile-drawer-active');
+        drawer.style.display = 'block';
+        requestAnimationFrame(() => {
+            drawer.classList.add('open');
+            drawer.setAttribute('aria-hidden', 'false');
+            menuBtn.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('mobile-drawer-active');
+        });
     }
 
     function closeDrawer() {
@@ -985,6 +992,11 @@ function initMobileNav() {
         drawer.setAttribute('aria-hidden', 'true');
         menuBtn.setAttribute('aria-expanded', 'false');
         document.body.classList.remove('mobile-drawer-active');
+        setTimeout(() => {
+            if (!drawer.classList.contains('open')) {
+                drawer.style.display = 'none';
+            }
+        }, 320);
     }
 
     menuBtn.addEventListener('click', () => {
