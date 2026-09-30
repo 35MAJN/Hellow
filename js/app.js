@@ -8,21 +8,33 @@ const translations = {
     en: {
         // Nav
         "nav-home": "Home",
+        "nav-about": "About",
         "nav-research": "Research",
-        "nav-education": "Education",
         "nav-experience": "Experience",
         "nav-projects": "Projects",
+        "nav-education": "Education",
         "nav-skills": "Skills",
+        "nav-contact": "Contact",
+        "nav-contact-btn": "Contact",
         "nav-cv": "Curriculum Vitae",
+        "btn-install-website": "Install Website",
         "scroll-indicator": "Explore Core Focus & Research",
-        "pwa-install": "Install App",
+        "pwa-install": "Install Website",
         "pwa-installed": "Installed",
-        "pwa-install-banner": "Install app for fast offline access",
-        "pwa-install-btn": "Install",
+        "pwa-install-banner": "Install website for fast offline access",
+        "pwa-install-btn": "Install Website",
         "pwa-ios-title": "Install on iPhone / iPad",
         "pwa-ios-step1": "1. Tap the Share button in Safari toolbar below.",
         "pwa-ios-step2": "2. Scroll down and select 'Add to Home Screen'.",
         "pwa-ios-step3": "3. Tap 'Add' in the top-right corner to install.",
+        "pwa-desktop-title": "Install Website as App",
+        "pwa-guide-step1": "In your browser address bar or menu (⋮ / Share), locate the Install or Add to Home Screen option.",
+        "pwa-guide-step2": "Click Install to add this portfolio as a standalone desktop or mobile application.",
+        "pwa-guide-step3": "Enjoy ultra-fast offline access and immersive full-screen experience anytime.",
+        "pwa-modal-done": "Got It",
+        "sec-contact-kicker": "Get In Touch",
+        "sec-contact-title": "Contact & Collaboration",
+        "sec-contact-desc": "Open to research collaborations, academic inquiries, and deep tech discussions.",
         "thanos-tooltip": "Infinity Gauntlet Snap",
         "thanos-restore-tooltip": "Time Stone: Reverse Reality",
         
@@ -226,21 +238,33 @@ const translations = {
     fa: {
         // Nav
         "nav-home": "خانه",
+        "nav-about": "درباره من",
         "nav-research": "پژوهش‌ها",
-        "nav-education": "تحصیلات",
         "nav-experience": "تجربیات",
         "nav-projects": "پروژه‌ها",
+        "nav-education": "تحصیلات",
         "nav-skills": "مهارت‌ها",
+        "nav-contact": "تماس",
+        "nav-contact-btn": "تماس",
         "nav-cv": "رزومه (CV)",
+        "btn-install-website": "نصب وب‌سایت",
         "scroll-indicator": "مشاهده تمرکز علمی و پژوهش‌ها",
-        "pwa-install": "نصب برنامه",
+        "pwa-install": "نصب وب‌سایت",
         "pwa-installed": "نصب شده",
-        "pwa-install-banner": "نصب وب‌اپلیکیشن برای دسترسی سریع و آفلاین",
-        "pwa-install-btn": "نصب",
+        "pwa-install-banner": "نصب وب‌سایت برای دسترسی سریع و آفلاین",
+        "pwa-install-btn": "نصب وب‌سایت",
         "pwa-ios-title": "نصب در آیفون / آیپد",
         "pwa-ios-step1": "۱. روی دکمه اشتراک‌گذاری (Share) در نوار پایین مرورگر سافاری ضربه بزنید.",
         "pwa-ios-step2": "۲. به پایین رفته و گزینه «Add to Home Screen» را انتخاب کنید.",
         "pwa-ios-step3": "۳. در گوشه بالا دکمه «Add» را برای نصب بزنید.",
+        "pwa-desktop-title": "نصب وب‌سایت به عنوان برنامه",
+        "pwa-guide-step1": "در نوار آدرس یا منوی مرورگر خود، گزینه نصب (Install) یا «Add to Home Screen» را پیدا کنید.",
+        "pwa-guide-step2": "روی Install کلیک کنید تا وب‌سایت به صورت یک اپلیکیشن مستقل اجرا شود.",
+        "pwa-guide-step3": "از دسترسی پرسرعت و امکان کارکرد بدون اینترنت لذت ببرید.",
+        "pwa-modal-done": "متوجه شدم",
+        "sec-contact-kicker": "راه‌های ارتباطی",
+        "sec-contact-title": "تماس و همکاری",
+        "sec-contact-desc": "مشتاق ارتباطات پژوهشی، پروژه‌های عمیق مهندسی و هوش مصنوعی.",
         "thanos-tooltip": "بشکن تانوس",
         "thanos-restore-tooltip": "بازگردانی با سنگ زمان",
 
@@ -674,14 +698,14 @@ function initSvgMorph() {
         const svgNS = "http://www.w3.org/2000/svg";
         const width = 800;
         const height = 180;
-        const textToMorph = "MAJN 35";
+        const textToMorph = "JAVADINASAB";
 
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = width;
         tempCanvas.height = height;
         const tCtx = tempCanvas.getContext('2d');
         tCtx.fillStyle = 'white';
-        tCtx.font = `900 110px Inter, sans-serif`;
+        tCtx.font = `900 86px Inter, sans-serif`;
         tCtx.textAlign = 'center';
         tCtx.textBaseline = 'middle';
         tCtx.fillText(textToMorph, width / 2, height / 2);
@@ -875,16 +899,21 @@ function initPWA() {
     const isIOS = /iphone|ipad|ipod/.test(userAgent) && !window.MSStream;
 
     if (isStandalone) {
-        if (pwaNavBtn) pwaNavBtn.style.display = 'none';
+        if (pwaNavBtn) {
+            pwaNavBtn.classList.add('is-installed');
+            pwaNavBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span class="btn-install-text">' + (document.documentElement.lang === 'fa' ? 'نصب شد' : 'Installed') + '</span>';
+        }
         if (pwaDrawerBtn) pwaDrawerBtn.style.display = 'none';
         if (pwaBanner) pwaBanner.style.display = 'none';
         return;
     }
 
-    // On iOS Safari, display-mode beforeinstallprompt is not supported,
-    // so we proactively enable install triggers to guide users!
+    // Ensure the CTA button is visible and active
+    if (pwaNavBtn) {
+        pwaNavBtn.style.display = 'inline-flex';
+    }
+
     if (isIOS) {
-        if (pwaNavBtn) pwaNavBtn.style.display = 'inline-flex';
         if (pwaDrawerBtn) pwaDrawerBtn.style.display = 'block';
         if (pwaBanner && !sessionStorage.getItem('pwa_banner_dismissed')) {
             setTimeout(() => {
@@ -907,26 +936,96 @@ function initPWA() {
         }
     });
 
-    async function handleInstallClick() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                if (pwaNavBtn) pwaNavBtn.style.display = 'none';
-                if (pwaDrawerBtn) pwaDrawerBtn.style.display = 'none';
-                if (pwaBanner) pwaBanner.style.display = 'none';
-            }
-            deferredPrompt = null;
-        } else if (isIOS) {
-            if (iosModal) {
-                iosModal.style.display = 'flex';
-                iosModal.setAttribute('aria-hidden', 'false');
+    function showInstallGuidance() {
+        if (!iosModal) return;
+        const modalTitle = document.getElementById('pwa-modal-title');
+        const modalSteps = document.getElementById('pwa-modal-steps');
+        const isPersian = document.documentElement.lang === 'fa';
+
+        if (isIOS) {
+            if (modalTitle) modalTitle.textContent = isPersian ? 'نصب در آیفون / آیپد' : 'Install on iPhone / iPad';
+            if (modalSteps) {
+                modalSteps.innerHTML = isPersian ? `
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">۱</span>
+                        <p>روی دکمه اشتراک‌گذاری <strong>(Share)</strong> <i class="fas fa-arrow-up-from-bracket pwa-ios-icon-highlight"></i> در نوار سافاری ضربه بزنید.</p>
+                    </div>
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">۲</span>
+                        <p>به پایین بروید و گزینه <i class="fas fa-plus-square pwa-ios-icon-highlight"></i> <strong>Add to Home Screen</strong> را انتخاب کنید.</p>
+                    </div>
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">۳</span>
+                        <p>در گوشه بالا دکمه <strong>Add</strong> را برای نصب بزنید.</p>
+                    </div>` : `
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">1</span>
+                        <p>Tap the <strong>Share</strong> button <i class="fas fa-arrow-up-from-bracket pwa-ios-icon-highlight"></i> in the Safari toolbar below.</p>
+                    </div>
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">2</span>
+                        <p>Scroll down and select <i class="fas fa-plus-square pwa-ios-icon-highlight"></i> <strong>Add to Home Screen</strong>.</p>
+                    </div>
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">3</span>
+                        <p>Tap <strong>Add</strong> in the top-right corner to complete installation.</p>
+                    </div>`;
             }
         } else {
-            // General guidance for browsers
-            alert(document.documentElement.lang === 'fa' 
-                ? 'برای نصب، از منوی مرورگر خود گزینه «Install» یا «Add to Home screen» را انتخاب کنید.' 
-                : 'To install, click the Install icon in your browser address bar or select "Add to Home screen" in browser menu.');
+            if (modalTitle) modalTitle.textContent = isPersian ? 'نصب وب‌سایت به عنوان اپلیکیشن' : 'Install Website as App';
+            if (modalSteps) {
+                modalSteps.innerHTML = isPersian ? `
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">۱</span>
+                        <p>در مرورگر کروم یا اج، روی آیکون <strong>Install</strong> <i class="fas fa-download pwa-ios-icon-highlight"></i> در انتهای نوار آدرس کلیک کنید.</p>
+                    </div>
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">۲</span>
+                        <p>یا از منوی مرورگر (⋮)، گزینه <strong>Save and share</strong> یا <strong>Install</strong> را بزنید.</p>
+                    </div>
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">۳</span>
+                        <p>وب‌سایت بلافاصله به عنوان یک برنامه مجزا و پرسرعت در سیستم شما نصب می‌شود.</p>
+                    </div>` : `
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">1</span>
+                        <p>In Chrome or Edge, click the <strong>Install</strong> icon <i class="fas fa-download pwa-ios-icon-highlight"></i> in the address bar.</p>
+                    </div>
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">2</span>
+                        <p>Alternatively, open browser menu (⋮) and choose <strong>Save and share</strong> → <strong>Install app</strong>.</p>
+                    </div>
+                    <div class="pwa-ios-step">
+                        <span class="pwa-ios-step-num">3</span>
+                        <p>Launch instantly from your desktop, taskbar, or home screen with full offline access.</p>
+                    </div>`;
+            }
+        }
+
+        iosModal.style.display = 'flex';
+        iosModal.setAttribute('aria-hidden', 'false');
+    }
+
+    async function handleInstallClick() {
+        if (deferredPrompt) {
+            try {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    if (pwaNavBtn) {
+                        pwaNavBtn.classList.add('is-installed');
+                        pwaNavBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span class="btn-install-text">' + (document.documentElement.lang === 'fa' ? 'نصب شد' : 'Installed') + '</span>';
+                    }
+                    if (pwaDrawerBtn) pwaDrawerBtn.style.display = 'none';
+                    if (pwaBanner) pwaBanner.style.display = 'none';
+                }
+            } catch (err) {
+                console.warn('Install prompt error:', err);
+                showInstallGuidance();
+            }
+            deferredPrompt = null;
+        } else {
+            showInstallGuidance();
         }
     }
 

@@ -3,7 +3,7 @@
  * Provides Offline Capability, Asset Precaching, and Installability
  */
 
-const CACHE_NAME = 'majn-portfolio-v1';
+const CACHE_NAME = 'majn-portfolio-v2';
 
 const PRECACHE_ASSETS = [
   '/',
@@ -13,10 +13,15 @@ const PRECACHE_ASSETS = [
   '/js/brain-sim.js',
   '/js/thanos.js',
   '/site.webmanifest',
+  '/manifest.json',
   '/favicon.ico',
+  '/favicon-16x16.png',
+  '/favicon-32x32.png',
+  '/favicon-48x48.png',
   '/apple-touch-icon.png',
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
+  '/og-image.png',
   '/pic.jpg'
 ];
 

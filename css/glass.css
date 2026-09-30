@@ -865,6 +865,70 @@ footer {
    PROGRESSIVE WEB APP (PWA) & MOBILE NAVIGATION SYSTEM
    ========================================================================== */
 
+/* PWA Install Website CTA Button */
+.btn-install-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 15px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.16) 0%, rgba(14, 165, 233, 0.22) 100%);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 10px rgba(2, 132, 199, 0.15);
+    white-space: nowrap;
+    z-index: 10;
+    line-height: 1;
+}
+
+[data-theme="dark"] .btn-install-cta {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(14, 165, 233, 0.12) 100%);
+    border-color: rgba(56, 189, 248, 0.75);
+    color: #38bdf8;
+    box-shadow: 0 2px 14px rgba(56, 189, 248, 0.2);
+}
+
+.btn-install-cta:hover {
+    background: var(--accent);
+    color: #ffffff !important;
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px var(--accent-glow);
+}
+
+.btn-install-cta:hover .pwa-badge-pulse {
+    background: #ffffff;
+    box-shadow: 0 0 10px #ffffff;
+}
+
+.btn-install-cta.is-installed {
+    border-color: #10b981;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.12);
+    pointer-events: none;
+}
+
+.btn-install-cta .pwa-badge-pulse {
+    position: static;
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: pwaPulseDot 2s infinite ease-in-out;
+}
+
+.pwa-banner-icon-glyph {
+    font-size: 1.3rem;
+    color: var(--accent);
+}
+
 /* PWA Nav Button */
 .pwa-install-btn {
     position: relative;
@@ -1372,6 +1436,26 @@ footer {
         align-items: center;
         justify-content: center;
         border-radius: 50%;
+    }
+
+    .btn-install-cta span.btn-install-text {
+        display: none;
+    }
+
+    .btn-install-cta {
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .btn-install-cta .pwa-badge-pulse {
+        position: absolute;
+        top: 4px;
+        right: 4px;
     }
 
     #hero {
