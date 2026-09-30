@@ -1,0 +1,56 @@
+%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >> endobj
+4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> endobj
+6 0 obj << /Length 3069 >> stream
+BT
+/F2 18 Tf 50 740 Td (MOHAMMADALI JAVADINASAB) Tj
+/F1 10 Tf 0 -16 Td (AI Researcher & Electrical Engineer | Tehran, Iran | ma.javadinasab@gmail.com | linkedin.com/in/35majn) Tj
+/F2 12 Tf 0 -24 Td (EDUCATION) Tj
+/F1 9 Tf 0 -14 Td (M.Sc. in Electrical Engineering (Signal Processing) - Shahid Beheshti University (2025 - Present) | GPA: 3.33/4.0) Tj
+0 -12 Td (B.Sc. in Electrical Engineering (Telecommunications) - Iran University of Science & Technology (2019 - 2024) | GPA: 3.41/4.0) Tj
+0 -12 Td (B.Sc. in Industrial Engineering (Minor) - Iran University of Science & Technology (2020 - 2024) | GPA: 3.32/4.0) Tj
+/F2 12 Tf 0 -22 Td (RESEARCH & PUBLICATIONS) Tj
+/F2 10 Tf 0 -14 Td (EEG Source Localization Using Deep Learning (Deep Volumetric Source Imaging - DVSI)) Tj
+/F1 9 Tf 0 -12 Td (Target: IEEE TBME (Manuscript in Progress) | First Author with Dr. Ehsan Darestani (KU Leuven)) Tj
+/F2 12 Tf 0 -22 Td (PROFESSIONAL EXPERIENCE) Tj
+/F2 9.5 Tf 0 -14 Td (Research & Teaching Assistant - Iran University of Science & Technology (2022 - Present)) Tj
+/F1 8.5 Tf 0 -11 Td (- 3D Deep Convolutional neural architectures for EEG cortical dipole retrieval) Tj
+0 -11 Td (- Linear Algebra Teaching Assistant for Dr. Saeed Ebadollahi) Tj
+/F2 9.5 Tf 0 -14 Td (AI & Data Science Specialist - Freelancer (2022 - Present)) Tj
+/F1 8.5 Tf 0 -11 Td (- Colon Polyp Detection Hackathon (IUST & Irancell Labs 2025): 95% detection accuracy with clinical chatbot) Tj
+0 -11 Td (- Federated Learning with RL for imaging satellite topology optimization (Australia collaboration)) Tj
+0 -11 Td (- Transfer Learning for Skin Cancer Classification (95% accuracy) and MADM algorithms in Python) Tj
+/F2 9.5 Tf 0 -14 Td (Co-founder & Lead Web Developer - LearnAmuse (2022 - Present)) Tj
+/F1 8.5 Tf 0 -11 Td (- Built and launched LearnAmuse.com; created AI integration training courses for educators) Tj
+/F2 9.5 Tf 0 -14 Td (R&D Engineer & Instructor - Balafan AI Academy (2021 - 2023)) Tj
+/F1 8.5 Tf 0 -11 Td (- Video analytics on NVIDIA Jetson Nano with DeepStream SDK; taught Deep Learning to 35+ students) Tj
+/F2 9.5 Tf 0 -14 Td (Python Developer & Data Scientist - LifeWeb (2021 - 2022)) Tj
+/F1 8.5 Tf 0 -11 Td (- Backend development with Flask, Elasticsearch, MongoDB; RNN market sentiment analysis) Tj
+/F2 12 Tf 0 -22 Td (HONORS & AWARDS) Tj
+/F1 8.5 Tf 0 -12 Td (- Top 1% in Nationwide University Entrance Exam among 150,000+ candidates (2019)) Tj
+0 -11 Td (- Head of Team of 7: IEEE SPS 2022 Signal Processing Cup (Synthetic speech attribution)) Tj
+0 -11 Td (- 1st Place: Huawei Seeds for the Future (5G, AI & Cloud) (2022)) Tj
+/F2 12 Tf 0 -22 Td (TECHNICAL SKILLS) Tj
+/F1 8.5 Tf 0 -12 Td (Languages: Python, MATLAB, C++, JavaScript/TypeScript, LaTeX) Tj
+0 -11 Td (ML & AI: PyTorch, TensorFlow, Keras, scikit-learn, Reinforcement Learning, Federated Learning) Tj
+0 -11 Td (Signal & BCI: EEG Signal Processing, Source Localization, Brainstorm, FieldTrip, Bio-Electromagnetics) Tj
+0 -11 Td (Embedded & Tools: NVIDIA Jetson Nano, CUDA, DeepStream, Docker, Git, Linux, Flask, Elasticsearch) Tj
+ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000000321 00000 n 
+0000000396 00000 n 
+trailer << /Size 7 /Root 1 0 R >>
+startxref
+3517
+%%EOF
