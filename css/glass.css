@@ -1040,6 +1040,13 @@ footer {
     border-bottom: 1px solid var(--liquid-border-subtle);
 }
 
+.mobile-drawer-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+}
+
 .mobile-drawer-links {
     display: flex;
     flex-direction: column;
@@ -1346,11 +1353,26 @@ footer {
 @media (max-width: 860px) {
     .glass-nav {
         width: min(95%, 980px);
-        padding: 0 14px;
+        padding: 0 10px 0 14px;
     }
 
     .nav-links {
         display: none;
+    }
+
+    .nav-controls {
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-install-cta {
+        margin-right: auto;
+    }
+
+    [dir="rtl"] .btn-install-cta {
+        margin-right: 0;
+        margin-left: auto;
     }
 
     .mobile-menu-btn {
