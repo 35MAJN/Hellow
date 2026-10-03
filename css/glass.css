@@ -101,7 +101,7 @@ body {
     top: 16px;
     left: 50%;
     transform: translateX(-50%);
-    width: min(94%, 980px);
+    width: min(96%, 1160px);
     height: var(--nav-height);
     display: flex;
     align-items: center;
@@ -230,6 +230,108 @@ body {
     transform: translateY(-1px);
     box-shadow: 0 6px 16px var(--accent-glow);
     filter: brightness(1.1);
+}
+
+/* --- SIGNAL LAB FEATURED INTERACTIVE BUTTON --- */
+.btn-siglab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 15px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.16) 0%, rgba(14, 165, 233, 0.22) 50%, rgba(59, 130, 246, 0.16) 100%);
+    border: 1px solid rgba(14, 165, 233, 0.55);
+    color: #0369a1 !important;
+    font-size: 0.83rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 2px 12px rgba(6, 182, 212, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    line-height: 1;
+    z-index: 10;
+}
+
+[data-theme="dark"] .btn-siglab {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.22) 0%, rgba(14, 165, 233, 0.20) 50%, rgba(99, 102, 241, 0.22) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.6);
+    color: #38bdf8 !important;
+    box-shadow: 0 2px 14px rgba(56, 189, 248, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.btn-siglab:hover {
+    transform: translateY(-1.5px);
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.25) 0%, rgba(14, 165, 233, 0.32) 50%, rgba(59, 130, 246, 0.24) 100%);
+    border-color: #0284c7;
+    color: #0284c7 !important;
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.75);
+}
+
+[data-theme="dark"] .btn-siglab:hover {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.32) 0%, rgba(14, 165, 233, 0.28) 50%, rgba(99, 102, 241, 0.3) 100%);
+    border-color: #38bdf8;
+    color: #e0f2fe !important;
+    box-shadow: 0 6px 22px rgba(56, 189, 248, 0.42), inset 0 1px 1.5px rgba(255, 255, 255, 0.25);
+}
+
+.btn-siglab:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.25);
+}
+
+.btn-siglab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.siglab-icon {
+    font-size: 0.92rem;
+    color: #0284c7;
+    animation: siglabWave 2.8s infinite ease-in-out;
+    transform-origin: center;
+    display: inline-block;
+}
+
+[data-theme="dark"] .siglab-icon {
+    color: #22d3ee;
+    filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.65));
+}
+
+@keyframes siglabWave {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.92;
+    }
+    50% {
+        transform: scale(1.18);
+        opacity: 1;
+        color: #06b6d4;
+    }
+}
+
+.siglab-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: siglabDotPulse 2s infinite ease-in-out;
+    flex-shrink: 0;
+}
+
+@keyframes siglabDotPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.85;
+    }
+    50% {
+        transform: scale(1.35);
+        opacity: 1;
+        box-shadow: 0 0 12px #10b981;
+    }
 }
 
 /* Glass Card (Realistic Liquid Glass with Fluid Refraction & Organic Meniscus) */
@@ -1095,6 +1197,53 @@ footer {
     color: #fff !important;
 }
 
+/* Featured Signal Lab in Mobile Drawer */
+.mobile-nav-siglab {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.14) 0%, rgba(14, 165, 233, 0.18) 50%, rgba(59, 130, 246, 0.14) 100%);
+    border: 1px solid rgba(14, 165, 233, 0.45);
+    color: #0369a1 !important;
+    font-weight: 700 !important;
+}
+
+[data-theme="dark"] .mobile-nav-siglab {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.18) 0%, rgba(14, 165, 233, 0.15) 50%, rgba(99, 102, 241, 0.18) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.5);
+    color: #38bdf8 !important;
+}
+
+.mobile-nav-siglab i {
+    color: #0284c7 !important;
+    animation: siglabWave 2.8s infinite ease-in-out;
+}
+
+[data-theme="dark"] .mobile-nav-siglab i {
+    color: #22d3ee !important;
+}
+
+.drawer-siglab-badge {
+    margin-left: auto;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.15);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+[data-theme="dark"] .drawer-siglab-badge {
+    background: rgba(16, 185, 129, 0.22);
+    color: #34d399;
+    border-color: rgba(52, 211, 153, 0.45);
+}
+
+[dir="rtl"] .drawer-siglab-badge {
+    margin-left: 0;
+    margin-right: auto;
+}
+
 .mobile-drawer-pwa {
     padding-top: 14px;
     border-top: 1px solid var(--liquid-border-subtle);
@@ -1349,6 +1498,25 @@ footer {
    RESPONSIVE BREAKPOINTS: TABLETS & SMARTPHONES OPTIMIZATION
    ========================================================================== */
 
+/* Medium Displays / Tablet Landscape (861px - 1100px) */
+@media (min-width: 861px) and (max-width: 1100px) {
+    .nav-links {
+        gap: 14px;
+    }
+    .nav-link {
+        font-size: 0.82rem;
+    }
+    .nav-controls {
+        gap: 6px;
+    }
+    .btn-install-cta span.btn-install-text {
+        display: none;
+    }
+    .btn-install-cta {
+        padding: 7px 11px;
+    }
+}
+
 /* Tablets & Small Laptops (<= 860px) */
 @media (max-width: 860px) {
     .glass-nav {
@@ -1364,6 +1532,13 @@ footer {
         width: 100%;
         display: flex;
         align-items: center;
+        gap: 6px;
+    }
+
+    .btn-siglab {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        height: 36px;
     }
 
     .btn-install-cta {
@@ -1480,6 +1655,18 @@ footer {
         right: 4px;
     }
 
+    .btn-siglab {
+        height: 35px;
+        padding: 0 10px;
+        font-size: 0.78rem;
+        gap: 5px;
+    }
+
+    .btn-siglab .siglab-dot {
+        width: 5px;
+        height: 5px;
+    }
+
     #hero {
         min-height: 85vh;
         padding-top: calc(var(--nav-height) + 24px);
@@ -1593,6 +1780,20 @@ footer {
 @media (max-width: 380px) {
     .glass-nav {
         padding: 0 8px 0 10px;
+    }
+
+    .btn-siglab {
+        padding: 0 8px;
+        font-size: 0.74rem;
+        gap: 4px;
+    }
+
+    .btn-siglab .siglab-dot {
+        display: none;
+    }
+
+    .btn-cv-pill {
+        display: none;
     }
 
     .brand-badge span {
