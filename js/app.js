@@ -506,6 +506,33 @@ function setLanguage(lang) {
     }
 }
 
+// Function to synchronize theme with Signal Lab (siglab.majn35.ir)
+function updateSiglabThemeUrls(theme) {
+    const activeTheme = theme || (document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
+    // Dynamically update href for all links pointing to Signal Lab
+    document.querySelectorAll('a[href*="siglab.majn35.ir"]').forEach(link => {
+        try {
+            const rawHref = link.getAttribute('href') || 'https://siglab.majn35.ir';
+            const url = new URL(rawHref.startsWith('http') ? rawHref : `https://siglab.majn35.ir`);
+            url.searchParams.set('theme', activeTheme);
+            link.setAttribute('href', url.toString());
+        } catch (e) {
+            link.setAttribute('href', `https://siglab.majn35.ir/?theme=${activeTheme}`);
+        }
+    });
+
+    // Persist shared cross-subdomain cookie for majn35.ir
+    try {
+        const hostname = window.location.hostname;
+        if (hostname.endsWith('majn35.ir')) {
+            document.cookie = `theme=${activeTheme}; domain=.majn35.ir; path=/; max-age=31536000; SameSite=Lax`;
+        }
+    } catch (e) {
+        // Ignore cookie security restrictions
+    }
+}
+
 // Theme Switcher Function
 function toggleTheme() {
     const body = document.body;
@@ -516,10 +543,12 @@ function toggleTheme() {
         body.setAttribute('data-theme', 'light');
         if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
         localStorage.setItem('theme', 'light');
+        updateSiglabThemeUrls('light');
     } else {
         body.setAttribute('data-theme', 'dark');
         if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
         localStorage.setItem('theme', 'dark');
+        updateSiglabThemeUrls('dark');
     }
 }
 
@@ -549,11 +578,29 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.setAttribute('data-theme', 'dark');
         const themeBtn = document.getElementById('theme-btn');
         if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        updateSiglabThemeUrls('dark');
     } else {
         document.body.setAttribute('data-theme', 'light');
         const themeBtn = document.getElementById('theme-btn');
         if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+        updateSiglabThemeUrls('light');
     }
+
+    // Ensure clicks on Signal Lab links always carry the real-time active theme
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href*="siglab.majn35.ir"]');
+        if (link) {
+            const currentTheme = document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+            try {
+                const rawHref = link.getAttribute('href') || 'https://siglab.majn35.ir';
+                const url = new URL(rawHref.startsWith('http') ? rawHref : `https://siglab.majn35.ir`);
+                url.searchParams.set('theme', currentTheme);
+                link.setAttribute('href', url.toString());
+            } catch (err) {
+                link.setAttribute('href', `https://siglab.majn35.ir/?theme=${currentTheme}`);
+            }
+        }
+    });
 
     // Language Toggle Button
     const langBtn = document.getElementById('lang-btn');
