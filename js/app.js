@@ -1184,4 +1184,10 @@ function initMobileNav() {
             }
         }
     });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 992 && drawer.classList.contains('open')) {
+            closeDrawer();
+        }
+    });
 }

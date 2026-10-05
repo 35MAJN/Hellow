@@ -43,16 +43,19 @@
     --hud-bg: rgba(12, 18, 30, 0.15);
 }
 
-* {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
@@ -61,9 +64,76 @@ body {
     color: var(--text-main);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.6;
+    width: 100%;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Global text wrapping & media containment */
+p, h1, h2, h3, h4, h5, h6, li, span, a {
+    overflow-wrap: break-word;
+}
+
+img, svg, canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive Table Support */
+.responsive-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 16px 0;
+    border-radius: 16px;
+    border: 1px solid var(--liquid-border-subtle);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: start;
+}
+
+th, td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--liquid-border-subtle);
+    font-variant-numeric: tabular-nums;
+}
+
+th {
+    background: rgba(2, 132, 199, 0.06);
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+[data-theme="dark"] th {
+    background: rgba(56, 189, 248, 0.08);
+}
+
+/* Responsive Forms & Inputs */
+input, textarea, select {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: var(--liquid-card-bg);
+    border: 1px solid var(--liquid-border);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 1rem; /* 16px prevents iOS Safari auto-zoom on focus */
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 [lang="fa"] body, [lang="fa"] * {
@@ -1044,7 +1114,7 @@ footer {
     display: none;
 }
 
-@media (min-width: 861px) {
+@media (min-width: 993px) {
     .mobile-nav-drawer,
     #mobile-nav-drawer,
     .mobile-menu-btn,
@@ -1481,33 +1551,59 @@ footer {
 }
 
 /* ==========================================================================
-   RESPONSIVE BREAKPOINTS: TABLETS & SMARTPHONES OPTIMIZATION
+   RESPONSIVE BREAKPOINTS: COMPREHENSIVE TABLET & SMARTPHONE UX
    ========================================================================== */
 
-/* Medium Displays / Tablet Landscape (861px - 1100px) */
-@media (min-width: 861px) and (max-width: 1100px) {
-    .nav-links {
-        gap: 14px;
+/* 1. Large Tablets & Compact Laptops (<= 1140px) */
+@media (max-width: 1140px) {
+    .container {
+        max-width: 1000px;
+        padding: 0 20px;
     }
+
+    .glass-nav {
+        width: min(96%, 1060px);
+        padding: 0 14px 0 18px;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
     .nav-link {
         font-size: 0.82rem;
     }
+
     .nav-controls {
         gap: 6px;
     }
+
     .btn-install-cta span.btn-install-text {
         display: none;
     }
+
     .btn-install-cta {
         padding: 7px 11px;
     }
+
+    .profile-card {
+        grid-template-columns: 200px 1fr;
+        gap: 24px;
+        padding: 28px;
+    }
+
+    .profile-avatar {
+        width: 180px;
+        height: 180px;
+    }
 }
 
-/* Tablets & Small Laptops (<= 860px) */
-@media (max-width: 860px) {
+/* 2. Tablets in Portrait & Compact Landscape (<= 992px) */
+@media (max-width: 992px) {
     .glass-nav {
-        width: min(95%, 980px);
-        padding: 0 10px 0 14px;
+        width: min(95%, 900px);
+        height: 60px;
+        padding: 0 12px 0 16px;
         justify-content: space-between;
     }
 
@@ -1522,81 +1618,195 @@ footer {
     }
 
     .btn-siglab {
-        padding: 0 13px;
-        font-size: 0.82rem;
-        height: 36px;
+        padding: 0 14px;
+        font-size: 0.84rem;
+        height: 38px;
+        min-height: 38px;
         gap: 7px;
     }
 
     .mobile-menu-btn {
         display: inline-flex;
-    }
-
-    .profile-card {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 22px;
-    }
-    
-    .profile-avatar {
-        margin: 0 auto;
-        width: 130px;
-        height: 130px;
-    }
-    
-    .contact-row {
+        align-items: center;
         justify-content: center;
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        min-height: 42px;
+        font-size: 1rem;
     }
 
+    .btn-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        font-size: 0.95rem;
+    }
+
+    .btn-cv-pill {
+        height: 38px;
+        padding: 0 14px;
+        font-size: 0.82rem;
+    }
+
+    #hero {
+        min-height: 85svh;
+        min-height: 85vh;
+        padding-top: calc(var(--nav-height) + 20px);
+    }
+
+    #svg-morph-wrapper {
+        max-width: 480px;
+        height: 95px;
+    }
+
+    /* Purpose-built 2-column Tablet Profile Card */
+    .profile-card {
+        grid-template-columns: 180px 1fr;
+        gap: 26px;
+        padding: 28px 24px;
+        border-radius: 22px;
+        text-align: start;
+        align-items: center;
+    }
+
+    .profile-avatar {
+        margin: 0;
+        width: 160px;
+        height: 160px;
+        border-radius: 22px;
+    }
+
+    .profile-info h1 {
+        font-size: clamp(1.65rem, 3.5vw, 2.1rem);
+    }
+
+    .profile-tagline {
+        font-size: 0.95rem;
+    }
+
+    .profile-bio {
+        font-size: 0.90rem;
+        line-height: 1.65;
+    }
+
+    .contact-row {
+        justify-content: flex-start;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    [dir="rtl"] .profile-card {
+        text-align: start;
+    }
+
+    [dir="rtl"] .contact-row {
+        justify-content: flex-start;
+    }
+
+    /* Tablet Highlights: 2-column balanced */
     .highlights-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 14px;
     }
 
-    .cards-grid {
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-        gap: 16px;
-    }
-
+    /* Purpose-built 2-column Tablet Grids for Research, Projects, Experience */
+    .cards-grid,
     .skills-category-grid,
     .ref-grid,
     .research-grid {
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .glass-card {
+        padding: 24px 22px;
+        border-radius: 20px;
+    }
+
+    .section-header {
+        margin: 44px auto 20px;
+        padding: 22px 24px;
+        border-radius: 20px;
+    }
+
+    .section-title {
+        font-size: clamp(1.45rem, 4vw, 1.95rem);
+    }
+
+    /* Tablet Filter Bar */
+    .filter-bar {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 8px;
+        padding: 4px 4px 10px;
+        margin-bottom: 22px;
+        justify-content: flex-start;
+    }
+
+    .filter-bar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-btn {
+        min-height: 42px;
+        padding: 8px 18px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
 }
 
-/* Smartphones (<= 600px) */
-@media (max-width: 600px) {
+/* 3. Smartphones & Narrow Handheld Devices (<= 720px) */
+@media (max-width: 720px) {
     .container {
         padding: 0 16px;
     }
 
+    /* Fixed Glass Header on Mobile with Safe-Area Offset */
     .glass-nav {
         height: 56px;
-        padding: 0 10px 0 14px;
+        padding: 0 8px 0 12px;
         top: calc(10px + env(safe-area-inset-top, 0px));
-        width: 96%;
+        width: 95%;
+        border-radius: 999px;
     }
 
-    .brand-badge {
-        font-size: 0.92rem;
+    .btn-siglab {
+        height: 38px;
+        min-height: 38px;
+        padding: 0 12px;
+        font-size: 0.80rem;
         gap: 6px;
     }
 
-    .brand-dot {
+    .btn-siglab .siglab-dot {
         width: 6px;
         height: 6px;
     }
 
     .nav-controls {
-        gap: 3px;
+        gap: 4px;
     }
 
+    /* Comfortable touch targets (minimum 38px visual with expanded tap hit area) */
     .btn-icon {
-        width: 35px;
-        height: 35px;
-        font-size: 0.88rem;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
+        font-size: 0.90rem;
+        position: relative;
+    }
+
+    .btn-icon::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
     }
 
     .btn-cv-pill span {
@@ -1604,13 +1814,22 @@ footer {
     }
 
     .btn-cv-pill {
-        width: 35px;
-        height: 35px;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
         padding: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
+        position: relative;
+    }
+
+    .btn-cv-pill::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
     }
 
     .btn-install-cta span.btn-install-text {
@@ -1618,87 +1837,108 @@ footer {
     }
 
     .btn-install-cta {
-        width: 35px;
-        height: 35px;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
         padding: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
+        position: relative;
+    }
+
+    .btn-install-cta::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
     }
 
     .btn-install-cta .pwa-badge-pulse {
         position: absolute;
-        top: 4px;
-        right: 4px;
+        top: 5px;
+        right: 5px;
     }
 
-    .btn-siglab {
-        height: 35px;
-        padding: 0 10px;
-        font-size: 0.78rem;
-        gap: 5px;
+    .mobile-menu-btn {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
+        font-size: 0.95rem;
     }
 
-    .btn-siglab .siglab-dot {
-        width: 5px;
-        height: 5px;
-    }
-
+    /* Mobile Hero */
     #hero {
-        min-height: 85vh;
-        padding-top: calc(var(--nav-height) + 24px);
-        padding-bottom: 24px;
+        min-height: 80svh;
+        min-height: 80vh;
+        padding-top: calc(var(--nav-height) + 16px);
+        padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     }
 
     #svg-morph-wrapper {
-        max-width: 320px;
-        height: 80px;
+        max-width: 330px;
+        height: 75px;
     }
 
     .scroll-indicator {
-        font-size: 0.76rem;
-        padding: 6px 14px;
+        font-size: 0.78rem;
+        min-height: 42px;
+        padding: 8px 16px;
+        border-radius: 999px;
     }
 
-    .glass-card {
-        padding: 20px 16px;
-        border-radius: 18px;
+    /* Mobile Profile Section: Focused, Centered, Clean Visual Hierarchy */
+    .profile-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 18px;
+        padding: 22px 18px;
+        border-radius: 20px;
     }
 
-    .section-header {
-        margin: 40px auto 18px;
-        padding: 18px 20px;
-        border-radius: 18px;
-        width: 96%;
-    }
-
-    .section-title {
-        font-size: clamp(1.35rem, 5.5vw, 1.7rem);
-    }
-
-    .section-desc {
-        font-size: 0.84rem;
+    .profile-avatar {
+        margin: 0 auto;
+        width: 120px;
+        height: 120px;
+        border-radius: 20px;
     }
 
     .profile-info h1 {
-        font-size: clamp(1.5rem, 6vw, 1.95rem);
+        font-size: clamp(1.45rem, 5vw, 1.8rem);
+        line-height: 1.25;
     }
 
     .profile-tagline {
-        font-size: 0.92rem;
+        font-size: 0.88rem;
+        line-height: 1.5;
+        color: var(--accent);
     }
 
     .profile-bio {
         font-size: 0.86rem;
-        line-height: 1.6;
+        line-height: 1.65;
+        max-width: 60ch;
+        margin: 0 auto;
+    }
+
+    .contact-row {
+        justify-content: center;
+        gap: 8px 10px;
+        flex-wrap: wrap;
     }
 
     .contact-item {
+        min-height: 40px;
+        padding: 8px 14px;
         font-size: 0.82rem;
-        word-break: break-all;
+        border-radius: 999px;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 
+    /* Highlights: 2x2 Grid on Mobile */
     .highlights-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
@@ -1706,21 +1946,27 @@ footer {
 
     .stat-card {
         padding: 14px 12px;
-        border-radius: 14px;
+        border-radius: 16px;
     }
 
     .stat-number {
-        font-size: 1.4rem;
+        font-size: 1.35rem;
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
     }
 
     .stat-label {
-        font-size: 0.78rem;
+        font-size: 0.76rem;
+        font-weight: 700;
+        line-height: 1.3;
     }
 
     .stat-detail {
         font-size: 0.70rem;
+        line-height: 1.4;
     }
 
+    /* Single-Column Stack for Content Cards */
     .cards-grid,
     .skills-category-grid,
     .ref-grid,
@@ -1729,63 +1975,309 @@ footer {
         gap: 14px;
     }
 
+    .glass-card {
+        padding: 20px 16px;
+        border-radius: 18px;
+    }
+
+    .section-header {
+        margin: 36px auto 16px;
+        padding: 18px 16px;
+        border-radius: 18px;
+        width: 100%;
+    }
+
+    .section-title {
+        font-size: clamp(1.35rem, 4.5vw, 1.7rem);
+        line-height: 1.3;
+    }
+
+    .section-desc {
+        font-size: 0.84rem;
+        line-height: 1.55;
+    }
+
+    .card-title {
+        font-size: 1.12rem;
+        line-height: 1.35;
+    }
+
+    .card-meta {
+        font-size: 0.80rem;
+    }
+
+    ul, ol {
+        padding-left: 20px;
+    }
+
+    [dir="rtl"] ul, [dir="rtl"] ol {
+        padding-left: 0;
+        padding-right: 20px;
+    }
+
+    li {
+        font-size: 0.86rem;
+        line-height: 1.6;
+        margin-bottom: 6px;
+    }
+
+    /* Swipeable Mobile Filter Bar */
     .filter-bar {
-        gap: 6px;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 8px;
+        padding: 4px 2px 10px;
+        margin-bottom: 18px;
+        justify-content: flex-start;
+    }
+
+    .filter-bar::-webkit-scrollbar {
+        display: none;
     }
 
     .filter-btn {
-        padding: 6px 12px;
-        font-size: 0.76rem;
+        min-height: 40px;
+        padding: 8px 16px;
+        font-size: 0.80rem;
+        font-weight: 700;
+        flex-shrink: 0;
+        white-space: nowrap;
     }
 
+    /* Contact Showcase Card */
+    .contact-showcase-card {
+        padding: 22px 16px !important;
+        border-radius: 20px !important;
+    }
+
+    .contact-showcase-card .contact-item {
+        min-height: 44px;
+        padding: 10px 16px !important;
+        font-size: 0.84rem;
+    }
+
+    /* Mobile Footer */
+    footer .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+        padding: 28px 16px calc(36px + env(safe-area-inset-bottom, 0px));
+    }
+
+    footer .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 16px;
+    }
+
+    footer .footer-links .nav-link {
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.85rem;
+    }
+
+    footer .footer-copy {
+        font-size: 0.78rem;
+        line-height: 1.5;
+    }
+
+    /* Mobile Floating Action Buttons */
     .scroll-top-btn {
-        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-        left: calc(16px + env(safe-area-inset-left, 0px));
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        left: calc(14px + env(safe-area-inset-left, 0px));
         right: auto;
         width: 44px;
         height: 44px;
+        min-width: 44px;
+        min-height: 44px;
     }
 
     .thanos-floating-btn {
-        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-        right: calc(16px + env(safe-area-inset-right, 0px));
-        width: 52px;
-        height: 52px;
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        right: calc(14px + env(safe-area-inset-right, 0px));
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+    }
+
+    [dir="rtl"] .scroll-top-btn {
+        left: auto;
+        right: calc(14px + env(safe-area-inset-right, 0px));
+    }
+
+    [dir="rtl"] .thanos-floating-btn {
+        right: auto;
+        left: calc(14px + env(safe-area-inset-left, 0px));
+    }
+
+    /* Extra padding at bottom of main to clear FABs */
+    main.container {
+        padding-bottom: 64px;
     }
 }
 
-/* Extra-Narrow Phones (<= 380px) */
+/* 4. Extra-Narrow Smartphones (<= 380px) */
 @media (max-width: 380px) {
+    .container {
+        padding: 0 10px;
+    }
+
     .glass-nav {
-        padding: 0 8px 0 10px;
+        padding: 0 6px 0 10px;
+        width: 98%;
     }
 
     .btn-siglab {
+        height: 36px;
+        min-height: 36px;
         padding: 0 8px;
         font-size: 0.74rem;
         gap: 4px;
     }
 
     .btn-siglab .siglab-dot {
-        display: none;
+        width: 5px;
+        height: 5px;
+    }
+
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        min-height: 36px;
+        font-size: 0.84rem;
     }
 
     .btn-cv-pill {
         display: none;
     }
 
-    .brand-badge span {
-        font-size: 0.85rem;
+    .mobile-menu-btn {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        min-height: 36px;
     }
 
-    .btn-icon {
-        width: 32px;
-        height: 32px;
+    #svg-morph-wrapper {
+        max-width: 285px;
+        height: 68px;
+    }
+
+    .profile-card {
+        padding: 16px 12px;
+        border-radius: 16px;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 16px;
+    }
+
+    .profile-info h1 {
+        font-size: 1.35rem;
+    }
+
+    .profile-tagline {
+        font-size: 0.84rem;
+    }
+
+    .profile-bio {
         font-size: 0.82rem;
+    }
+
+    .contact-item {
+        padding: 8px 12px !important;
+        font-size: 0.78rem;
     }
 
     .highlights-grid {
         grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 12px 10px;
+    }
+
+    .glass-card {
+        padding: 16px 12px;
+        border-radius: 16px;
+    }
+
+    .section-header {
+        padding: 16px 12px;
+        margin: 28px auto 14px;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+    }
+
+    .section-desc {
+        font-size: 0.78rem;
+    }
+
+    .filter-btn {
+        padding: 7px 12px;
+        font-size: 0.76rem;
+        min-height: 38px;
+    }
+
+    .pwa-banner {
+        width: 95%;
+        padding: 10px 12px;
+    }
+
+    .pwa-ios-sheet {
+        padding: 18px 14px;
+    }
+}
+
+/* 5. Touch Devices Polish (No Sticky Hover, Instant Active Feedback) */
+@media (hover: none) and (pointer: coarse) {
+    .glass-card:hover,
+    .btn-siglab:hover,
+    .btn-cv-pill:hover,
+    .btn-install-cta:hover,
+    .filter-btn:hover,
+    .scroll-top-btn:hover {
+        transform: none;
+    }
+
+    .btn-siglab:active,
+    .btn-icon:active,
+    .btn-cv-pill:active,
+    .btn-install-cta:active,
+    .filter-btn:active,
+    .contact-item:active,
+    .mobile-nav-link:active,
+    .scroll-top-btn:active,
+    .thanos-floating-btn:active {
+        transform: scale(0.96);
+        transition: transform 0.1s ease;
+    }
+
+    .thanos-floating-btn .thanos-fab-tooltip {
+        display: none !important;
+    }
+}
+
+/* 6. Accessibility & Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
 
