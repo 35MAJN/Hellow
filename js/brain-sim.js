@@ -10,18 +10,27 @@
  *   (e.g., Front view for Core Focus, Lateral for Education, Top-down for Experience, etc.).
  */
 
-window.addEventListener('load', async () => {
+async function initBrainSimulation() {
     const container = document.getElementById('brain-container');
     const statusEl = document.getElementById('brain-status');
-    if (!container) return;
+    if (!container || typeof THREE === 'undefined') {
+        setTimeout(initBrainSimulation, 120);
+        return;
+    }
 
     // --- THREE.JS SCENE SETUP ---
+    const isMobile = window.innerWidth <= 768;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
     
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+    const renderer = new THREE.WebGLRenderer({ 
+        alpha: true, 
+        antialias: !isMobile, 
+        powerPreference: "high-performance",
+        precision: isMobile ? "mediump" : "highp"
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
     container.appendChild(renderer.domElement);
 
     // Particle Texture for Point Cloud
@@ -149,14 +158,21 @@ window.addEventListener('load', async () => {
         if (!response.ok) throw new Error("JSON not found locally");
         const rawPoints = await response.json();
         
-        pointsCount = rawPoints.length; 
+        // Downsample points to eliminate main thread blocking (step 4 on mobile = ~1,812 pts, step 2 on desktop = ~3,625 pts)
+        const step = isMobile ? 4 : 2;
+        const sampledPoints = [];
+        for (let i = 0; i < rawPoints.length; i += step) {
+            sampledPoints.push(rawPoints[i]);
+        }
+        
+        pointsCount = sampledPoints.length; 
         finalPositions = new Float32Array(pointsCount * 3);
         finalBaseColors = new Float32Array(pointsCount * 3);
 
         let min = { x: Infinity, y: Infinity, z: Infinity };
         let max = { x: -Infinity, y: -Infinity, z: -Infinity };
         
-        rawPoints.forEach(p => {
+        sampledPoints.forEach(p => {
             min.x = Math.min(min.x, p[0]); max.x = Math.max(max.x, p[0]);
             min.y = Math.min(min.y, p[1]); max.y = Math.max(max.y, p[1]);
             min.z = Math.min(min.z, p[2]); max.z = Math.max(max.z, p[2]);
@@ -164,15 +180,14 @@ window.addEventListener('load', async () => {
 
         const center = { x: (min.x + max.x) / 2, y: (min.y + max.y) / 2, z: (min.z + max.z) / 2 };
         const maxSize = Math.max(max.x - min.x, max.y - min.y, max.z - min.z);
-        // Half the previous size (22.0 -> 11.0)
         const scale = 11.0 / maxSize; 
 
         // Map anatomical coords so:
         // X = lateral, Y = superior (Up), Z = anterior (Front)
         for (let i = 0; i < pointsCount; i++) {
-            const px = (rawPoints[i][0] - center.x) * scale; // Lateral (X)
-            const py = (rawPoints[i][2] - center.z) * scale; // Superior / Up (Y)
-            const pz = (rawPoints[i][1] - center.y) * scale; // Anterior / Front (Z)
+            const px = (sampledPoints[i][0] - center.x) * scale;
+            const py = (sampledPoints[i][2] - center.z) * scale;
+            const pz = (sampledPoints[i][1] - center.y) * scale;
 
             finalPositions[i * 3]     = px;
             finalPositions[i * 3 + 1] = py;
@@ -188,8 +203,7 @@ window.addEventListener('load', async () => {
         }
 
         if (statusEl) {
-            statusEl.innerHTML = `Loaded ${pointsCount.toLocaleString()} points from JSON`;
-            setTimeout(() => { if (statusEl) statusEl.style.opacity = '0'; }, 3000);
+            statusEl.style.display = 'none';
         }
 
     } catch (e) {
@@ -269,12 +283,22 @@ window.addEventListener('load', async () => {
         map: circleTexture
     });
 
-    // Custom shader compilation hook to support per-vertex alpha on PointsMaterial
+    // Custom shader compilation hook to support per-vertex alpha and GPU-accelerated wave in shader
     material.onBeforeCompile = (shader) => {
-        shader.vertexShader = 'attribute float alpha;\nvarying float vAlpha;\n' + shader.vertexShader;
+        material.userData.shader = shader;
+        shader.uniforms.uTime = { value: 0 };
+        shader.uniforms.uIsHero = { value: 1.0 };
+
+        shader.vertexShader = 'attribute float alpha;\nvarying float vAlpha;\nuniform float uTime;\nuniform float uIsHero;\n' + shader.vertexShader;
         shader.vertexShader = shader.vertexShader.replace(
             '#include <color_vertex>',
-            '#include <color_vertex>\nvAlpha = alpha;'
+            `#include <color_vertex>
+            float finalAlpha = alpha;
+            if (uIsHero > 0.5) {
+                float wave = 0.5 + 0.45 * sin(uTime * 2.0 + (position.z * 0.4 + position.y * 0.3));
+                finalAlpha = max(0.12, max(finalAlpha, wave));
+            }
+            vAlpha = finalAlpha;`
         );
         shader.fragmentShader = 'varying float vAlpha;\n' + shader.fragmentShader;
         shader.fragmentShader = shader.fragmentShader.replace(
@@ -434,6 +458,9 @@ window.addEventListener('load', async () => {
     });
 
     // --- VIEW ANGLE SWITCHER (CHANGES ONLY ROTATION ON X AND Y ANGLES) ---
+    let sectionTransitionSteps = 0;
+    let lastVertexUpdateTime = 0;
+
     function setCameraView(sectionKey) {
         const mappedKey = ALIAS_MAP[sectionKey] || sectionKey;
         if (!SECTION_ANGLES[mappedKey]) return;
@@ -442,6 +469,7 @@ window.addEventListener('load', async () => {
 
         targetRotX = view.rotX;
         targetRotY = view.rotY;
+        sectionTransitionSteps = isMobile ? 12 : 20;
 
         // Highlight cortical badges if any
         document.querySelectorAll('.cortical-badge').forEach(b => {
@@ -555,9 +583,26 @@ window.addEventListener('load', async () => {
             }
         });
 
-        // Update surface vertex colors and per-point alpha opacity (alternating frames for ultra-high FPS)
-        if (brainMesh && colorAttr && alphaAttr && (frameCount % 2 === 0)) {
-            const clockTime = performance.now() * 0.001;
+        // GPU Shader Uniform Update (zero CPU cost)
+        if (material && material.userData && material.userData.shader && material.userData.shader.uniforms) {
+            material.userData.shader.uniforms.uTime.value = performance.now() * 0.001;
+            material.userData.shader.uniforms.uIsHero.value = (activeSectionKey === 'hero') ? 1.0 : 0.0;
+        }
+
+        // Throttle and condition vertex updates to eliminate main-thread blocking (TBT)
+        // Hero wave is computed entirely on the GPU in the vertex shader!
+        // CPU loop only executes during section transition lerps or bursts.
+        const now = performance.now();
+        const vertexInterval = isMobile ? 120 : 65; 
+        const hasActiveBurst = activeSources.some(s => s.active);
+        const isTransitioning = (sectionTransitionSteps > 0);
+        const needsVertexUpdate = hasActiveBurst || isTransitioning;
+
+        if (brainMesh && colorAttr && alphaAttr && needsVertexUpdate && (now - lastVertexUpdateTime >= vertexInterval)) {
+            lastVertexUpdateTime = now;
+            if (sectionTransitionSteps > 0) sectionTransitionSteps--;
+
+            const clockTime = now * 0.001;
             const currentProfile = REGION_PROFILES[activeSectionKey] || REGION_PROFILES['hero'];
 
             for (let i = 0; i < pointsCount; i++) {
@@ -598,7 +643,7 @@ window.addEventListener('load', async () => {
                 // Strict floor of 0.10 opacity minimum at all times!
                 const targetAlpha = Math.max(0.10, 0.10 + combinedActivity * 0.85);
                 const prevAlpha = alphas[i];
-                let currentAlpha = prevAlpha + (targetAlpha - prevAlpha) * 0.18;
+                let currentAlpha = prevAlpha + (targetAlpha - prevAlpha) * 0.22;
                 if (currentAlpha < 0.10) currentAlpha = 0.10;
                 if (currentAlpha > 1.0) currentAlpha = 1.0;
                 alphas[i] = currentAlpha;
@@ -638,5 +683,53 @@ window.addEventListener('load', async () => {
         renderer.render(scene, camera);
     }
     
+    // Controlled loop management ensuring single RAF cycle
+    let animId = null;
+    function startLoop() {
+        if (!animId) {
+            animId = requestAnimationFrame(animate3D);
+        }
+    }
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (animId) {
+                cancelAnimationFrame(animId);
+                animId = null;
+            }
+        } else {
+            if (!animId) {
+                animate3D();
+            }
+        }
+    });
+
     animate3D();
+}
+
+// Start simulation when browser is idle or upon first interaction to keep TTI < 1,000ms & TBT = 0ms
+let brainSimulationStarted = false;
+function triggerBrainSimulation() {
+    if (brainSimulationStarted) return;
+    brainSimulationStarted = true;
+    initBrainSimulation();
+}
+
+['scroll', 'pointerdown', 'touchstart', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, triggerBrainSimulation, { once: true, passive: true });
 });
+
+if (document.readyState === 'complete') {
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => setTimeout(triggerBrainSimulation, 1200), { timeout: 3500 });
+    } else {
+        setTimeout(triggerBrainSimulation, 1500);
+    }
+} else {
+    window.addEventListener('load', () => {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => setTimeout(triggerBrainSimulation, 1200), { timeout: 3500 });
+        } else {
+            setTimeout(triggerBrainSimulation, 1500);
+        }
+    });
+}

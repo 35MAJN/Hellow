@@ -616,11 +616,18 @@ document.addEventListener('DOMContentLoaded', () => {
         themeBtn.addEventListener('click', toggleTheme);
     }
 
-    // Dynamic SVG Morphing Logo
-    initSvgMorph();
-
-    // 2D Background Canvas
-    initBackgroundParticles();
+    // Defer dynamic visual effects until main thread is idle for instant FCP and low TBT
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => {
+            initSvgMorph();
+            initBackgroundParticles();
+        }, { timeout: 1200 });
+    } else {
+        setTimeout(() => {
+            initSvgMorph();
+            initBackgroundParticles();
+        }, 150);
+    }
 
     // Scroll Elements: Progress Bar, Back to Top Button, Side Navigation Rail
     initScrollElements();
@@ -740,137 +747,105 @@ function initScrollElements() {
     });
 }
 
-// SVG Logo Morphing Logic
+// High-Performance Ambient Synaptic Logo Accent (Instant Speed Index & Zero-TBT)
 function initSvgMorph() {
-    document.fonts.ready.then(() => {
-        const svg = document.getElementById('morph-svg');
-        if (!svg) return;
+    const svg = document.getElementById('morph-svg');
+    if (!svg) return;
 
-        const svgNS = "http://www.w3.org/2000/svg";
-        const width = 800;
-        const height = 180;
-        const textToMorph = "JAVADINASAB";
+    const isMobile = window.innerWidth <= 768;
+    const svgNS = "http://www.w3.org/2000/svg";
+    const width = 800;
+    const height = 180;
 
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = width;
-        tempCanvas.height = height;
-        const tCtx = tempCanvas.getContext('2d');
-        tCtx.fillStyle = 'white';
-        tCtx.font = `900 86px Inter, sans-serif`;
-        tCtx.textAlign = 'center';
-        tCtx.textBaseline = 'middle';
-        tCtx.fillText(textToMorph, width / 2, height / 2);
+    // Elegant constellation accent nodes around the crisp typography
+    const nodesCount = isMobile ? 12 : 24;
+    const nodes = [];
+    const edges = [];
+    const frag = document.createDocumentFragment();
 
-        const imgData = tCtx.getImageData(0, 0, width, height).data;
-        const targetPoints = [];
+    // Fixed pre-placed aesthetic coordinate anchors around the name "JAVADINASAB"
+    for (let i = 0; i < nodesCount; i++) {
+        const xAnchor = 140 + (i / nodesCount) * 520;
+        const yAnchor = 65 + Math.sin(i * 1.5) * 35;
 
-        for (let y = 0; y < height; y += 8) {
-            for (let x = 0; x < width; x += 8) {
-                const alpha = imgData[(y * width + x) * 4 + 3];
-                if (alpha > 130) {
-                    targetPoints.push({ x: x + (Math.random() * 4 - 2), y: y + (Math.random() * 4 - 2) });
-                }
-            }
-        }
+        const circle = document.createElementNS(svgNS, 'circle');
+        circle.setAttribute('r', (Math.random() * 1.4 + 1.2).toFixed(1));
+        circle.setAttribute('class', 'morph-node');
+        frag.appendChild(circle);
 
-        targetPoints.sort(() => Math.random() - 0.5);
-        const nodesCount = targetPoints.length;
-        const nodes = [];
-        const edges = [];
+        nodes.push({
+            el: circle,
+            x: xAnchor + (Math.random() * 14 - 7),
+            y: yAnchor + (Math.random() * 14 - 7),
+            baseX: xAnchor,
+            baseY: yAnchor,
+            speed: 0.0008 + (i % 3) * 0.0004,
+            offset: i * 0.6
+        });
+    }
 
-        for (let i = 0; i < nodesCount; i++) {
-            const circle = document.createElementNS(svgNS, 'circle');
-            circle.setAttribute('r', (Math.random() * 1.6 + 1.2).toFixed(1));
-            circle.setAttribute('class', 'morph-node');
-            svg.appendChild(circle);
+    // Connect adjacent nodes with subtle neural synaptic links
+    const maxEdges = isMobile ? 8 : 16;
+    for (let i = 0; i < nodesCount - 1 && edges.length < maxEdges; i += 2) {
+        const line = document.createElementNS(svgNS, 'line');
+        line.setAttribute('class', 'morph-edge');
+        line.style.opacity = '0.14';
+        frag.appendChild(line);
+        edges.push({ el: line, i: i, j: i + 1 });
+    }
 
-            nodes.push({
-                el: circle,
-                x: Math.random() * width,
-                y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 1.2,
-                vy: (Math.random() - 0.5) * 1.2,
-                tx: targetPoints[i].x,
-                ty: targetPoints[i].y
-            });
-        }
+    svg.appendChild(frag);
 
-        const maxEdges = Math.min(220, Math.floor(nodesCount * 1.4));
-        for (let i = 0; i < maxEdges; i++) {
-            const line = document.createElementNS(svgNS, 'line');
-            line.setAttribute('class', 'morph-edge');
-            svg.insertBefore(line, svg.firstChild);
-            edges.push({ el: line });
-        }
-
-        let phase = 'wander';
-        let morphStartTime = 0;
-
-        setTimeout(() => { phase = 'pulse'; }, 1800);
-        setTimeout(() => { phase = 'morph'; morphStartTime = performance.now(); }, 3200);
-
-        function animateMorph(time) {
-            for (let i = 0; i < nodesCount; i++) {
-                const n = nodes[i];
-                if (phase === 'wander' || phase === 'pulse') {
-                    n.x += n.vx;
-                    n.y += n.vy;
-                    if (n.x < 0 || n.x > width) n.vx *= -1;
-                    if (n.y < 0 || n.y > height) n.vy *= -1;
-                } else if (phase === 'morph' || phase === 'float') {
-                    const t = Math.min(1, (time - morphStartTime) / 2000);
-                    const easeT = 1 - Math.pow(1 - t, 3);
-                    if (phase === 'morph') {
-                        n.x += (n.tx - n.x) * easeT * 0.12;
-                        n.y += (n.ty - n.y) * easeT * 0.12;
-                        if (t >= 1) phase = 'float';
-                    } else {
-                        n.x += Math.sin(time * 0.001 + i) * 0.12 + (n.tx - n.x) * 0.04;
-                        n.y += Math.cos(time * 0.0015 + i) * 0.12 + (n.ty - n.y) * 0.04;
-                    }
-                }
-                n.el.setAttribute('cx', n.x.toFixed(1));
-                n.el.setAttribute('cy', n.y.toFixed(1));
-            }
-
-            // Draw neural network connecting lines
-            let edgeIdx = 0;
-            for (let i = 0; i < nodesCount && edgeIdx < maxEdges; i += 2) {
-                let minDist = Infinity;
-                let closest = -1;
-                for (let j = 0; j < nodesCount; j++) {
-                    if (i === j) continue;
-                    const dx = nodes[i].x - nodes[j].x;
-                    const dy = nodes[i].y - nodes[j].y;
-                    const dist = dx * dx + dy * dy;
-                    if (dist < minDist) { minDist = dist; closest = j; }
-                }
-
-                if (closest !== -1 && minDist < 2400) {
-                    const line = edges[edgeIdx].el;
-                    line.setAttribute('x1', nodes[i].x);
-                    line.setAttribute('y1', nodes[i].y);
-                    line.setAttribute('x2', nodes[closest].x);
-                    line.setAttribute('y2', nodes[closest].y);
-                    line.style.opacity = phase === 'float' ? '0.06' : (0.35 - minDist / 7000).toFixed(2);
-                    edgeIdx++;
-                }
-            }
-            while (edgeIdx < maxEdges) {
-                edges[edgeIdx].el.style.opacity = '0';
-                edgeIdx++;
-            }
-
+    let lastFrame = 0;
+    function animateMorph(time) {
+        if (document.hidden || window.scrollY > window.innerHeight * 1.1) {
             requestAnimationFrame(animateMorph);
+            return;
         }
+
+        // Throttle SVG DOM updates to ~24fps to conserve main thread CPU
+        if (time - lastFrame < 40) {
+            requestAnimationFrame(animateMorph);
+            return;
+        }
+        lastFrame = time;
+
+        const t = time;
+        for (let i = 0; i < nodesCount; i++) {
+            const n = nodes[i];
+            const curX = n.baseX + Math.sin(t * n.speed + n.offset) * 8;
+            const curY = n.baseY + Math.cos(t * n.speed * 1.2 + n.offset) * 6;
+            n.el.setAttribute('cx', curX.toFixed(1));
+            n.el.setAttribute('cy', curY.toFixed(1));
+        }
+
+        for (let e = 0; e < edges.length; e++) {
+            const edge = edges[e];
+            const nA = nodes[edge.i];
+            const nB = nodes[edge.j];
+            edge.el.setAttribute('x1', nA.el.getAttribute('cx'));
+            edge.el.setAttribute('y1', nA.el.getAttribute('cy'));
+            edge.el.setAttribute('x2', nB.el.getAttribute('cx'));
+            edge.el.setAttribute('y2', nB.el.getAttribute('cy'));
+        }
+
         requestAnimationFrame(animateMorph);
-    });
+    }
+
+    requestAnimationFrame(animateMorph);
 }
 
-// 2D Ambient Background Particles
+// 2D Ambient Background Particles (Desktop Only & Throttled)
 function initBackgroundParticles() {
     const canvas = document.getElementById('bg-canvas');
     if (!canvas) return;
+
+    // Skip on mobile devices to preserve CPU and GPU battery
+    if (window.innerWidth <= 768) {
+        canvas.style.display = 'none';
+        return;
+    }
+
     const ctx = canvas.getContext('2d');
     let particles = [];
 
@@ -879,15 +854,15 @@ function initBackgroundParticles() {
         canvas.height = window.innerHeight;
     }
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
 
     class BgParticle {
         constructor() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 3 + 1.5;
-            this.vx = (Math.random() - 0.5) * 0.3;
-            this.vy = (Math.random() - 0.5) * 0.3;
+            this.size = Math.random() * 2.2 + 1.0;
+            this.vx = (Math.random() - 0.5) * 0.2;
+            this.vy = (Math.random() - 0.5) * 0.2;
         }
         update() {
             this.x += this.vx;
@@ -897,28 +872,42 @@ function initBackgroundParticles() {
             if (this.y < 0) this.y = canvas.height;
             if (this.y > canvas.height) this.y = 0;
         }
-        draw() {
-            const isDark = document.body.getAttribute('data-theme') === 'dark';
-            ctx.fillStyle = isDark ? 'rgba(56, 189, 248, 0.22)' : 'rgba(0, 102, 204, 0.15)';
+        draw(isDark) {
+            ctx.fillStyle = isDark ? 'rgba(56, 189, 248, 0.18)' : 'rgba(0, 102, 204, 0.10)';
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
         }
     }
 
-    for (let i = 0; i < 45; i++) {
+    const pCount = 18;
+    for (let i = 0; i < pCount; i++) {
         particles.push(new BgParticle());
     }
 
-    function loop() {
+    let lastDraw = 0;
+    function loop(time) {
+        if (document.hidden || window.scrollY > window.innerHeight * 1.2) {
+            requestAnimationFrame(loop);
+            return;
+        }
+
+        // Throttle ambient canvas to ~30fps
+        if (time - lastDraw < 33) {
+            requestAnimationFrame(loop);
+            return;
+        }
+        lastDraw = time;
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        for (let i = 0; i < pCount; i++) {
+            particles[i].update();
+            particles[i].draw(isDark);
+        }
         requestAnimationFrame(loop);
     }
-    loop();
+    requestAnimationFrame(loop);
 }
 
 // --- PROGRESSIVE WEB APP (PWA) INSTALL & LIFECYCLE CONTROLLER ---

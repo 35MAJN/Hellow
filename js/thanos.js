@@ -1064,13 +1064,10 @@
         });
     }
 
-    // --- THANOS SCROLL APPEARING OBSERVER (ULTRA LIGHTWEIGHT) ---
+    // --- THANOS SCROLL APPEARING OBSERVER (ULTRA LIGHTWEIGHT & LCP-OPTIMIZED) ---
     function initThanosAppearingObserver() {
+        const viewportHeight = window.innerHeight || 800;
         const targets = document.querySelectorAll('.glass-card, .section-header, .stat-pill');
-
-        targets.forEach(el => {
-            el.classList.add('thanos-appear-target');
-        });
 
         const observerOptions = {
             root: null,
@@ -1097,7 +1094,19 @@
             });
         }, observerOptions);
 
-        targets.forEach(el => appearObserver.observe(el));
+        targets.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            // Critical for Instant LCP & High Speed Index:
+            // Do NOT hide above-the-fold elements with opacity: 0!
+            if (rect.top < viewportHeight * 0.92) {
+                el._hasMaterialized = true;
+                el.classList.add('thanos-materialized');
+                return;
+            }
+
+            el.classList.add('thanos-appear-target');
+            appearObserver.observe(el);
+        });
     }
 
     // --- 3D PERSPECTIVE TILT (LIGHTWEIGHT RAF) ---

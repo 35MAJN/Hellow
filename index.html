@@ -92,17 +92,150 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="mask-icon" href="/favicon-32x32.png" color="#0284c7">
 
-    <!-- Fonts & Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Fonts & Icons Preconnect & Async Loading for Instant FCP -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Vazirmatn:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Vazirmatn:wght@300;400;500;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Vazirmatn:wght@300;400;500;700;800;900&display=swap"></noscript>
     
-    <!-- Three.js Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Preload Critical LCP Avatar Image -->
+    <link rel="preload" fetchpriority="high" as="image" href="pic.jpg" type="image/jpeg">
 
-    <!-- Elevated Glassmorphism Stylesheet -->
-    <link rel="stylesheet" href="css/glass.css">
+    <!-- Critical Inlined CSS for Instant FCP & Speed Index (< 400ms) -->
+    <style id="critical-css">
+        :root, [data-theme="light"] {
+            --bg-gradient: radial-gradient(circle at 50% 0%, #f9fbfe 0%, #edf4fc 40%, #e2effa 100%);
+            --liquid-bg: rgba(255, 255, 255, 0.25);
+            --liquid-card-bg: rgba(255, 255, 255, 0.18);
+            --liquid-header-bg: rgba(255, 255, 255, 0.26);
+            --liquid-border: rgba(255, 255, 255, 0.42);
+            --liquid-border-subtle: rgba(255, 255, 255, 0.18);
+            --liquid-shadow: 0 16px 36px -6px rgba(15, 23, 42, 0.05), 0 2px 10px -2px rgba(15, 23, 42, 0.02), 0 0 0 1px rgba(255, 255, 255, 0.45);
+            --liquid-hover-shadow: 0 24px 50px -8px rgba(2, 132, 199, 0.12), 0 4px 14px -2px rgba(2, 132, 199, 0.05), 0 0 0 1.5px rgba(2, 132, 199, 0.35);
+            --text-main: #0f172a;
+            --text-muted: #334155;
+            --text-dim: #64748b;
+            --accent: #0284c7;
+            --accent-light: #0369a1;
+            --accent-glow: rgba(2, 132, 199, 0.14);
+            --pulse-color: #0284c7;
+            --nav-height: 64px;
+        }
+        [data-theme="dark"] {
+            --bg-gradient: radial-gradient(circle at 50% 10%, #0a0e17 0%, #05080e 50%, #020306 100%);
+            --liquid-bg: rgba(14, 20, 32, 0.15);
+            --liquid-card-bg: rgba(16, 23, 38, 0.11);
+            --liquid-header-bg: rgba(14, 21, 35, 0.16);
+            --liquid-border: rgba(255, 255, 255, 0.08);
+            --liquid-border-subtle: rgba(255, 255, 255, 0.04);
+            --liquid-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+            --liquid-hover-shadow: 0 28px 60px -12px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(56, 189, 248, 0.25);
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --text-dim: #94a3b8;
+            --accent: #38bdf8;
+            --accent-light: #60a5fa;
+            --accent-glow: rgba(56, 189, 248, 0.18);
+            --pulse-color: #22d3ee;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; width: 100%; overflow-x: hidden; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+        body {
+            background: var(--bg-gradient); background-attachment: fixed;
+            color: var(--text-main); font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6; width: 100%; overflow-x: hidden; -webkit-font-smoothing: antialiased; min-height: 100vh;
+        }
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
+        .glass-nav {
+            position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+            width: min(96%, 1160px); height: var(--nav-height);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 16px 0 22px; z-index: 1000; border-radius: 999px;
+            background: var(--liquid-bg); backdrop-filter: blur(24px) saturate(190%);
+            -webkit-backdrop-filter: blur(24px) saturate(190%); border: 1px solid var(--liquid-border);
+            box-shadow: var(--liquid-shadow);
+        }
+        .btn-siglab {
+            display: inline-flex; align-items: center; gap: 9px; height: 38px;
+            padding: 0 16px; border-radius: 999px;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.12) 0%, rgba(14, 165, 233, 0.22) 100%);
+            border: 1.5px solid var(--accent); color: var(--text-main) !important;
+            font-size: 0.86rem; font-weight: 800; text-decoration: none; white-space: nowrap; flex-shrink: 0;
+        }
+        [data-theme="dark"] .btn-siglab { color: #f8fafc !important; }
+        .nav-links { display: flex; align-items: center; gap: 22px; }
+        .nav-link { text-decoration: none; color: var(--text-muted); font-size: 0.88rem; font-weight: 600; padding: 6px 2px; }
+        .nav-controls { display: flex; align-items: center; gap: 6px; }
+        .btn-icon {
+            width: 38px; height: 38px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--liquid-bg); border: 1px solid var(--liquid-border);
+            color: var(--text-muted); cursor: pointer; text-decoration: none;
+        }
+        .btn-cv-pill {
+            display: inline-flex; align-items: center; gap: 7px; height: 38px;
+            padding: 0 14px; border-radius: 999px;
+            background: var(--liquid-bg); border: 1px solid var(--liquid-border);
+            color: var(--text-main); font-size: 0.82rem; font-weight: 700; text-decoration: none;
+        }
+        #hero {
+            min-height: 85vh; min-height: 85svh; display: flex; flex-direction: column;
+            align-items: center; justify-content: space-between;
+            padding-top: calc(var(--nav-height) + 24px); padding-bottom: 32px;
+            position: relative; z-index: 10;
+        }
+        #svg-morph-wrapper { width: 100%; max-width: 450px; height: 120px; margin: 0 auto 10px auto; position: relative; z-index: 10; }
+        #morph-svg { width: 100%; height: 100%; overflow: visible; }
+        .morph-hero-text {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: 900; font-size: 82px; letter-spacing: 0.15em; fill: var(--accent);
+            filter: drop-shadow(0 2px 10px var(--accent-glow)); user-select: none;
+        }
+        [data-theme="dark"] .morph-hero-text { fill: #38bdf8; }
+        .morph-node { fill: var(--accent); }
+        .morph-edge { stroke: var(--accent); stroke-width: 1.5; opacity: 0.2; }
+        .hero-spacer { flex: 1; min-height: 220px; width: 100%; pointer-events: none; }
+        .scroll-indicator {
+            display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700;
+            color: var(--accent); background: var(--liquid-card-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--liquid-border); padding: 8px 18px; border-radius: 999px; text-decoration: none;
+        }
+        .glass-card {
+            background: var(--liquid-card-bg);
+            backdrop-filter: blur(24px) saturate(190%); -webkit-backdrop-filter: blur(24px) saturate(190%);
+            border-radius: 24px; border: 1px solid var(--liquid-border); box-shadow: var(--liquid-shadow);
+            position: relative; overflow: hidden; padding: 32px; z-index: 10;
+        }
+        .profile-card {
+            display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center; margin-top: 24px;
+        }
+        .profile-avatar {
+            width: 140px; height: 140px; border-radius: 28px; object-fit: cover;
+            border: 3px solid var(--accent); box-shadow: 0 10px 24px var(--accent-glow); display: block;
+        }
+        .profile-info h1 { font-size: 2.1rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 8px; }
+        .profile-tagline { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin-bottom: 12px; }
+        .profile-bio { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.65; }
+        @media (max-width: 860px) {
+            .nav-links { display: none; }
+            .glass-nav { width: min(95%, 980px); padding: 0 10px 0 14px; }
+        }
+        @media (max-width: 720px) {
+            .container { padding: 0 16px; }
+            .profile-card { grid-template-columns: 1fr; text-align: center; gap: 20px; padding: 22px 18px; }
+            .profile-img-wrap { margin: 0 auto; }
+            .contact-row { justify-content: center; }
+            #svg-morph-wrapper { max-width: 330px; height: 75px; }
+        }
+    </style>
+
+    <!-- Elevated Glassmorphism Stylesheet (Loaded with Non-Blocking Preload & Stylesheet Switch) -->
+    <link rel="preload" href="css/glass.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/glass.css"></noscript>
 </head>
 <body data-theme="light">
 
@@ -500,14 +633,16 @@
 
     <!-- Persistent 3D Spatial Brain Canvas -->
     <div id="brain-container">
-        <div id="brain-status">Initializing Simulation...</div>
+        <div id="brain-status" style="display:none;">Initializing Simulation...</div>
     </div>
 
     <!-- FULLSCREEN HERO SECTION -->
     <section id="hero">
-        <!-- Dynamic Morphing SVG Logo -->
+        <!-- Dynamic Morphing SVG Logo with Immediate Typography for Instant Speed Index -->
         <div id="svg-morph-wrapper">
-            <svg id="morph-svg" viewBox="0 0 800 200"></svg>
+            <svg id="morph-svg" viewBox="0 0 800 180" class="hero-brand-svg">
+                <text x="400" y="105" text-anchor="middle" class="morph-hero-text">JAVADINASAB</text>
+            </svg>
         </div>
 
         <div class="hero-spacer"></div>
@@ -524,7 +659,7 @@
         <!-- PROFILE INTRODUCTION CARD -->
         <section class="glass-card profile-card" id="profile">
             <div class="profile-img-wrap">
-                <img src="pic.jpg" alt="Mohammadali Javadinasab" class="profile-avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'">
+                <img src="pic.jpg" alt="Mohammadali Javadinasab" class="profile-avatar" fetchpriority="high" decoding="async" width="240" height="240" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'">
             </div>
             <div class="profile-info">
                 <h1 data-t="hero-name">Mohammadali Javadinasab</h1>
@@ -1282,10 +1417,10 @@
 
     </main>
 
-    <!-- Application Logic & Brain Simulation Scripts -->
-    <script src="js/app.js"></script>
-    <script src="js/brain-sim.js"></script>
-    <!-- Thanos Disintegration & Time Stone Reassembly Engine -->
-    <script src="js/thanos.js"></script>
+    <!-- Application Logic & High-Performance Scripts (Deferred for Maximum Speed Index) -->
+    <script defer src="js/app.js"></script>
+    <script defer src="js/thanos.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="js/brain-sim.js"></script>
 </body>
 </html>

@@ -10,6 +10,7 @@
     "lint": "node -e \"console.log('Lint passed')\""
   },
   "dependencies": {
+    "compression": "^1.8.2",
     "express": "^5.2.1"
   }
 }
