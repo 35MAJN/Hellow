@@ -619,12 +619,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Defer dynamic visual effects until main thread is idle for instant FCP and low TBT
     if ('requestIdleCallback' in window) {
         requestIdleCallback(() => {
-            initSvgMorph();
             initBackgroundParticles();
         }, { timeout: 1200 });
     } else {
         setTimeout(() => {
-            initSvgMorph();
             initBackgroundParticles();
         }, 150);
     }
@@ -745,94 +743,6 @@ function initScrollElements() {
             }
         });
     });
-}
-
-// High-Performance Ambient Synaptic Logo Accent (Instant Speed Index & Zero-TBT)
-function initSvgMorph() {
-    const svg = document.getElementById('morph-svg');
-    if (!svg) return;
-
-    const isMobile = window.innerWidth <= 768;
-    const svgNS = "http://www.w3.org/2000/svg";
-    const width = 800;
-    const height = 180;
-
-    // Elegant constellation accent nodes around the crisp typography
-    const nodesCount = isMobile ? 12 : 24;
-    const nodes = [];
-    const edges = [];
-    const frag = document.createDocumentFragment();
-
-    // Fixed pre-placed aesthetic coordinate anchors around the name "JAVADINASAB"
-    for (let i = 0; i < nodesCount; i++) {
-        const xAnchor = 140 + (i / nodesCount) * 520;
-        const yAnchor = 65 + Math.sin(i * 1.5) * 35;
-
-        const circle = document.createElementNS(svgNS, 'circle');
-        circle.setAttribute('r', (Math.random() * 1.4 + 1.2).toFixed(1));
-        circle.setAttribute('class', 'morph-node');
-        frag.appendChild(circle);
-
-        nodes.push({
-            el: circle,
-            x: xAnchor + (Math.random() * 14 - 7),
-            y: yAnchor + (Math.random() * 14 - 7),
-            baseX: xAnchor,
-            baseY: yAnchor,
-            speed: 0.0008 + (i % 3) * 0.0004,
-            offset: i * 0.6
-        });
-    }
-
-    // Connect adjacent nodes with subtle neural synaptic links
-    const maxEdges = isMobile ? 8 : 16;
-    for (let i = 0; i < nodesCount - 1 && edges.length < maxEdges; i += 2) {
-        const line = document.createElementNS(svgNS, 'line');
-        line.setAttribute('class', 'morph-edge');
-        line.style.opacity = '0.14';
-        frag.appendChild(line);
-        edges.push({ el: line, i: i, j: i + 1 });
-    }
-
-    svg.appendChild(frag);
-
-    let lastFrame = 0;
-    function animateMorph(time) {
-        if (document.hidden || window.scrollY > window.innerHeight * 1.1) {
-            requestAnimationFrame(animateMorph);
-            return;
-        }
-
-        // Throttle SVG DOM updates to ~24fps to conserve main thread CPU
-        if (time - lastFrame < 40) {
-            requestAnimationFrame(animateMorph);
-            return;
-        }
-        lastFrame = time;
-
-        const t = time;
-        for (let i = 0; i < nodesCount; i++) {
-            const n = nodes[i];
-            const curX = n.baseX + Math.sin(t * n.speed + n.offset) * 8;
-            const curY = n.baseY + Math.cos(t * n.speed * 1.2 + n.offset) * 6;
-            n.el.setAttribute('cx', curX.toFixed(1));
-            n.el.setAttribute('cy', curY.toFixed(1));
-        }
-
-        for (let e = 0; e < edges.length; e++) {
-            const edge = edges[e];
-            const nA = nodes[edge.i];
-            const nB = nodes[edge.j];
-            edge.el.setAttribute('x1', nA.el.getAttribute('cx'));
-            edge.el.setAttribute('y1', nA.el.getAttribute('cy'));
-            edge.el.setAttribute('x2', nB.el.getAttribute('cx'));
-            edge.el.setAttribute('y2', nB.el.getAttribute('cy'));
-        }
-
-        requestAnimationFrame(animateMorph);
-    }
-
-    requestAnimationFrame(animateMorph);
 }
 
 // 2D Ambient Background Particles (Desktop Only & Throttled)

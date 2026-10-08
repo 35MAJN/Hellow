@@ -532,8 +532,9 @@ async function initBrainSimulation() {
 
     // --- RENDER LOOP ---
     let frameCount = 0;
+    let animId = null;
     function animate3D() {
-        requestAnimationFrame(animate3D);
+        animId = requestAnimationFrame(animate3D);
         frameCount++;
 
         // Gradually decay user drag offset back to 0
@@ -684,12 +685,6 @@ async function initBrainSimulation() {
     }
     
     // Controlled loop management ensuring single RAF cycle
-    let animId = null;
-    function startLoop() {
-        if (!animId) {
-            animId = requestAnimationFrame(animate3D);
-        }
-    }
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
             if (animId) {
