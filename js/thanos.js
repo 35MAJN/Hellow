@@ -1095,9 +1095,15 @@
         }, observerOptions);
 
         targets.forEach(el => {
-            const rect = el.getBoundingClientRect();
             // Critical for Instant LCP & High Speed Index:
-            // Do NOT hide above-the-fold elements with opacity: 0!
+            // Do NOT hide above-the-fold elements (profile card, stat cards) with opacity: 0!
+            if (el.id === 'profile' || el.classList.contains('profile-card') || el.classList.contains('stat-card')) {
+                el._hasMaterialized = true;
+                el.classList.add('thanos-materialized');
+                return;
+            }
+
+            const rect = el.getBoundingClientRect();
             if (rect.top < viewportHeight * 0.92) {
                 el._hasMaterialized = true;
                 el.classList.add('thanos-materialized');

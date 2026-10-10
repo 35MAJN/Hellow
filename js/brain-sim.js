@@ -701,12 +701,27 @@ async function initBrainSimulation() {
     animate3D();
 }
 
-// Start simulation when browser is idle or upon first interaction to keep TTI < 1,000ms & TBT = 0ms
+// Start simulation when browser is idle or upon first interaction to keep TTI < 800ms & TBT = 0ms
 let brainSimulationStarted = false;
+
+function loadThreeJsAndStart() {
+    if (typeof THREE !== 'undefined') {
+        initBrainSimulation();
+        return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    script.async = true;
+    script.onload = () => {
+        initBrainSimulation();
+    };
+    document.head.appendChild(script);
+}
+
 function triggerBrainSimulation() {
     if (brainSimulationStarted) return;
     brainSimulationStarted = true;
-    initBrainSimulation();
+    loadThreeJsAndStart();
 }
 
 ['scroll', 'pointerdown', 'touchstart', 'keydown'].forEach(evt => {
@@ -715,16 +730,16 @@ function triggerBrainSimulation() {
 
 if (document.readyState === 'complete') {
     if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => setTimeout(triggerBrainSimulation, 1200), { timeout: 3500 });
+        requestIdleCallback(() => setTimeout(triggerBrainSimulation, 1500), { timeout: 4000 });
     } else {
-        setTimeout(triggerBrainSimulation, 1500);
+        setTimeout(triggerBrainSimulation, 2000);
     }
 } else {
     window.addEventListener('load', () => {
         if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => setTimeout(triggerBrainSimulation, 1200), { timeout: 3500 });
+            requestIdleCallback(() => setTimeout(triggerBrainSimulation, 1500), { timeout: 4000 });
         } else {
-            setTimeout(triggerBrainSimulation, 1500);
+            setTimeout(triggerBrainSimulation, 2000);
         }
     });
 }

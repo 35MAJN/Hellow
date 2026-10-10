@@ -868,7 +868,7 @@ function initPWA() {
         if (pwaBanner && !sessionStorage.getItem('pwa_banner_dismissed')) {
             setTimeout(() => {
                 pwaBanner.style.display = 'flex';
-            }, 2500);
+            }, 6000);
         }
     }
 
@@ -882,7 +882,7 @@ function initPWA() {
         if (pwaBanner && !sessionStorage.getItem('pwa_banner_dismissed')) {
             setTimeout(() => {
                 pwaBanner.style.display = 'flex';
-            }, 1800);
+            }, 6000);
         }
     });
 
